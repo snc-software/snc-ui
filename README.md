@@ -1,75 +1,71 @@
-# React + TypeScript + Vite
+# snc-ui
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React component library built on the Raspberry / Sky design system. Components ship as a Vite
+library build, are developed and documented in Storybook, and consume design tokens exposed as
+CSS custom properties.
 
-Currently, two official plugins are available:
+## Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Node version is pinned via `.nvmrc` (`nvm use`).
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run storybook   # component dev environment (http://localhost:6006)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Scripts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Script                    | Purpose                                        |
+| ------------------------- | ---------------------------------------------- |
+| `npm run storybook`       | Start Storybook for component development      |
+| `npm run build-storybook` | Build the static Storybook site                |
+| `npm run build`           | Type-check and build the library (`dist/`)     |
+| `npm run lint`            | Run ESLint                                     |
+| `npm run test`            | Run the Vitest suite                           |
+| `npm run test:coverage`   | Run the Vitest suite with coverage (80% floor) |
+| `npm run format`          | Format the repo with Prettier                  |
+| `npm run format:check`    | Check formatting without writing               |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project Structure
 
+```text
+src/
+├── Components/   # Component folders, re-exported from index.ts
+├── Shared/       # Cross-component constants
+├── Types/        # Cross-component types (SncComponent, SncComponentWithChildren)
+├── Utils/        # Cross-component utilities (cn, etc.)
+├── index.ts      # Library entry point
+├── index.css     # Library stylesheet entry (imports Tailwind + tokens)
+├── design-tokens.css   # Raw design tokens as CSS custom properties
+└── tailwind-theme.css  # Tailwind theme mapping consuming design-tokens.css
 ```
+
+## Path Aliases
+
+Each top-level `src` folder is aliased and MUST be imported via its alias rather than a relative
+path that traverses outside the current folder:
+
+| Alias          | Resolves to      |
+| -------------- | ---------------- |
+| `@/Components` | `src/Components` |
+| `@/Shared`     | `src/Shared`     |
+| `@/Types`      | `src/Types`      |
+| `@/Utils`      | `src/Utils`      |
+
+## Styling
+
+Tailwind utilities are generated under the `snc:` prefix (Tailwind v4 `prefix()`), and every theme
+token also carries its own `snc-` prefix, e.g. `snc:bg-snc-primary`, `snc:bg-snc-raspberry-50`. The
+`snc:` prefix marks a utility as coming from this library; the `snc-` prefix marks the token itself
+as an snc-branded value. Design tokens are defined once in `src/design-tokens.css` and mapped into
+Tailwind's theme in `src/tailwind-theme.css` — see [`DESIGN SYSTEM.md`](./DESIGN%20SYSTEM.md) and
+[`design-tokens.json`](./design-tokens.json) for the full token reference. Dark mode is triggered
+by a `.dark` class on `<html>`/`<body>`.
+
+## Standards
+
+All component and coding conventions for this repo live in [`.standards/`](./.standards):
+
+- [`coding-standards.md`](./.standards/coding-standards.md)
+- [`component-standards.md`](./.standards/component-standards.md)
+- [`unit-test-standards.md`](./.standards/unit-test-standards.md)

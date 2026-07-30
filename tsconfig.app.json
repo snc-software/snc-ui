@@ -16,6 +16,21 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Strictness */
+    "strict": true,
+
+    /* Path Aliases */
+    "paths": {
+      "@/Components": ["./src/Components"],
+      "@/Components/*": ["./src/Components/*"],
+      "@/Shared": ["./src/Shared"],
+      "@/Shared/*": ["./src/Shared/*"],
+      "@/Types": ["./src/Types"],
+      "@/Types/*": ["./src/Types/*"],
+      "@/Utils": ["./src/Utils"],
+      "@/Utils/*": ["./src/Utils/*"]
+    },
+
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,

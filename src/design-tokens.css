@@ -1,0 +1,104 @@
+/**
+ * Design tokens sourced verbatim from design-tokens.json (Raspberry / Sky Design System).
+ * Raw color scales are mode-independent; semantic `mode.*` and status tokens flip under `.dark`.
+ * See DESIGN SYSTEM.md for usage rules.
+ */
+
+:root {
+  /* Raspberry scale */
+  --snc-raspberry-50: #fce4ec;
+  --snc-raspberry-100: #f8bbd0;
+  --snc-raspberry-200: #f48fb1;
+  --snc-raspberry-300: #f06292;
+  --snc-raspberry-400: #ec407a;
+  --snc-raspberry-500: #e91e63;
+  --snc-raspberry-600: #d81b60;
+  --snc-raspberry-700: #c2185b;
+  --snc-raspberry-800: #ad1457;
+  --snc-raspberry-900: #880e4f;
+
+  /* Sky scale */
+  --snc-sky-50: #f0f9ff;
+  --snc-sky-100: #e0f2fe;
+  --snc-sky-200: #bae6fd;
+  --snc-sky-300: #7dd3fc;
+  --snc-sky-400: #38bdf8;
+  --snc-sky-500: #0ea5e9;
+  --snc-sky-600: #0284c7;
+  --snc-sky-700: #0369a1;
+  --snc-sky-800: #075985;
+  --snc-sky-900: #0c4a6e;
+
+  /* Neutral scale */
+  --snc-neutral-50: #f8fafc;
+  --snc-neutral-100: #f1f5f9;
+  --snc-neutral-200: #e2e8f0;
+  --snc-neutral-300: #cbd5e1;
+  --snc-neutral-400: #94a3b8;
+  --snc-neutral-500: #64748b;
+  --snc-neutral-600: #475569;
+  --snc-neutral-700: #334155;
+  --snc-neutral-800: #1e293b;
+  --snc-neutral-900: #0f172a;
+  --snc-neutral-950: #020617;
+
+  /* Typography */
+  --snc-font-family-heading: 'JetBrains Mono', monospace;
+  --snc-font-family-body: 'Manrope', sans-serif;
+
+  /* Mode tokens — light (default) */
+  --snc-background: #f8fafc;
+  --snc-surface: #ffffff;
+  --snc-surface-accent: #f0f9ff;
+  --snc-text-primary: #0f172a;
+  --snc-text-secondary: #475569;
+  --snc-border: #e2e8f0;
+  --snc-primary: #c2185b;
+  --snc-primary-hover: #ad1457;
+  --snc-primary-subtle-bg: #fce4ec;
+  --snc-accent: #0ea5e9;
+  --snc-accent-subtle-bg: #e0f2fe;
+
+  /* Semantic status triads — light (default) */
+  --snc-success-bg: #dcfce7;
+  --snc-success-border: #16a34a;
+  --snc-success-text: #166534;
+  --snc-warning-bg: #fef3c7;
+  --snc-warning-border: #d97706;
+  --snc-warning-text: #92400e;
+  --snc-error-bg: #fee2e2;
+  --snc-error-border: #dc2626;
+  --snc-error-text: #991b1b;
+  --snc-info-bg: #e0f2fe;
+  --snc-info-border: #0284c7;
+  --snc-info-text: #075985;
+}
+
+.dark {
+  /* Mode tokens — dark */
+  --snc-background: #020617;
+  --snc-surface: #0f172a;
+  --snc-surface-accent: #1e293b;
+  --snc-text-primary: #f8fafc;
+  --snc-text-secondary: #94a3b8;
+  --snc-border: #334155;
+  --snc-primary: #ec407a;
+  --snc-primary-hover: #f06292;
+  --snc-primary-subtle-bg: #880e4f;
+  --snc-accent: #38bdf8;
+  --snc-accent-subtle-bg: #0c4a6e;
+
+  /* Semantic status triads — dark */
+  --snc-success-bg: #14532d;
+  --snc-success-border: #22c55e;
+  --snc-success-text: #86efac;
+  --snc-warning-bg: #78350f;
+  --snc-warning-border: #f59e0b;
+  --snc-warning-text: #fcd34d;
+  --snc-error-bg: #7f1d1d;
+  --snc-error-border: #ef4444;
+  --snc-error-text: #fca5a5;
+  --snc-info-bg: #0c4a6e;
+  --snc-info-border: #38bdf8;
+  --snc-info-text: #7dd3fc;
+}

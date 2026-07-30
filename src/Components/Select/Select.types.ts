@@ -1,30 +1,51 @@
 import type { Sizes } from './Select.constants';
 import type { SncComponent } from '@/Types/SncComponent';
-import type { Ref, SelectHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 
 export type SelectOption = {
   /**
-   * Value submitted/reported when the option is chosen.
+   * Value reported to `onChange` when the option is chosen.
    */
   value: string;
   /**
    * User-facing option text.
    */
-  label: string;
+  label: ReactNode;
   disabled?: boolean;
 };
 
 export type SelectProps = SncComponent<
-  // `size` is omitted from the native attributes deliberately: HTML's `size` is a row count, which
-  // would intersect with our `'sm' | 'md'` union and collapse it to `never`.
+  // The trigger is a `<button>` rather than a native `<select>`: the options panel is custom-rendered
+  // so it can carry the design system's own treatment, which a native dropdown cannot be styled into.
+  // `value`/`defaultValue`/`onChange` are omitted from the button attributes and redeclared below,
+  // because the button's own versions describe a form control this component does not present.
   Omit<
-    SelectHTMLAttributes<HTMLSelectElement>,
-    'className' | 'id' | 'style' | 'children' | 'size'
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    'className' | 'id' | 'style' | 'children' | 'type' | 'value' | 'defaultValue' | 'onChange'
   > & {
     /**
      * Options to choose from.
      */
     options: SelectOption[];
+    /**
+     * Selected value. Supplying this makes the component controlled — it then only changes when the
+     * consumer passes a new one.
+     */
+    value?: string;
+    /**
+     * Initially selected value when the component is left uncontrolled.
+     */
+    defaultValue?: string;
+    /**
+     * Called with the chosen option's `value`. Note this is the value itself rather than a change
+     * event, because there is no native `<select>` behind the control to raise one.
+     */
+    onChange?: (value: string) => void;
+    /**
+     * Shown while nothing is selected.
+     * @default 'Select'
+     */
+    placeholder?: ReactNode;
     /**
      * Control height/padding. Style-affecting, so it maps to a key of {@link Sizes}.
      */
@@ -35,12 +56,16 @@ export type SelectProps = SncComponent<
      */
     hasError?: boolean;
     /**
-     * Rendered as a disabled, non-selectable leading option to prompt a choice.
+     * How many options are visible before the panel starts scrolling.
+     * @default 7
      */
-    placeholder?: string;
+    visibleOptions?: number;
     /**
-     * Accepted as a normal prop so React Hook Form can register the field.
+     * Submitted with the surrounding form via a hidden input mirroring the selected value. React Hook
+     * Form should drive this component through `Controller` rather than `register`, since the trigger
+     * is a button and so raises no native change event to register against.
      */
-    ref?: Ref<HTMLSelectElement>;
+    name?: string;
+    ref?: Ref<HTMLButtonElement>;
   }
 >;

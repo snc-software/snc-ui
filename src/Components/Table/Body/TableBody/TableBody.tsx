@@ -33,7 +33,7 @@ export default function TableBody<TRow extends object>({
         <tr>
           <td colSpan={columnCount} className={classes.messageCell}>
             <div className={classes.message}>
-              <Spinner size="xl" className={classes.spinner} />
+              <Spinner size="xl" />
             </div>
           </td>
         </tr>

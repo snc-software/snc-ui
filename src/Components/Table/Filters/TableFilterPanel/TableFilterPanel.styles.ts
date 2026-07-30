@@ -12,6 +12,6 @@ export const classes = {
     'snc:rounded snc:p-0 snc:text-snc-text-secondary',
     'snc:transition-colors snc:duration-150 snc:hover:text-snc-text-primary',
     'snc:disabled:cursor-not-allowed snc:disabled:opacity-40',
-    'snc:focus-visible:outline-none snc:focus-visible:ring-2 snc:focus-visible:ring-snc-accent',
+    'snc:focus-visible:outline-none snc:focus-visible:ring-2 snc:focus-visible:ring-snc-primary',
   ),
 } as const;

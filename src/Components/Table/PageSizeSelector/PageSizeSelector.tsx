@@ -23,11 +23,12 @@ export default function PageSizeSelector({
     <div className={cn(classes.base, className)} {...rest}>
       <Select
         aria-label="Rows per page"
+        className={classes.select}
         size="sm"
         disabled={disabled}
         value={String(value)}
         options={options.map((option) => ({ value: String(option), label: String(option) }))}
-        onChange={(event) => onChange(Number(event.target.value))}
+        onChange={(pageSize) => onChange(Number(pageSize))}
       />
       <span className={classes.label}>per page</span>
     </div>

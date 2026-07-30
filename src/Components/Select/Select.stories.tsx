@@ -8,6 +8,11 @@ const options = [
   { value: 'archived', label: 'Archived' },
 ];
 
+const manyOptions = Array.from({ length: 15 }, (_, index) => ({
+  value: `option-${index + 1}`,
+  label: `Option ${index + 1}`,
+}));
+
 const meta = {
   title: 'Components/Select',
   component: Select,
@@ -19,6 +24,7 @@ const meta = {
     },
     hasError: { control: 'boolean' },
     disabled: { control: 'boolean' },
+    visibleOptions: { control: { type: 'number', min: 1 } },
     onChange: { action: 'changed' },
   },
   args: {
@@ -37,8 +43,12 @@ export const Small: Story = {
   args: { size: 'sm' },
 };
 
+export const WithSelection: Story = {
+  args: { defaultValue: 'active' },
+};
+
 export const WithPlaceholder: Story = {
-  args: { placeholder: 'Choose a status', defaultValue: '' },
+  args: { placeholder: 'Choose a status' },
 };
 
 export const HasError: Story = {
@@ -46,11 +56,18 @@ export const HasError: Story = {
 };
 
 export const Disabled: Story = {
-  args: { disabled: true },
+  args: { disabled: true, defaultValue: 'draft' },
 };
 
 export const WithDisabledOption: Story = {
   args: {
     options: [...options, { value: 'deleted', label: 'Deleted', disabled: true }],
   },
+};
+
+/**
+ * The panel caps its height at `visibleOptions` rows and scrolls beyond that.
+ */
+export const Scrolling: Story = {
+  args: { options: manyOptions, visibleOptions: 5 },
 };

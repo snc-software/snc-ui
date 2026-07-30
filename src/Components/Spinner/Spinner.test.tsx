@@ -54,6 +54,21 @@ describe('Spinner', () => {
     expect(screen.getByRole('status').querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
   });
 
+  it('paints in the primary colour by default', () => {
+    render(<Spinner />);
+
+    expect(screen.getByRole('status').className).toContain('snc:text-snc-primary');
+  });
+
+  it('lets a consumer-supplied text colour replace the primary default', () => {
+    render(<Spinner className="snc:text-current" />);
+
+    const spinner = screen.getByRole('status');
+
+    expect(spinner.className).toContain('snc:text-current');
+    expect(spinner.className).not.toContain('snc:text-snc-primary');
+  });
+
   it('merges a consumer-supplied className with the base classes', () => {
     render(<Spinner className="custom-class" />);
 

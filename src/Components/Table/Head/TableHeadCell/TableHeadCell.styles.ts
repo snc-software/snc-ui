@@ -13,7 +13,7 @@ export const classes = {
     'snc:rounded snc:p-0 snc:text-snc-text-secondary',
     'snc:transition-colors snc:duration-150',
     'snc:hover:text-snc-text-primary',
-    'snc:focus-visible:outline-none snc:focus-visible:ring-2 snc:focus-visible:ring-snc-accent',
+    'snc:focus-visible:outline-none snc:focus-visible:ring-2 snc:focus-visible:ring-snc-primary',
   ),
   filterTrigger: cn('snc:flex snc:flex-1 snc:items-center snc:gap-2 snc:text-left'),
   filterIcon: cn('snc:transition-transform snc:duration-300'),

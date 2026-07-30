@@ -102,6 +102,18 @@ describe('Checkbox', () => {
     expect(ref).toHaveBeenCalled();
   });
 
+  // The source library bolds the label whenever the box is ticked or mixed. It is driven from CSS
+  // rather than a prop, so the assertion is on the variant being wired up, not on computed weight —
+  // jsdom does not resolve Tailwind's generated stylesheet.
+  it('bolds the label while checked or indeterminate', () => {
+    const { container } = render(<Checkbox label="Select row" />);
+
+    const wrapper = container.firstElementChild;
+
+    expect(wrapper?.className).toContain('snc:has-[:checked]:font-bold');
+    expect(wrapper?.className).toContain('snc:has-[:indeterminate]:font-bold');
+  });
+
   it('merges a consumer-supplied className onto the wrapper', () => {
     const { container } = render(<Checkbox label="Select row" className="custom-class" />);
 

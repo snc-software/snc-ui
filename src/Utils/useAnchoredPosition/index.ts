@@ -1,0 +1,1 @@
+export { useAnchoredPosition } from './useAnchoredPosition';

@@ -24,8 +24,11 @@ describe('PageSizeSelector', () => {
     expect(screen.getByRole('combobox', { name: 'Rows per page' })).toBeInTheDocument();
   });
 
-  it('renders an option per supplied page size', () => {
+  it('renders an option per supplied page size', async () => {
+    const user = userEvent.setup();
     renderSelector();
+
+    await user.click(screen.getByRole('combobox', { name: 'Rows per page' }));
 
     expect(screen.getAllByRole('option')).toHaveLength(3);
   });
@@ -33,7 +36,7 @@ describe('PageSizeSelector', () => {
   it('reflects the current page size', () => {
     renderSelector({ value: 50 });
 
-    expect(screen.getByRole('combobox', { name: 'Rows per page' })).toHaveValue('50');
+    expect(screen.getByRole('combobox', { name: 'Rows per page' })).toHaveTextContent('50');
   });
 
   it('renders the per page caption', () => {
@@ -46,7 +49,8 @@ describe('PageSizeSelector', () => {
     const user = userEvent.setup();
     const props = renderSelector();
 
-    await user.selectOptions(screen.getByRole('combobox', { name: 'Rows per page' }), '50');
+    await user.click(screen.getByRole('combobox', { name: 'Rows per page' }));
+    await user.click(screen.getByRole('option', { name: '50' }));
 
     expect(props.onChange).toHaveBeenCalledWith(50);
   });

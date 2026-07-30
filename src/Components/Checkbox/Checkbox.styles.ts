@@ -1,7 +1,15 @@
 import { cn } from '@/Utils/cn';
 
 export const classes = {
-  wrapper: cn('snc:inline-flex snc:items-center snc:gap-2'),
+  // The bold-when-selected label comes from the source library, which drives it off the checked and
+  // indeterminate states. It is applied here rather than on the label because the label is not a
+  // sibling of the input, so a `peer-checked` variant cannot reach it — `has-*` inspects the whole
+  // subtree instead, and font-weight inherits down to the label. Driving it from CSS rather than from
+  // a React prop keeps it correct for uncontrolled checkboxes, where React never sees `checked`.
+  wrapper: cn(
+    'snc:inline-flex snc:items-center snc:gap-2',
+    'snc:has-[:checked]:font-bold snc:has-[:indeterminate]:font-bold',
+  ),
   control: cn('snc:relative snc:inline-flex snc:h-4 snc:w-4 snc:shrink-0'),
   input: cn(
     'snc:peer snc:h-4 snc:w-4 snc:appearance-none',

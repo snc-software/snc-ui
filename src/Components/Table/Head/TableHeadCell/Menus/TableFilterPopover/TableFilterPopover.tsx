@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import { cn } from '@/Utils/cn';
+import { useAnchoredPosition } from '@/Utils/useAnchoredPosition';
 import { useClickOutside } from '@/Utils/useClickOutside';
 
 import { classes } from './TableFilterPopover.styles';
 
 import type { TableFilterPopoverProps } from './TableFilterPopover.types';
-import type { CSSProperties } from 'react';
 
 /**
  * Anchored dismissible panel for a column's filter menu.
@@ -31,49 +31,12 @@ export default function TableFilterPopover({
   ...rest
 }: TableFilterPopoverProps) {
   const panelRef = useRef<HTMLDivElement | null>(null);
-  const [position, setPosition] = useState<CSSProperties>();
-
-  const updatePosition = useCallback(() => {
-    const trigger = triggerRef.current;
-
-    if (!trigger) {
-      return;
-    }
-
-    const rect = trigger.getBoundingClientRect();
-
-    setPosition({
-      top: rect.bottom,
-      ...(alignMenu === 'right'
-        ? { right: Math.max(0, window.innerWidth - rect.right) }
-        : { left: rect.left }),
-      ...(hasAdaptiveWidth ? { width: rect.width } : {}),
-    });
-  }, [alignMenu, hasAdaptiveWidth, triggerRef]);
-
-  // Layout effect so the panel is positioned before paint — otherwise it flashes at the origin.
-  useLayoutEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    updatePosition();
-  }, [isOpen, updatePosition]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    // `true` so ancestor scroll containers (the table's own scroll area) are caught, not just window.
-    window.addEventListener('scroll', updatePosition, true);
-    window.addEventListener('resize', updatePosition);
-
-    return () => {
-      window.removeEventListener('scroll', updatePosition, true);
-      window.removeEventListener('resize', updatePosition);
-    };
-  }, [isOpen, updatePosition]);
+  const position = useAnchoredPosition({
+    isOpen,
+    triggerRef,
+    align: alignMenu,
+    hasAdaptiveWidth,
+  });
 
   useEffect(() => {
     if (!isOpen) {

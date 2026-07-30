@@ -18,6 +18,6 @@ export const classes = {
     'snc:inline-flex snc:items-center snc:justify-center',
     'snc:rounded-full snc:p-0',
     'snc:transition-opacity snc:duration-150 snc:hover:opacity-70',
-    'snc:focus-visible:outline-none snc:focus-visible:ring-2 snc:focus-visible:ring-snc-accent',
+    'snc:focus-visible:outline-none snc:focus-visible:ring-2 snc:focus-visible:ring-snc-primary',
   ),
 } as const;

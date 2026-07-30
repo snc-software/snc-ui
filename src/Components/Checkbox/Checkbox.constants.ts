@@ -5,7 +5,7 @@ export const Variants = {
     'snc:border-snc-border',
     'snc:checked:border-snc-primary snc:checked:bg-snc-primary',
     'snc:indeterminate:border-snc-primary snc:indeterminate:bg-snc-primary',
-    'snc:focus-visible:ring-snc-accent',
+    'snc:focus-visible:ring-snc-primary',
   ),
   error: cn(
     'snc:border-snc-error-border',

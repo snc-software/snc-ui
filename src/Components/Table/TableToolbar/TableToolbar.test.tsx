@@ -60,7 +60,8 @@ describe('TableToolbar', () => {
     const user = userEvent.setup();
     const props = renderToolbar();
 
-    await user.selectOptions(screen.getByRole('combobox', { name: 'Rows per page' }), '50');
+    await user.click(screen.getByRole('combobox', { name: 'Rows per page' }));
+    await user.click(screen.getByRole('option', { name: '50' }));
 
     expect(props.onPageSizeChanged).toHaveBeenCalledWith(50);
   });

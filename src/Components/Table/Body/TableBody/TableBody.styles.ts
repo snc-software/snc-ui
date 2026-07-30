@@ -6,5 +6,4 @@ export const classes = {
     'snc:flex snc:items-center snc:justify-center',
     'snc:font-snc-body snc:text-sm snc:text-snc-text-secondary',
   ),
-  spinner: cn('snc:text-snc-primary'),
 } as const;

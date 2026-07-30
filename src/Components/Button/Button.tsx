@@ -25,7 +25,9 @@ export default function Button({
       className={cn(classes.base, Variants[variant], className)}
       {...rest}
     >
-      {isLoading && <Spinner size="sm" />}
+      {/* Overrides the spinner's primary default so it inherits the button's foreground instead —
+          otherwise a primary button would paint a raspberry spinner on a raspberry background. */}
+      {isLoading && <Spinner size="sm" className="snc:text-current" />}
       {children}
     </button>
   );

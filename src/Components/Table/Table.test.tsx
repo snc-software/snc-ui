@@ -111,7 +111,8 @@ describe('Table', () => {
     const { onFetchRequested } = renderTable();
 
     await user.click(screen.getByRole('button', { name: 'Go to page 2' }));
-    await user.selectOptions(screen.getByRole('combobox', { name: 'Rows per page' }), '50');
+    await user.click(screen.getByRole('combobox', { name: 'Rows per page' }));
+    await user.click(screen.getByRole('option', { name: '50' }));
 
     expect(onFetchRequested).toHaveBeenLastCalledWith(
       expect.objectContaining({ page: 1, pageSize: 50 }),

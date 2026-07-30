@@ -1,3 +1,26 @@
-// Barrel export for all components. Populated as components are added.
-export * from './Button';
+// Barrel export for all components.
+//
+// `export *` does not re-export a default binding, and each component's index.ts exports its component
+// as the default (as component-standards.md requires). Each default is therefore bound to a name here,
+// or nothing would be reachable from the library root.
+export { default as Button } from './Button';
+export type { ButtonProps } from './Button';
+
+export { default as Checkbox } from './Checkbox';
+export type { CheckboxProps } from './Checkbox';
+
+export { default as Input } from './Input';
+export type { InputProps } from './Input';
+
+export { default as Select } from './Select';
+export type { SelectOption, SelectProps } from './Select';
+
+export { default as Spinner } from './Spinner';
+export type { SpinnerProps } from './Spinner';
+
+// Table's own index.ts already names its sub-components and public types, so `export *` picks those
+// up; only its default needs binding.
+export { default as Table } from './Table';
+export * from './Table';
+
 export * from './Typography';

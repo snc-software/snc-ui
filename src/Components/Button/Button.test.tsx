@@ -92,6 +92,18 @@ describe('Button', () => {
     expect(button).toHaveAttribute('aria-busy', 'true');
   });
 
+  it('renders a Spinner when isLoading is true', () => {
+    render(<Button isLoading>Click me</Button>);
+
+    expect(screen.getByRole('status', { name: 'Loading' })).toBeInTheDocument();
+  });
+
+  it('does not render a Spinner when isLoading is false', () => {
+    render(<Button>Click me</Button>);
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
   it('merges a consumer-supplied className with the variant classes', () => {
     render(<Button className="custom-class">Click me</Button>);
 

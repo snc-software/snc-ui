@@ -9,6 +9,4 @@ export const classes = {
     'snc:focus-visible:outline-none snc:focus-visible:ring-2 snc:focus-visible:ring-snc-accent snc:focus-visible:ring-offset-2',
     'snc:disabled:cursor-not-allowed snc:disabled:opacity-60',
   ),
-  spinner: cn('snc:h-4 snc:w-4 snc:animate-spin'),
-  srOnly: cn('snc:sr-only'),
 } as const;

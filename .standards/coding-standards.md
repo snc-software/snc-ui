@@ -36,8 +36,9 @@ Examples
 
 ### Committing & Pull Requests
 
-* Committing code and opening/merging pull requests is the sole responsibility of the developer
-* Any tooling or AI agent working within this repository MUST NOT commit code, push to a branch, or open/merge a pull request under any circumstance — it may prepare, stage, or describe changes for the developer to review and commit themselves
+* Committing code is the sole responsibility of the developer — no tooling or AI agent may commit code under any circumstance
+* Opening or merging a pull request (and pushing the branch it's built from) is likewise the developer's responsibility, with one narrow exception: an AI agent invoked explicitly via the `sc-pr-and-merge` command MAY push the current branch, open a pull request, and enable auto-merge, strictly following that command's own instructions
+* Outside of an explicit `sc-pr-and-merge` invocation, tooling or an AI agent MUST NOT commit code, push to a branch, or open/merge a pull request under any circumstance — it may prepare, stage, or describe changes for the developer to review and commit/push/PR themselves
 
 ## Required Practices
 
@@ -129,7 +130,8 @@ snc-ui
 
 NEVER
 
-* Commit code or open/merge a pull request as an automated tool or AI agent — this is the developer's responsibility alone
+* Commit code as an automated tool or AI agent — this is the developer's responsibility alone, with no exception
+* Push a branch, or open/merge a pull request, as an automated tool or AI agent — except when explicitly invoked via the `sc-pr-and-merge` command, which is authorized to push, open, and auto-merge a PR per its own instructions
 * Introduce a new dependency without explicit engineer confirmation, unless it was already specified in the task brief
 * Introduce a new dependency that duplicates existing functionality
 * Leave `console.log`/`console.debug` statements in committed code

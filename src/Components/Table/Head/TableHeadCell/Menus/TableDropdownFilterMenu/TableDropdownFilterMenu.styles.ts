@@ -1,16 +1,10 @@
 import { cn } from '@/Utils/cn';
 
 export const classes = {
-  base: cn('snc:max-h-[400px] snc:overflow-y-auto', 'snc:py-1'),
-  list: cn('snc:flex snc:flex-col'),
-  option: cn(
-    'snc:flex snc:w-full snc:items-center snc:gap-2',
-    'snc:px-3 snc:py-2 snc:text-left',
-    'snc:font-snc-body snc:text-sm snc:text-snc-text-primary',
-    'snc:transition-colors snc:duration-150',
-    'snc:hover:bg-snc-accent-subtle-bg',
-    'snc:focus-visible:outline-none snc:focus-visible:bg-snc-accent-subtle-bg',
-  ),
-  optionSelected: cn('snc:bg-snc-primary-subtle-bg snc:font-medium'),
-  clearOption: cn('snc:text-snc-text-secondary'),
+  base: cn('snc:flex snc:min-w-max snc:flex-col snc:gap-3 snc:p-3'),
+  // Matches `TableInputFilterMenu`: the popover takes the column's width, which is not necessarily
+  // wide enough for the control and its three buttons.
+  select: cn('snc:min-w-56'),
+  actions: cn('snc:flex snc:gap-3'),
+  primaryActions: cn('snc:flex snc:flex-1 snc:gap-2'),
 } as const;

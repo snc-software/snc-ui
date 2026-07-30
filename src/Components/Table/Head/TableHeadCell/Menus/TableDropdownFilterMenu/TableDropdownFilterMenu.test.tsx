@@ -28,30 +28,61 @@ function renderMenu(overrides: Partial<Parameters<typeof TableDropdownFilterMenu
   return props;
 }
 
+const getSelect = () => screen.getByRole('combobox', { name: 'Filter by status' });
+
 describe('TableDropdownFilterMenu', () => {
-  it('renders a labelled listbox', () => {
+  it('renders a labelled select rather than a bare option list', () => {
     renderMenu();
 
-    expect(screen.getByRole('listbox', { name: 'Filter by status' })).toBeInTheDocument();
+    expect(getSelect()).toBeInTheDocument();
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
 
-  it('renders an option per supplied option plus the clear option', () => {
+  it('renders the same Search, Clear and Cancel actions as the input menu', () => {
     renderMenu();
 
-    expect(screen.getAllByRole('option')).toHaveLength(3);
+    expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Clear' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
   });
 
-  it('omits the clear option when isClearable is false', () => {
+  it('omits the clear action when isClearable is false', () => {
     renderMenu({ isClearable: false });
+
+    expect(screen.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
+  });
+
+  it('renders an option per supplied option', async () => {
+    const user = userEvent.setup();
+    renderMenu();
+
+    await user.click(getSelect());
 
     expect(screen.getAllByRole('option')).toHaveLength(2);
   });
 
-  it('applies the filter when an option is selected', async () => {
+  it('disables Search until an option is chosen', async () => {
+    const user = userEvent.setup();
+    renderMenu();
+
+    expect(screen.getByRole('button', { name: 'Search' })).toBeDisabled();
+
+    await user.click(getSelect());
+    await user.click(screen.getByRole('option', { name: 'Active' }));
+
+    expect(screen.getByRole('button', { name: 'Search' })).toBeEnabled();
+  });
+
+  it('does not apply the filter until Search is pressed', async () => {
     const user = userEvent.setup();
     const props = renderMenu();
 
+    await user.click(getSelect());
     await user.click(screen.getByRole('option', { name: 'Active' }));
+
+    expect(props.onFiltersSet).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole('button', { name: 'Search' }));
 
     expect(props.onFiltersSet).toHaveBeenCalledWith([
       { id: 'status', title: 'Status', text: 'Active', value: 'active' },
@@ -62,71 +93,49 @@ describe('TableDropdownFilterMenu', () => {
     const user = userEvent.setup();
     const props = renderMenu();
 
+    await user.click(getSelect());
     await user.click(screen.getByRole('option', { name: 'Active' }));
+    await user.click(screen.getByRole('button', { name: 'Search' }));
 
     expect(props.onClose).toHaveBeenCalledTimes(1);
   });
 
-  it('marks the active filter option as selected', () => {
+  it('seeds the select from the active filter', () => {
     renderMenu({ filters: [{ id: 'status', title: 'Status', value: 'active' }] });
 
-    expect(screen.getByRole('option', { name: 'Active' })).toHaveAttribute('aria-selected', 'true');
+    expect(getSelect()).toHaveTextContent('Active');
   });
 
-  it('marks the clear option as selected when no filter is active', () => {
-    renderMenu();
-
-    expect(screen.getByRole('option', { name: 'All' })).toHaveAttribute('aria-selected', 'true');
-  });
-
-  it('clears the filter when the clear option is selected', async () => {
+  it('clears the active filter and resets the select without closing', async () => {
     const user = userEvent.setup();
     const props = renderMenu({ filters: [{ id: 'status', title: 'Status', value: 'active' }] });
 
-    await user.click(screen.getByRole('option', { name: 'All' }));
+    await user.click(screen.getByRole('button', { name: 'Clear' }));
 
     expect(props.onFiltersCleared).toHaveBeenCalledWith(['status']);
+    expect(getSelect()).toHaveTextContent('Select status');
+    expect(props.onClose).not.toHaveBeenCalled();
   });
 
-  it('selects the focused option with Enter', async () => {
+  it('clears an unsubmitted choice without reporting a filter change', async () => {
     const user = userEvent.setup();
-    const props = renderMenu({ isClearable: false });
+    const props = renderMenu();
 
-    await user.tab();
-    await user.keyboard('{Enter}');
+    await user.click(getSelect());
+    await user.click(screen.getByRole('option', { name: 'Active' }));
+    await user.click(screen.getByRole('button', { name: 'Clear' }));
 
-    expect(props.onFiltersSet).toHaveBeenCalledWith([
-      { id: 'status', title: 'Status', text: 'Active', value: 'active' },
-    ]);
+    expect(getSelect()).toHaveTextContent('Select status');
+    expect(props.onFiltersCleared).not.toHaveBeenCalled();
   });
 
-  it('moves focus to the next option with ArrowDown', async () => {
+  it('closes without applying anything when Cancel is pressed', async () => {
     const user = userEvent.setup();
-    renderMenu({ isClearable: false });
+    const props = renderMenu();
 
-    await user.tab();
-    await user.keyboard('{ArrowDown}');
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
 
-    expect(screen.getByRole('option', { name: 'Archived' })).toHaveFocus();
-  });
-
-  it('moves focus to the previous option with ArrowUp', async () => {
-    const user = userEvent.setup();
-    renderMenu({ isClearable: false });
-
-    await user.tab();
-    await user.keyboard('{ArrowDown}{ArrowUp}');
-
-    expect(screen.getByRole('option', { name: 'Active' })).toHaveFocus();
-  });
-
-  it('wraps focus from the last option back to the first', async () => {
-    const user = userEvent.setup();
-    renderMenu({ isClearable: false });
-
-    await user.tab();
-    await user.keyboard('{ArrowDown}{ArrowDown}');
-
-    expect(screen.getByRole('option', { name: 'Active' })).toHaveFocus();
+    expect(props.onClose).toHaveBeenCalledTimes(1);
+    expect(props.onFiltersSet).not.toHaveBeenCalled();
   });
 });

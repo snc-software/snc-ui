@@ -159,7 +159,48 @@ describe('TableHeadCell', () => {
 
     await user.click(screen.getByRole('button', { name: 'Filter by name' }));
 
-    expect(screen.getByRole('listbox', { name: 'Filter by name' })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: 'Filter by name' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+  });
+
+  // The Select inside the dropdown menu portals its own panel to `document.body`, so it lands outside
+  // the popover's DOM subtree. Without containment the popover's click-outside detector reads an
+  // option click as a click outside itself and closes, taking the menu with it before the choice
+  // registers.
+  it('keeps the dropdown filter menu open while choosing from its select', async () => {
+    const user = userEvent.setup();
+    renderCell({
+      column: {
+        ...basicColumn,
+        filterType: 'dropdown',
+        options: [{ value: 'active', label: 'Active' }],
+      },
+    });
+
+    await user.click(screen.getByRole('button', { name: 'Filter by name' }));
+    await user.click(screen.getByRole('combobox', { name: 'Filter by name' }));
+    await user.click(screen.getByRole('option', { name: 'Active' }));
+
+    expect(screen.getByRole('combobox', { name: 'Filter by name' })).toHaveTextContent('Active');
+    expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+  });
+
+  it('closes only the select, not the whole menu, when Escape is pressed in the select', async () => {
+    const user = userEvent.setup();
+    renderCell({
+      column: {
+        ...basicColumn,
+        filterType: 'dropdown',
+        options: [{ value: 'active', label: 'Active' }],
+      },
+    });
+
+    await user.click(screen.getByRole('button', { name: 'Filter by name' }));
+    await user.click(screen.getByRole('combobox', { name: 'Filter by name' }));
+    await user.keyboard('{Escape}');
+
+    expect(screen.queryByRole('option')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
   });
 
   it('renders custom filter menu content for a custom filter column', async () => {

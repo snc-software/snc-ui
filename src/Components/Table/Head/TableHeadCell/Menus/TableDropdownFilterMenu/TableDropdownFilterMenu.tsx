@@ -1,19 +1,19 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
+import Button from '@/Components/Button';
+import Select from '@/Components/Select';
 import { cn } from '@/Utils/cn';
 
 import { classes } from './TableDropdownFilterMenu.styles';
 
 import type { TableDropdownFilterMenuProps } from './TableDropdownFilterMenu.types';
-import type { KeyboardEvent } from 'react';
-
-const ClearOptionValue = '';
 
 /**
- * Single-select option list for a column filter. Only meaningful inside `TableHeadCell`'s popover.
+ * Option-list filter panel for a column. Only meaningful inside `TableHeadCell`'s filter popover.
  *
- * Implemented as a listbox with roving tabindex rather than a stack of buttons so arrow keys move
- * between options the way assistive technology expects of a single-select list.
+ * Mirrors `TableInputFilterMenu`'s shape — a control above Search / Clear / Cancel — so both filter
+ * types read the same way. The source library instead applied a dropdown choice immediately, with no
+ * buttons at all; the two panels were reconciled on the design side in favour of this one.
  */
 export default function TableDropdownFilterMenu({
   columnId,
@@ -28,89 +28,59 @@ export default function TableDropdownFilterMenu({
   ...rest
 }: TableDropdownFilterMenuProps) {
   const activeFilter = filters.find((filter) => filter.id === columnId);
-  const selectedValue = activeFilter?.value === undefined ? undefined : String(activeFilter.value);
-
-  const selectableOptions = isClearable
-    ? [{ value: ClearOptionValue, label: 'All' }, ...options]
-    : options;
-
-  const initialIndex = Math.max(
-    0,
-    selectableOptions.findIndex((option) => option.value === selectedValue),
+  const [value, setValue] = useState<string | undefined>(
+    activeFilter?.value === undefined ? undefined : String(activeFilter.value),
   );
-  const [focusedIndex, setFocusedIndex] = useState(initialIndex);
-  const optionRefs = useRef<Array<HTMLLIElement | null>>([]);
 
-  const select = (value: string) => {
-    if (value === ClearOptionValue) {
-      onFiltersCleared([columnId]);
-      onClose();
+  const canSearch = value !== undefined && value.length > 0;
+  const canClear = activeFilter !== undefined || canSearch;
+
+  const submit = () => {
+    if (!canSearch) {
       return;
     }
 
-    const option = selectableOptions.find((candidate) => candidate.value === value);
+    const option = options.find((candidate) => candidate.value === value);
 
     onFiltersSet([{ id: columnId, title, text: option?.label, value }]);
     onClose();
   };
 
-  const moveFocus = (nextIndex: number) => {
-    const clamped = (nextIndex + selectableOptions.length) % selectableOptions.length;
+  // Leaves the popover open, matching `TableInputFilterMenu` — clearing is normally the first half of
+  // choosing something else.
+  const handleClear = () => {
+    setValue(undefined);
 
-    setFocusedIndex(clamped);
-    optionRefs.current[clamped]?.focus();
-  };
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLLIElement>, index: number, value: string) => {
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      moveFocus(index + 1);
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      moveFocus(index - 1);
-    } else if (event.key === 'Home') {
-      event.preventDefault();
-      moveFocus(0);
-    } else if (event.key === 'End') {
-      event.preventDefault();
-      moveFocus(selectableOptions.length - 1);
-    } else if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      select(value);
+    if (activeFilter) {
+      onFiltersCleared([columnId]);
     }
   };
 
   return (
     <div className={cn(classes.base, className)} {...rest}>
-      <ul role="listbox" aria-label={`Filter by ${title.toLowerCase()}`} className={classes.list}>
-        {selectableOptions.map((option, index) => {
-          const isSelected =
-            option.value === ClearOptionValue
-              ? selectedValue === undefined
-              : option.value === selectedValue;
-
-          return (
-            <li
-              key={option.value || 'all'}
-              ref={(node) => {
-                optionRefs.current[index] = node;
-              }}
-              role="option"
-              aria-selected={isSelected}
-              tabIndex={index === focusedIndex ? 0 : -1}
-              className={cn(
-                classes.option,
-                isSelected && classes.optionSelected,
-                option.value === ClearOptionValue && classes.clearOption,
-              )}
-              onClick={() => select(option.value)}
-              onKeyDown={(event) => handleKeyDown(event, index, option.value)}
-            >
-              {option.label}
-            </li>
-          );
-        })}
-      </ul>
+      <Select
+        className={classes.select}
+        aria-label={`Filter by ${title.toLowerCase()}`}
+        placeholder={`Select ${title.toLowerCase()}`}
+        options={options}
+        value={value ?? ''}
+        onChange={setValue}
+      />
+      <div className={classes.actions}>
+        <div className={classes.primaryActions}>
+          <Button disabled={!canSearch} onClick={submit}>
+            Search
+          </Button>
+          {isClearable && (
+            <Button variant="text" disabled={!canClear} onClick={handleClear}>
+              Clear
+            </Button>
+          )}
+        </div>
+        <Button variant="text" onClick={onClose}>
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 }

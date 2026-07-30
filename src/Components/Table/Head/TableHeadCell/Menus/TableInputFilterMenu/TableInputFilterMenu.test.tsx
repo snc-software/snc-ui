@@ -93,10 +93,30 @@ describe('TableInputFilterMenu', () => {
     expect(props.onFiltersSet).not.toHaveBeenCalled();
   });
 
-  it('disables the clear control when no filter is active', () => {
+  it('disables the clear control when there is nothing to clear', () => {
     renderMenu();
 
     expect(screen.getByRole('button', { name: 'Clear' })).toBeDisabled();
+  });
+
+  it('enables the clear control as soon as text is typed', async () => {
+    const user = userEvent.setup();
+    renderMenu();
+
+    await user.type(screen.getByRole('textbox', { name: 'Filter by name' }), 'Ada');
+
+    expect(screen.getByRole('button', { name: 'Clear' })).toBeEnabled();
+  });
+
+  it('empties the input when cleared', async () => {
+    const user = userEvent.setup();
+    renderMenu();
+
+    const input = screen.getByRole('textbox', { name: 'Filter by name' });
+    await user.type(input, 'Ada');
+    await user.click(screen.getByRole('button', { name: 'Clear' }));
+
+    expect(input).toHaveValue('');
   });
 
   it('clears the filter and calls onFiltersCleared with the column id', async () => {
@@ -106,6 +126,28 @@ describe('TableInputFilterMenu', () => {
     await user.click(screen.getByRole('button', { name: 'Clear' }));
 
     expect(props.onFiltersCleared).toHaveBeenCalledWith(['name']);
+    expect(screen.getByRole('textbox', { name: 'Filter by name' })).toHaveValue('');
+  });
+
+  // Clearing is normally the first half of searching for something else, so the panel stays put.
+  it('stays open after clearing and returns focus to the input', async () => {
+    const user = userEvent.setup();
+    const props = renderMenu({ filters: [{ id: 'name', title: 'Name', value: 'Ada' }] });
+
+    await user.click(screen.getByRole('button', { name: 'Clear' }));
+
+    expect(props.onClose).not.toHaveBeenCalled();
+    expect(screen.getByRole('textbox', { name: 'Filter by name' })).toHaveFocus();
+  });
+
+  it('does not report a filter change when clearing text that was never searched', async () => {
+    const user = userEvent.setup();
+    const props = renderMenu();
+
+    await user.type(screen.getByRole('textbox', { name: 'Filter by name' }), 'Ada');
+    await user.click(screen.getByRole('button', { name: 'Clear' }));
+
+    expect(props.onFiltersCleared).not.toHaveBeenCalled();
   });
 
   it('hides the clear control when isClearable is false', () => {

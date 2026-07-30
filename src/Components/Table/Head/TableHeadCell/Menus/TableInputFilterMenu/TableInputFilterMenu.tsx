@@ -36,7 +36,9 @@ export default function TableInputFilterMenu({
   }, []);
 
   const canSearch = value.trim().length > 0;
-  const canClear = activeFilter !== undefined;
+  // Enabled for typed-but-not-yet-searched text as well as an applied filter, so Clear always does
+  // the thing it looks like it will: empty the box.
+  const canClear = activeFilter !== undefined || value.length > 0;
 
   const submit = () => {
     if (!canSearch) {
@@ -54,16 +56,24 @@ export default function TableInputFilterMenu({
     }
   };
 
+  // Deliberately leaves the popover open, unlike the source library, which closed on clear. Clearing
+  // is usually the first half of "search for something else", and closing hid the now-empty box the
+  // user was clearing in order to retype into.
   const handleClear = () => {
-    onFiltersCleared([columnId]);
     setValue('');
-    onClose();
+
+    if (activeFilter) {
+      onFiltersCleared([columnId]);
+    }
+
+    inputRef.current?.focus();
   };
 
   return (
     <div className={cn(classes.base, className)} {...rest}>
       <Input
         ref={inputRef}
+        className={classes.input}
         aria-label={`Filter by ${title.toLowerCase()}`}
         placeholder={placeholder ?? `Start typing ${title.toLowerCase()}`}
         value={value}

@@ -125,6 +125,34 @@ export default function Select({
     close(true);
   };
 
+  // The panel is portalled to `document.body`, so it sits outside the DOM subtree of whatever contains
+  // this Select. An ancestor running its own dismissal logic — the table's filter popover, say — would
+  // therefore read a click on an option as a click outside itself and close, taking the Select with
+  // it. Stopping these at the panel keeps the portal's DOM position from leaking into ancestor
+  // dismissal: the panel is logically part of the Select, wherever React chose to mount it. Native
+  // listeners rather than React handlers because the ancestor's listeners are native and on
+  // `document`, so propagation has to be stopped in the real DOM, not in React's synthetic tree.
+  //
+  // Must be a layout effect declared above the focus effect below: layout effects run in declaration
+  // order, and the focus one fires a `focusin` that would otherwise escape before this is listening.
+  useLayoutEffect(() => {
+    const panel = listRef.current;
+
+    if (!panel) {
+      return;
+    }
+
+    const stop = (event: Event) => event.stopPropagation();
+
+    panel.addEventListener('pointerdown', stop);
+    panel.addEventListener('focusin', stop);
+
+    return () => {
+      panel.removeEventListener('pointerdown', stop);
+      panel.removeEventListener('focusin', stop);
+    };
+  }, [isOpen]);
+
   // Focus follows the highlighted option so the browser handles scrolling it into view, and so screen
   // readers announce each option as it is reached.
   useLayoutEffect(() => {
@@ -164,6 +192,12 @@ export default function Select({
       select(index);
     } else if (event.key === 'Escape') {
       event.preventDefault();
+      // Escape closes this panel only. Without stopping here it would keep travelling up to any
+      // ancestor listening for its own dismissal — the table's filter popover — and close that too.
+      // Handled through React rather than a native listener on the panel, because React's delegated
+      // listener sits on the portal container: stopping the native event any earlier would prevent
+      // React from ever dispatching to this handler.
+      event.stopPropagation();
       close(true);
     } else if (event.key === 'Tab') {
       close(false);

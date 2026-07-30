@@ -74,3 +74,37 @@
   --font-snc-heading: var(--snc-font-family-heading);
   --font-snc-body: var(--snc-font-family-body);
 }
+
+/**
+ * CSS custom property inheritance passes down the already-computed value, not a live reference. Without
+ * this block, `--snc-color-snc-background` (etc.) is computed once at `:root` and every descendant
+ * inherits that computed value even when `.dark` is applied to a wrapping element rather than `:root`
+ * itself. Re-declaring each mode-dependent mapping here forces a fresh lookup of the raw token wherever
+ * `.dark` is applied in the DOM.
+ */
+.dark {
+  --snc-color-snc-background: var(--snc-background);
+  --snc-color-snc-surface: var(--snc-surface);
+  --snc-color-snc-surface-accent: var(--snc-surface-accent);
+  --snc-color-snc-text-primary: var(--snc-text-primary);
+  --snc-color-snc-text-secondary: var(--snc-text-secondary);
+  --snc-color-snc-border: var(--snc-border);
+  --snc-color-snc-primary: var(--snc-primary);
+  --snc-color-snc-primary-hover: var(--snc-primary-hover);
+  --snc-color-snc-primary-subtle-bg: var(--snc-primary-subtle-bg);
+  --snc-color-snc-accent: var(--snc-accent);
+  --snc-color-snc-accent-subtle-bg: var(--snc-accent-subtle-bg);
+
+  --snc-color-snc-success-bg: var(--snc-success-bg);
+  --snc-color-snc-success-border: var(--snc-success-border);
+  --snc-color-snc-success-text: var(--snc-success-text);
+  --snc-color-snc-warning-bg: var(--snc-warning-bg);
+  --snc-color-snc-warning-border: var(--snc-warning-border);
+  --snc-color-snc-warning-text: var(--snc-warning-text);
+  --snc-color-snc-error-bg: var(--snc-error-bg);
+  --snc-color-snc-error-border: var(--snc-error-border);
+  --snc-color-snc-error-text: var(--snc-error-text);
+  --snc-color-snc-info-bg: var(--snc-info-bg);
+  --snc-color-snc-info-border: var(--snc-info-border);
+  --snc-color-snc-info-text: var(--snc-info-text);
+}

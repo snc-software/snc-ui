@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Raspberry / Sky Palette</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconoir@7.11.0/css/iconoir.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Manrope:wght@400;500;700&display=swap');
+
+  :root{
+    --bg:#F8FAFC; --fg:#0F172A; --card:#FFFFFF; --muted:#475569; --line:#E2E8F0;
+    --font-head:'JetBrains Mono', monospace;
+    --font-body:'Manrope', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:32px 20px 64px; background:var(--bg); color:var(--fg);
+    font-family:var(--font-body);
+  }
+  h1,h2,h3{font-family:var(--font-head);}
+  h1{font-size:22px; margin:0 0 4px; font-weight:600;}
+  p.sub{color:var(--muted); margin:0 0 32px; font-size:14px;}
+  h2{font-size:15px; text-transform:uppercase; letter-spacing:.02em; color:var(--muted); margin:36px 0 12px; font-weight:600;}
+  .row{display:flex; gap:10px; flex-wrap:wrap;}
+  .swatch{
+    width:104px; border-radius:10px; overflow:hidden; border:1px solid var(--line);
+    box-shadow:0 1px 2px rgba(0,0,0,.04);
+  }
+  .swatch .fill{height:64px;}
+  .swatch .label{background:var(--card); padding:6px 8px; font-size:11px; line-height:1.5;}
+  .swatch .name{font-weight:600; display:block;}
+  .swatch .hex{color:var(--muted); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10.5px;}
+  .base{outline:2px solid #0F172A; outline-offset:2px;}
+
+  .modes{display:grid; grid-template-columns:1fr; gap:24px; margin-top:16px;}
+  @media(min-width:720px){.modes{grid-template-columns:1fr 1fr;}}
+  .mode-card{border-radius:14px; padding:20px; border:1px solid var(--line);}
+  .mode-card.light{background:#F8FAFC; color:#0F172A;}
+  .mode-card.dark{background:#020617; color:#F8FAFC;}
+  .mode-card h3{margin:0 0 14px; font-size:14px; text-transform:uppercase; letter-spacing:.04em;}
+  .token{display:flex; align-items:center; gap:10px; padding:7px 0; font-size:13px; border-bottom:1px solid rgba(128,128,128,.15);}
+  .token:last-child{border-bottom:none;}
+  .chip{width:22px; height:22px; border-radius:6px; flex-shrink:0; border:1px solid rgba(128,128,128,.3);}
+  .token .tname{flex:1;}
+  .token .thex{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; opacity:.7; font-size:11.5px;}
+
+  .demo-btn{
+    display:inline-block; padding:9px 16px; border-radius:8px; font-size:13px; font-weight:600;
+    margin-top:10px; border:none; cursor:pointer;
+  }
+
+  .sem-h3{font-size:12.5px; color:var(--muted); margin:16px 0 8px; font-weight:600;}
+
+  .type-block{display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:8px;}
+  @media(min-width:720px){.type-block{grid-template-columns:1fr 1fr;}}
+  .type-row{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px;}
+  .type-tag{display:block; font-family:var(--font-body); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:600; margin-bottom:12px;}
+  .type-sample{margin-bottom:12px; line-height:1.3;}
+  .type-sample:last-child{margin-bottom:0;}
+
+  .toast{
+    border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:8px; font-weight:500;
+  }
+  .pill-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;}
+  .pill{
+    border-radius:999px; padding:4px 12px; font-size:12px; font-weight:600;
+  }
+
+  .icon-grid{display:flex; flex-wrap:wrap; gap:10px;}
+  .icon-tile{
+    width:88px; display:flex; flex-direction:column; align-items:center; gap:8px;
+    padding:16px 8px 12px; border-radius:12px; border:1px solid var(--line); background:var(--card);
+  }
+  .icon-tile i{font-size:24px;}
+  .icon-tile span{font-size:10px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--muted); text-align:center;}
+</style>
+</head>
+<body>
+
+  <h1>Raspberry &amp; Sky Palette</h1>
+  <p class="sub">Primary: Raspberry #C2185B &middot; Complementary: Pale Sky #E0F2FE &middot; built for light &amp; dark mode</p>
+
+  <h2>Typography</h2>
+  <p class="sub" style="margin:-6px 0 16px;">Heading: JetBrains Mono (OFL, free for commercial use) &middot; Body: Manrope (OFL, free for commercial use)</p>
+  <div class="type-block">
+    <div class="type-row">
+      <span class="type-tag">Heading — JetBrains Mono</span>
+      <div class="type-sample" style="font-family:'JetBrains Mono',monospace; font-weight:700; font-size:30px; letter-spacing:-0.02em;">Aa Raspberry Sky</div>
+      <div class="type-sample" style="font-family:'JetBrains Mono',monospace; font-weight:600; font-size:20px; letter-spacing:-0.02em;">H2 · Component tokens</div>
+      <div class="type-sample" style="font-family:'JetBrains Mono',monospace; font-weight:500; font-size:15px;">H3 · Section label</div>
+    </div>
+    <div class="type-row">
+      <span class="type-tag">Body — Manrope</span>
+      <div class="type-sample" style="font-family:'Manrope',sans-serif; font-weight:400; font-size:15px; max-width:520px;">
+        The quick raspberry fox jumps over the pale sky — 0123456789. Body copy stays legible at small sizes while keeping a rounded, geometric character that doesn't feel like every other product out there.
+      </div>
+      <div class="type-sample" style="font-family:'Manrope',sans-serif; font-weight:700; font-size:13px; color:var(--muted);">
+        Bold weight for labels, captions and UI chrome
+      </div>
+    </div>
+  </div>
+
+  <h2>Raspberry (primary)</h2>
+  <div class="row">
+    <div class="swatch"><div class="fill" style="background:#FCE4EC"></div><div class="label"><span class="name">50</span><span class="hex">#FCE4EC</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#F8BBD0"></div><div class="label"><span class="name">100</span><span class="hex">#F8BBD0</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#F48FB1"></div><div class="label"><span class="name">200</span><span class="hex">#F48FB1</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#F06292"></div><div class="label"><span class="name">300</span><span class="hex">#F06292</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#EC407A"></div><div class="label"><span class="name">400</span><span class="hex">#EC407A</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#E91E63; color:white"></div><div class="label"><span class="name">500</span><span class="hex">#E91E63</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#D81B60"></div><div class="label"><span class="name">600</span><span class="hex">#D81B60</span></div></div>
+    <div class="swatch base"><div class="fill" style="background:#C2185B"></div><div class="label"><span class="name">700 · base</span><span class="hex">#C2185B</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#AD1457"></div><div class="label"><span class="name">800</span><span class="hex">#AD1457</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#880E4F"></div><div class="label"><span class="name">900</span><span class="hex">#880E4F</span></div></div>
+  </div>
+
+  <h2>Sky (complementary)</h2>
+  <div class="row">
+    <div class="swatch"><div class="fill" style="background:#F0F9FF"></div><div class="label"><span class="name">50</span><span class="hex">#F0F9FF</span></div></div>
+    <div class="swatch base"><div class="fill" style="background:#E0F2FE"></div><div class="label"><span class="name">100 · base</span><span class="hex">#E0F2FE</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#BAE6FD"></div><div class="label"><span class="name">200</span><span class="hex">#BAE6FD</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#7DD3FC"></div><div class="label"><span class="name">300</span><span class="hex">#7DD3FC</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#38BDF8"></div><div class="label"><span class="name">400</span><span class="hex">#38BDF8</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#0EA5E9; color:white"></div><div class="label"><span class="name">500</span><span class="hex">#0EA5E9</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#0284C7"></div><div class="label"><span class="name">600</span><span class="hex">#0284C7</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#0369A1"></div><div class="label"><span class="name">700</span><span class="hex">#0369A1</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#075985"></div><div class="label"><span class="name">800</span><span class="hex">#075985</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#0C4A6E"></div><div class="label"><span class="name">900</span><span class="hex">#0C4A6E</span></div></div>
+  </div>
+
+  <h2>Neutrals</h2>
+  <div class="row">
+    <div class="swatch"><div class="fill" style="background:#F8FAFC"></div><div class="label"><span class="name">50</span><span class="hex">#F8FAFC</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#F1F5F9"></div><div class="label"><span class="name">100</span><span class="hex">#F1F5F9</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#E2E8F0"></div><div class="label"><span class="name">200</span><span class="hex">#E2E8F0</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#CBD5E1"></div><div class="label"><span class="name">300</span><span class="hex">#CBD5E1</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#94A3B8"></div><div class="label"><span class="name">400</span><span class="hex">#94A3B8</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#64748B; color:white"></div><div class="label"><span class="name">500</span><span class="hex">#64748B</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#475569; color:white"></div><div class="label"><span class="name">600</span><span class="hex">#475569</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#334155; color:white"></div><div class="label"><span class="name">700</span><span class="hex">#334155</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#1E293B; color:white"></div><div class="label"><span class="name">800</span><span class="hex">#1E293B</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#0F172A; color:white"></div><div class="label"><span class="name">900</span><span class="hex">#0F172A</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#020617; color:white"></div><div class="label"><span class="name">950</span><span class="hex">#020617</span></div></div>
+  </div>
+
+  <h2>Semantic — expanded (bg / border / text)</h2>
+
+  <h3 class="sem-h3">Success</h3>
+  <div class="row">
+    <div class="swatch"><div class="fill" style="background:#DCFCE7"></div><div class="label"><span class="name">Light · bg</span><span class="hex">#DCFCE7</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#16A34A; color:white"></div><div class="label"><span class="name">Light · border</span><span class="hex">#16A34A</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#166534; color:white"></div><div class="label"><span class="name">Light · text</span><span class="hex">#166534</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#14532D; color:white"></div><div class="label"><span class="name">Dark · bg</span><span class="hex">#14532D</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#22C55E"></div><div class="label"><span class="name">Dark · border</span><span class="hex">#22C55E</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#86EFAC"></div><div class="label"><span class="name">Dark · text</span><span class="hex">#86EFAC</span></div></div>
+  </div>
+
+  <h3 class="sem-h3">Warning</h3>
+  <div class="row">
+    <div class="swatch"><div class="fill" style="background:#FEF3C7"></div><div class="label"><span class="name">Light · bg</span><span class="hex">#FEF3C7</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#D97706; color:white"></div><div class="label"><span class="name">Light · border</span><span class="hex">#D97706</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#92400E; color:white"></div><div class="label"><span class="name">Light · text</span><span class="hex">#92400E</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#78350F; color:white"></div><div class="label"><span class="name">Dark · bg</span><span class="hex">#78350F</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#F59E0B"></div><div class="label"><span class="name">Dark · border</span><span class="hex">#F59E0B</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#FCD34D"></div><div class="label"><span class="name">Dark · text</span><span class="hex">#FCD34D</span></div></div>
+  </div>
+
+  <h3 class="sem-h3">Error</h3>
+  <div class="row">
+    <div class="swatch"><div class="fill" style="background:#FEE2E2"></div><div class="label"><span class="name">Light · bg</span><span class="hex">#FEE2E2</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#DC2626; color:white"></div><div class="label"><span class="name">Light · border</span><span class="hex">#DC2626</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#991B1B; color:white"></div><div class="label"><span class="name">Light · text</span><span class="hex">#991B1B</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#7F1D1D; color:white"></div><div class="label"><span class="name">Dark · bg</span><span class="hex">#7F1D1D</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#EF4444"></div><div class="label"><span class="name">Dark · border</span><span class="hex">#EF4444</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#FCA5A5"></div><div class="label"><span class="name">Dark · text</span><span class="hex">#FCA5A5</span></div></div>
+  </div>
+
+  <h3 class="sem-h3">Info</h3>
+  <div class="row">
+    <div class="swatch"><div class="fill" style="background:#E0F2FE"></div><div class="label"><span class="name">Light · bg</span><span class="hex">#E0F2FE</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#0284C7; color:white"></div><div class="label"><span class="name">Light · border</span><span class="hex">#0284C7</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#075985; color:white"></div><div class="label"><span class="name">Light · text</span><span class="hex">#075985</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#0C4A6E; color:white"></div><div class="label"><span class="name">Dark · bg</span><span class="hex">#0C4A6E</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#38BDF8"></div><div class="label"><span class="name">Dark · border</span><span class="hex">#38BDF8</span></div></div>
+    <div class="swatch"><div class="fill" style="background:#7DD3FC"></div><div class="label"><span class="name">Dark · text</span><span class="hex">#7DD3FC</span></div></div>
+  </div>
+
+  <h2>Icon library — Iconoir (MIT, free commercial use)</h2>
+  <div class="icon-grid">
+    <div class="icon-tile"><i class="iconoir-home" style="color:#C2185B"></i><span>home</span></div>
+    <div class="icon-tile"><i class="iconoir-bell" style="color:#C2185B"></i><span>bell</span></div>
+    <div class="icon-tile"><i class="iconoir-heart" style="color:#C2185B"></i><span>heart</span></div>
+    <div class="icon-tile"><i class="iconoir-search" style="color:#C2185B"></i><span>search</span></div>
+    <div class="icon-tile"><i class="iconoir-user" style="color:#C2185B"></i><span>user</span></div>
+    <div class="icon-tile"><i class="iconoir-settings" style="color:#C2185B"></i><span>settings</span></div>
+    <div class="icon-tile"><i class="iconoir-calendar" style="color:#0284C7"></i><span>calendar</span></div>
+    <div class="icon-tile"><i class="iconoir-star" style="color:#0284C7"></i><span>star</span></div>
+    <div class="icon-tile"><i class="iconoir-check-circle" style="color:#0284C7"></i><span>check-circle</span></div>
+    <div class="icon-tile"><i class="iconoir-map-pin" style="color:#0284C7"></i><span>map-pin</span></div>
+    <div class="icon-tile"><i class="iconoir-mail" style="color:#475569"></i><span>mail</span></div>
+    <div class="icon-tile"><i class="iconoir-lock" style="color:#475569"></i><span>lock</span></div>
+  </div>
+  <p class="sub" style="margin-top:12px;">CSS: <code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconoir@7.11.0/css/iconoir.css"&gt;</code> then <code>&lt;i class="iconoir-bell"&gt;&lt;/i&gt;</code>. React/Vue/Flutter/Swift packages also available if you're not on plain HTML.</p>
+
+  <h2>Toasts &amp; status pills — live examples</h2>
+  <div class="modes">
+    <div class="mode-card light">
+      <h3>Light mode</h3>
+      <div class="toast" style="background:#DCFCE7; border:1px solid #16A34A; color:#166534;">✓ Changes saved successfully</div>
+      <div class="toast" style="background:#FEF3C7; border:1px solid #D97706; color:#92400E;">⚠ Session expires in 5 minutes</div>
+      <div class="toast" style="background:#FEE2E2; border:1px solid #DC2626; color:#991B1B;">✕ Payment failed</div>
+      <div class="toast" style="background:#E0F2FE; border:1px solid #0284C7; color:#075985;">ℹ New feature available</div>
+      <div class="pill-row">
+        <span class="pill" style="background:#DCFCE7; border:1px solid #16A34A; color:#166534;">Active</span>
+        <span class="pill" style="background:#FEF3C7; border:1px solid #D97706; color:#92400E;">Pending</span>
+        <span class="pill" style="background:#FEE2E2; border:1px solid #DC2626; color:#991B1B;">Failed</span>
+        <span class="pill" style="background:#E0F2FE; border:1px solid #0284C7; color:#075985;">Info</span>
+      </div>
+    </div>
+    <div class="mode-card dark">
+      <h3>Dark mode</h3>
+      <div class="toast" style="background:#14532D; border:1px solid #22C55E; color:#86EFAC;">✓ Changes saved successfully</div>
+      <div class="toast" style="background:#78350F; border:1px solid #F59E0B; color:#FCD34D;">⚠ Session expires in 5 minutes</div>
+      <div class="toast" style="background:#7F1D1D; border:1px solid #EF4444; color:#FCA5A5;">✕ Payment failed</div>
+      <div class="toast" style="background:#0C4A6E; border:1px solid #38BDF8; color:#7DD3FC;">ℹ New feature available</div>
+      <div class="pill-row">
+        <span class="pill" style="background:#14532D; border:1px solid #22C55E; color:#86EFAC;">Active</span>
+        <span class="pill" style="background:#78350F; border:1px solid #F59E0B; color:#FCD34D;">Pending</span>
+        <span class="pill" style="background:#7F1D1D; border:1px solid #EF4444; color:#FCA5A5;">Failed</span>
+        <span class="pill" style="background:#0C4A6E; border:1px solid #38BDF8; color:#7DD3FC;">Info</span>
+      </div>
+    </div>
+  </div>
+
+  <h2>Component tokens — Light &amp; Dark</h2>
+  <div class="modes">
+    <div class="mode-card light">
+      <h3>Light mode</h3>
+      <div class="token"><div class="chip" style="background:#F8FAFC"></div><div class="tname">Background</div><div class="thex">#F8FAFC</div></div>
+      <div class="token"><div class="chip" style="background:#FFFFFF"></div><div class="tname">Surface</div><div class="thex">#FFFFFF</div></div>
+      <div class="token"><div class="chip" style="background:#F0F9FF"></div><div class="tname">Surface (accent)</div><div class="thex">#F0F9FF</div></div>
+      <div class="token"><div class="chip" style="background:#0F172A"></div><div class="tname">Text primary</div><div class="thex">#0F172A</div></div>
+      <div class="token"><div class="chip" style="background:#475569"></div><div class="tname">Text secondary</div><div class="thex">#475569</div></div>
+      <div class="token"><div class="chip" style="background:#E2E8F0"></div><div class="tname">Border</div><div class="thex">#E2E8F0</div></div>
+      <div class="token"><div class="chip" style="background:#C2185B"></div><div class="tname">Primary</div><div class="thex">#C2185B</div></div>
+      <div class="token"><div class="chip" style="background:#AD1457"></div><div class="tname">Primary hover</div><div class="thex">#AD1457</div></div>
+      <div class="token"><div class="chip" style="background:#FCE4EC"></div><div class="tname">Primary subtle bg</div><div class="thex">#FCE4EC</div></div>
+      <div class="token"><div class="chip" style="background:#0EA5E9"></div><div class="tname">Accent</div><div class="thex">#0EA5E9</div></div>
+      <div class="token"><div class="chip" style="background:#E0F2FE"></div><div class="tname">Accent subtle bg</div><div class="thex">#E0F2FE</div></div>
+      <button class="demo-btn" style="background:#C2185B; color:#fff;">Primary button</button>
+    </div>
+    <div class="mode-card dark">
+      <h3>Dark mode</h3>
+      <div class="token"><div class="chip" style="background:#020617"></div><div class="tname">Background</div><div class="thex">#020617</div></div>
+      <div class="token"><div class="chip" style="background:#0F172A"></div><div class="tname">Surface</div><div class="thex">#0F172A</div></div>
+      <div class="token"><div class="chip" style="background:#1E293B"></div><div class="tname">Surface (accent)</div><div class="thex">#1E293B</div></div>
+      <div class="token"><div class="chip" style="background:#F8FAFC"></div><div class="tname">Text primary</div><div class="thex">#F8FAFC</div></div>
+      <div class="token"><div class="chip" style="background:#94A3B8"></div><div class="tname">Text secondary</div><div class="thex">#94A3B8</div></div>
+      <div class="token"><div class="chip" style="background:#334155"></div><div class="tname">Border</div><div class="thex">#334155</div></div>
+      <div class="token"><div class="chip" style="background:#EC407A"></div><div class="tname">Primary</div><div class="thex">#EC407A</div></div>
+      <div class="token"><div class="chip" style="background:#F06292"></div><div class="tname">Primary hover</div><div class="thex">#F06292</div></div>
+      <div class="token"><div class="chip" style="background:#880E4F"></div><div class="tname">Primary subtle bg</div><div class="thex">#880E4F</div></div>
+      <div class="token"><div class="chip" style="background:#38BDF8"></div><div class="tname">Accent</div><div class="thex">#38BDF8</div></div>
+      <div class="token"><div class="chip" style="background:#0C4A6E"></div><div class="tname">Accent subtle bg</div><div class="thex">#0C4A6E</div></div>
+      <button class="demo-btn" style="background:#EC407A; color:#0F172A;">Primary button</button>
+    </div>
+  </div>
+
+</body>
+</html>

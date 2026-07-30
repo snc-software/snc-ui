@@ -1,1 +1,1 @@
-export type { SncComponent, SncComponentWithChildren } from "./SncComponent";
+export type { SncComponent, SncComponentWithChildren } from './SncComponent';

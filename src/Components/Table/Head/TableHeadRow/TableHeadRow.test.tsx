@@ -2,9 +2,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { createTableStore } from '@/States/useTableState';
+
 import TableHeadRow from './TableHeadRow';
 
-import type { TableColumn, TableFilter } from '../../Table.types';
+import type { TableColumn } from '../../Table.types';
+import type { TableStore } from '@/States/useTableState';
 
 type Row = { name: string; status: string };
 
@@ -13,16 +16,21 @@ const columns: Array<TableColumn<Row>> = [
   { id: 'status', title: 'Status', accessor: (row) => row.status },
 ];
 
-function renderRow(overrides: Partial<Parameters<typeof TableHeadRow<Row>>[0]> = {}) {
+function createStore() {
+  return createTableStore<Row>({ filters: [], pageSizeOptions: [20] });
+}
+
+function renderRow(
+  overrides: Partial<Parameters<typeof TableHeadRow<Row>>[0]> & { store?: TableStore<Row> } = {},
+) {
+  const { store = createStore(), ...rest } = overrides;
   const props = {
+    store,
     columns,
-    filters: [] as TableFilter[],
     selectionState: { checked: false, indeterminate: false },
     onSelectAllClicked: vi.fn(),
     onSortChanged: vi.fn(),
-    onFiltersSet: vi.fn(),
-    onFiltersCleared: vi.fn(),
-    ...overrides,
+    ...rest,
   };
 
   render(

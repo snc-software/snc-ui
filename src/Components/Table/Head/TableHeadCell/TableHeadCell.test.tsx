@@ -2,9 +2,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { createTableStore } from '@/States/useTableState';
+
 import TableHeadCell from './TableHeadCell';
 
-import type { TableColumn, TableFilter } from '../../Table.types';
+import type { TableColumn } from '../../Table.types';
+import type { TableStore } from '@/States/useTableState';
 
 type Row = { name: string; status: string };
 
@@ -14,13 +17,18 @@ const basicColumn: TableColumn<Row> = {
   accessor: (row) => row.name,
 };
 
-function renderCell(overrides: Partial<Parameters<typeof TableHeadCell<Row>>[0]> = {}) {
+function createStore() {
+  return createTableStore<Row>({ filters: [], pageSizeOptions: [20] });
+}
+
+function renderCell(
+  overrides: Partial<Parameters<typeof TableHeadCell<Row>>[0]> & { store?: TableStore<Row> } = {},
+) {
+  const { store = createStore(), ...rest } = overrides;
   const props = {
+    store,
     column: basicColumn,
-    filters: [] as TableFilter[],
-    onFiltersSet: vi.fn(),
-    onFiltersCleared: vi.fn(),
-    ...overrides,
+    ...rest,
   };
 
   render(
@@ -145,6 +153,19 @@ describe('TableHeadCell', () => {
     await user.click(screen.getByRole('button', { name: 'Filter by name' }));
 
     expect(screen.getByRole('textbox', { name: 'Filter by name' })).toBeInTheDocument();
+  });
+
+  it('applies a filter to the store when the input filter menu is submitted', async () => {
+    const user = userEvent.setup();
+    const { store } = renderCell({ column: { ...basicColumn, filterType: 'input' } });
+
+    await user.click(screen.getByRole('button', { name: 'Filter by name' }));
+    await user.type(screen.getByRole('textbox', { name: 'Filter by name' }), 'Ada');
+    await user.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(store.getState().activeFilters).toEqual([
+      { id: 'name', title: 'Name', text: 'Ada', value: 'Ada' },
+    ]);
   });
 
   it('opens the dropdown filter menu when the trigger is activated', async () => {

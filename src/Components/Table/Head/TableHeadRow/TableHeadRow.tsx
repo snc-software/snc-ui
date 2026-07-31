@@ -13,16 +13,14 @@ import type { TableHeadRowProps } from './TableHeadRow.types';
  * Only meaningful as a child of `TableHead`.
  */
 export default function TableHeadRow<TRow extends object>({
+  store,
   columns,
-  filters,
   isSelectionEnabled = false,
   selectionState,
   onSelectAllClicked,
   sortBy,
   sortDirection,
   onSortChanged,
-  onFiltersSet,
-  onFiltersCleared,
   className,
   ...rest
 }: TableHeadRowProps<TRow>) {
@@ -50,12 +48,10 @@ export default function TableHeadRow<TRow extends object>({
             index === 0 && !isSelectionEnabled && classes.firstColumn,
             index === columns.length - 1 && classes.lastColumn,
           )}
+          store={store}
           column={column}
-          filters={filters}
           sortDirection={sortBy === column.id ? sortDirection : undefined}
           onSortChanged={column.isSortable ? onSortChanged : undefined}
-          onFiltersSet={onFiltersSet}
-          onFiltersCleared={onFiltersCleared}
         />
       ))}
     </tr>

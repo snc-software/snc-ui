@@ -1,10 +1,11 @@
-import type { TableColumn, TableFilter, TableSortDirection } from '../../Table.types';
+import type { TableColumn, TableSortDirection } from '../../Table.types';
 import type { TableSelectionState } from '../../Table.utils';
+import type { TableStore } from '@/States/useTableState';
 import type { SncComponent } from '@/Types/SncComponent';
 
 export type TableHeadRowProps<TRow extends object> = SncComponent<{
+  store: TableStore<TRow>;
   columns: Array<TableColumn<TRow>>;
-  filters: TableFilter[];
   /**
    * Renders the leading select-all cell.
    */
@@ -20,6 +21,4 @@ export type TableHeadRowProps<TRow extends object> = SncComponent<{
   sortBy?: string;
   sortDirection?: TableSortDirection;
   onSortChanged: (columnId: string, sortDirection: TableSortDirection | undefined) => void;
-  onFiltersSet: (filters: TableFilter[]) => void;
-  onFiltersCleared: (filterIds: string[]) => void;
 }>;

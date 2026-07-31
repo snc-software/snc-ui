@@ -26,27 +26,22 @@ export default function TableHead<TRow extends object>({
   className,
   ...rest
 }: TableHeadProps<TRow>) {
-  const filters = useStore(store, (state) => state.activeFilters);
   const selectedRows = useStore(store, (state) => state.selected);
   const toggleSelectAll = useStore(store, (state) => state.toggleSelectAll);
-  const applyFilters = useStore(store, (state) => state.applyFilters);
-  const clearFilters = useStore(store, (state) => state.clearFilters);
 
   const selectionState = getSelectionState(data, selectedRows, isRowSelectable);
 
   return (
     <thead className={cn(classes.base, className)} {...rest}>
       <TableHeadRow<TRow>
+        store={store}
         columns={columns}
-        filters={filters}
         isSelectionEnabled={isSelectionEnabled}
         selectionState={selectionState}
         onSelectAllClicked={() => toggleSelectAll(data, isRowSelectable)}
         sortBy={sortBy}
         sortDirection={sortDirection}
         onSortChanged={onSortChanged}
-        onFiltersSet={applyFilters}
-        onFiltersCleared={clearFilters}
       />
     </thead>
   );

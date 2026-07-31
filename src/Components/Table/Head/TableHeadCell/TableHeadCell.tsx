@@ -1,5 +1,6 @@
 import { NavArrowDown, Search, Sort, SortDown, SortUp } from 'iconoir-react';
 import { useRef, useState } from 'react';
+import { useStore } from 'zustand';
 
 import Popout from '@/Internal/Popout';
 import { cn } from '@/Utils/cn';
@@ -27,18 +28,20 @@ const AriaSort = {
  * {@link FilterIcons} and `renderMenu` do here.
  */
 export default function TableHeadCell<TRow extends object>({
+  store,
   column,
-  filters,
   sortDirection,
   onSortChanged,
-  onFiltersSet,
-  onFiltersCleared,
   className,
   style,
   ...rest
 }: TableHeadCellProps<TRow>) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
+
+  const filters = useStore(store, (state) => state.activeFilters);
+  const onFiltersSet = useStore(store, (state) => state.applyFilters);
+  const onFiltersCleared = useStore(store, (state) => state.clearFilters);
 
   const isFilterable = column.filterType !== undefined;
   const headerContent = column.header ? column.header(column.title) : column.title;

@@ -22,7 +22,7 @@ const AriaSort = {
 /**
  * A single column header: title, optional sort control, and optional filter popover.
  *
- * Only meaningful as a child of `TableHeadRow`. Replaces wave-ui's six head-cell components — the
+ * Only meaningful as a child of `TableHeadRow`. the
  * per-filter-type variants there only chose an icon and a menu before delegating, which is what
  * {@link FilterIcons} and `renderMenu` do here.
  */

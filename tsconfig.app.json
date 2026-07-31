@@ -23,6 +23,8 @@
     "paths": {
       "@/Components": ["./src/Components"],
       "@/Components/*": ["./src/Components/*"],
+      "@/Internal": ["./src/Internal"],
+      "@/Internal/*": ["./src/Internal/*"],
       "@/Shared": ["./src/Shared"],
       "@/Shared/*": ["./src/Shared/*"],
       "@/Types": ["./src/Types"],

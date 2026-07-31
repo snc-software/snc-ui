@@ -92,6 +92,27 @@ describe('Button', () => {
     expect(button).toHaveAttribute('aria-busy', 'true');
   });
 
+  it('renders a Spinner when isLoading is true', () => {
+    render(<Button isLoading>Click me</Button>);
+
+    expect(screen.getByRole('status', { name: 'Loading' })).toBeInTheDocument();
+  });
+
+  it('paints the Spinner in the button foreground rather than the primary colour', () => {
+    render(<Button isLoading>Click me</Button>);
+
+    const spinner = screen.getByRole('status', { name: 'Loading' });
+
+    expect(spinner.className).toContain('snc:text-current');
+    expect(spinner.className).not.toContain('snc:text-snc-primary');
+  });
+
+  it('does not render a Spinner when isLoading is false', () => {
+    render(<Button>Click me</Button>);
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
   it('merges a consumer-supplied className with the variant classes', () => {
     render(<Button className="custom-class">Click me</Button>);
 

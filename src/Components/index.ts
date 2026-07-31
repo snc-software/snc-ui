@@ -44,4 +44,7 @@ export * from './Table';
 export { default as Tag } from './Tag';
 export type { TagProps } from './Tag';
 
+export { default as TextArea } from './TextArea';
+export type { TextAreaProps } from './TextArea';
+
 export * from './Typography';

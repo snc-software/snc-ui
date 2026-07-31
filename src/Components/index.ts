@@ -18,6 +18,9 @@ export type { SelectOption, SelectProps } from './Select';
 export { default as Spinner } from './Spinner';
 export type { SpinnerProps } from './Spinner';
 
+export { default as StatusPill } from './StatusPill';
+export type { StatusPillProps } from './StatusPill';
+
 // Table's own index.ts already names its sub-components and public types, so `export *` picks those
 // up; only its default needs binding.
 export { default as Table } from './Table';

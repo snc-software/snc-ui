@@ -20,8 +20,6 @@ export type { TableHeadRowProps } from './Head/TableHeadRow';
 export { default as TableHeadCell } from './Head/TableHeadCell';
 export type { TableHeadCellProps } from './Head/TableHeadCell';
 
-export { default as TableFilterPopover } from './Head/TableHeadCell/Menus/TableFilterPopover';
-export type { TableFilterPopoverProps } from './Head/TableHeadCell/Menus/TableFilterPopover';
 export { default as TableInputFilterMenu } from './Head/TableHeadCell/Menus/TableInputFilterMenu';
 export type { TableInputFilterMenuProps } from './Head/TableHeadCell/Menus/TableInputFilterMenu';
 export { default as TableDropdownFilterMenu } from './Head/TableHeadCell/Menus/TableDropdownFilterMenu';

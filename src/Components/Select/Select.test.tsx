@@ -227,7 +227,8 @@ describe('Select', () => {
 
     await user.click(getTrigger());
 
-    expect(screen.getByRole('listbox')).toHaveStyle({ maxHeight: '5.5rem' });
+    // The cap sits on the Popout panel, which is the scrolling element.
+    expect(screen.getByRole('listbox').parentElement).toHaveStyle({ maxHeight: '5.5rem' });
   });
 
   it('does not open when disabled', async () => {

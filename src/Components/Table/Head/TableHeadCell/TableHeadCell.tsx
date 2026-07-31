@@ -1,12 +1,12 @@
 import { NavArrowDown, Search, Sort, SortDown, SortUp } from 'iconoir-react';
 import { useRef, useState } from 'react';
 
+import Popout from '@/Internal/Popout';
 import { cn } from '@/Utils/cn';
 
 import { classes as tableClasses } from '../../Table.styles';
 import { getNextSortDirection } from '../../Table.utils';
 import TableDropdownFilterMenu from './Menus/TableDropdownFilterMenu';
-import TableFilterPopover from './Menus/TableFilterPopover';
 import TableInputFilterMenu from './Menus/TableInputFilterMenu';
 import { FilterIconOpenClass, IconSize } from './TableHeadCell.constants';
 import { classes } from './TableHeadCell.styles';
@@ -167,15 +167,16 @@ export default function TableHeadCell<TRow extends object>({
       </div>
 
       {isFilterable && (
-        <TableFilterPopover
+        <Popout
           isOpen={isOpen}
-          triggerRef={triggerRef}
+          anchorRef={triggerRef}
           onClose={closeMenu}
-          alignMenu={column.alignMenu}
+          align={column.alignMenu}
           hasAdaptiveWidth={column.hasAdaptiveWidth}
+          data-testid="table-filter-popover"
         >
           {renderMenu()}
-        </TableFilterPopover>
+        </Popout>
       )}
     </th>
   );

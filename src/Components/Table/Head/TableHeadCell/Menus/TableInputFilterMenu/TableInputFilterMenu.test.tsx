@@ -129,7 +129,6 @@ describe('TableInputFilterMenu', () => {
     expect(screen.getByRole('textbox', { name: 'Filter by name' })).toHaveValue('');
   });
 
-  // Clearing is normally the first half of searching for something else, so the panel stays put.
   it('stays open after clearing and returns focus to the input', async () => {
     const user = userEvent.setup();
     const props = renderMenu({ filters: [{ id: 'name', title: 'Name', value: 'Ada' }] });

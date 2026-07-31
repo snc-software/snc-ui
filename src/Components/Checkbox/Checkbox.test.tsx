@@ -102,9 +102,7 @@ describe('Checkbox', () => {
     expect(ref).toHaveBeenCalled();
   });
 
-  // The source library bolds the label whenever the box is ticked or mixed. It is driven from CSS
-  // rather than a prop, so the assertion is on the variant being wired up, not on computed weight —
-  // jsdom does not resolve Tailwind's generated stylesheet.
+  // Asserts the variant is wired up, not computed weight — jsdom does not resolve Tailwind's output.
   it('bolds the label while checked or indeterminate', () => {
     const { container } = render(<Checkbox label="Select row" />);
 

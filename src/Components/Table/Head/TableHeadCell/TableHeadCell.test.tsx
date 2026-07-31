@@ -163,10 +163,8 @@ describe('TableHeadCell', () => {
     expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
   });
 
-  // The Select inside the dropdown menu portals its own panel to `document.body`, so it lands outside
-  // the popover's DOM subtree. Without containment the popover's click-outside detector reads an
-  // option click as a click outside itself and closes, taking the menu with it before the choice
-  // registers.
+  // Regression: the Select portals its panel outside the popover's subtree, so without layer
+  // tracking the popover reads an option click as an outside click and closes.
   it('keeps the dropdown filter menu open while choosing from its select', async () => {
     const user = userEvent.setup();
     renderCell({

@@ -1,10 +1,8 @@
 import { NavArrowDown } from 'iconoir-react';
 import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 
+import Popout from '@/Internal/Popout';
 import { cn } from '@/Utils/cn';
-import { useAnchoredPosition } from '@/Utils/useAnchoredPosition';
-import { useClickOutside } from '@/Utils/useClickOutside';
 
 import {
   ChevronSize,
@@ -53,11 +51,9 @@ export default function Select({
   const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
 
   const triggerRef = useRef<HTMLButtonElement | null>(null);
-  const listRef = useRef<HTMLUListElement | null>(null);
   const optionRefs = useRef<Array<HTMLLIElement | null>>([]);
 
-  // Controlled as soon as `value` is supplied, mirroring how a native input behaves, so a consumer can
-  // pick either mode without the component holding a competing copy of the state.
+  // Controlled as soon as `value` is supplied, as a native input would be.
   const selectedValue = value ?? uncontrolledValue;
   const selectedOption = options.find((option) => option.value === selectedValue);
 
@@ -73,8 +69,6 @@ export default function Select({
     },
     [ref],
   );
-
-  const position = useAnchoredPosition({ isOpen, triggerRef });
 
   /**
    * Walks `step` options at a time from `from`, wrapping around, and returns the first that is not
@@ -125,36 +119,7 @@ export default function Select({
     close(true);
   };
 
-  // The panel is portalled to `document.body`, so it sits outside the DOM subtree of whatever contains
-  // this Select. An ancestor running its own dismissal logic — the table's filter popover, say — would
-  // therefore read a click on an option as a click outside itself and close, taking the Select with
-  // it. Stopping these at the panel keeps the portal's DOM position from leaking into ancestor
-  // dismissal: the panel is logically part of the Select, wherever React chose to mount it. Native
-  // listeners rather than React handlers because the ancestor's listeners are native and on
-  // `document`, so propagation has to be stopped in the real DOM, not in React's synthetic tree.
-  //
-  // Must be a layout effect declared above the focus effect below: layout effects run in declaration
-  // order, and the focus one fires a `focusin` that would otherwise escape before this is listening.
-  useLayoutEffect(() => {
-    const panel = listRef.current;
-
-    if (!panel) {
-      return;
-    }
-
-    const stop = (event: Event) => event.stopPropagation();
-
-    panel.addEventListener('pointerdown', stop);
-    panel.addEventListener('focusin', stop);
-
-    return () => {
-      panel.removeEventListener('pointerdown', stop);
-      panel.removeEventListener('focusin', stop);
-    };
-  }, [isOpen]);
-
-  // Focus follows the highlighted option so the browser handles scrolling it into view, and so screen
-  // readers announce each option as it is reached.
+  // Focus follows the highlight so the browser scrolls it into view and AT announces it.
   useLayoutEffect(() => {
     if (!isOpen) {
       return;
@@ -163,11 +128,8 @@ export default function Select({
     optionRefs.current[focusedIndex]?.focus();
   }, [isOpen, focusedIndex]);
 
-  useClickOutside([listRef, triggerRef], () => setIsOpen(false), isOpen);
-
   const handleTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    // Enter and Space are left to the button's native click behaviour rather than handled here,
-    // otherwise the panel would be opened twice.
+    // Enter/Space left to the button's native click, else the panel opens twice.
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       open();
@@ -190,15 +152,7 @@ export default function Select({
     } else if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       select(index);
-    } else if (event.key === 'Escape') {
-      event.preventDefault();
-      // Escape closes this panel only. Without stopping here it would keep travelling up to any
-      // ancestor listening for its own dismissal — the table's filter popover — and close that too.
-      // Handled through React rather than a native listener on the panel, because React's delegated
-      // listener sits on the portal container: stopping the native event any earlier would prevent
-      // React from ever dispatching to this handler.
-      event.stopPropagation();
-      close(true);
+      // Escape is Popout's, so only the topmost panel closes.
     } else if (event.key === 'Tab') {
       close(false);
     }
@@ -238,44 +192,41 @@ export default function Select({
         </span>
       </button>
 
-      {/* Mirrors the selection into the surrounding form, which the button trigger cannot do itself. */}
+      {/* Carries the selection into the surrounding form. */}
       {name !== undefined && <input type="hidden" name={name} value={selectedValue ?? ''} />}
 
-      {isOpen &&
-        createPortal(
-          <ul
-            ref={listRef}
-            id={`${triggerId}-listbox`}
-            role="listbox"
-            aria-labelledby={triggerId}
-            className={classes.panel}
-            style={{ ...position, maxHeight: `${OptionRowHeightRem * visibleOptions}rem` }}
-          >
-            {options.map((option, index) => (
-              <li
-                key={option.value}
-                ref={(node) => {
-                  optionRefs.current[index] = node;
-                }}
-                role="option"
-                aria-selected={option.value === selectedValue}
-                aria-disabled={option.disabled || undefined}
-                tabIndex={index === focusedIndex ? 0 : -1}
-                className={cn(
-                  classes.option,
-                  OptionSizes[size],
-                  option.value === selectedValue && classes.optionSelected,
-                  option.disabled && classes.optionDisabled,
-                )}
-                onClick={() => select(index)}
-                onKeyDown={(event) => handleOptionKeyDown(event, index)}
-              >
-                {option.label}
-              </li>
-            ))}
-          </ul>,
-          document.body,
-        )}
+      <Popout
+        isOpen={isOpen}
+        anchorRef={triggerRef}
+        onClose={() => setIsOpen(false)}
+        className={classes.panel}
+        style={{ maxHeight: `${OptionRowHeightRem * visibleOptions}rem` }}
+      >
+        <ul id={`${triggerId}-listbox`} role="listbox" aria-labelledby={triggerId}>
+          {options.map((option, index) => (
+            <li
+              key={option.value}
+              ref={(node) => {
+                optionRefs.current[index] = node;
+              }}
+              role="option"
+              aria-selected={option.value === selectedValue}
+              aria-disabled={option.disabled || undefined}
+              tabIndex={index === focusedIndex ? 0 : -1}
+              className={cn(
+                classes.option,
+                OptionSizes[size],
+                option.value === selectedValue && classes.optionSelected,
+                option.disabled && classes.optionDisabled,
+              )}
+              onClick={() => select(index)}
+              onKeyDown={(event) => handleOptionKeyDown(event, index)}
+            >
+              {option.label}
+            </li>
+          ))}
+        </ul>
+      </Popout>
     </div>
   );
 }

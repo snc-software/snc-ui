@@ -11,9 +11,8 @@ import type { TableDropdownFilterMenuProps } from './TableDropdownFilterMenu.typ
 /**
  * Option-list filter panel for a column. Only meaningful inside `TableHeadCell`'s filter popover.
  *
- * Mirrors `TableInputFilterMenu`'s shape — a control above Search / Clear / Cancel — so both filter
- * types read the same way. The source library instead applied a dropdown choice immediately, with no
- * buttons at all; the two panels were reconciled on the design side in favour of this one.
+ * Mirrors `TableInputFilterMenu`'s shape so both filter types read the same way. The source applied a
+ * dropdown choice immediately with no buttons; reconciled on the design side in favour of this.
  */
 export default function TableDropdownFilterMenu({
   columnId,
@@ -46,8 +45,7 @@ export default function TableDropdownFilterMenu({
     onClose();
   };
 
-  // Leaves the popover open, matching `TableInputFilterMenu` — clearing is normally the first half of
-  // choosing something else.
+  // Stays open, matching TableInputFilterMenu.
   const handleClear = () => {
     setValue(undefined);
 

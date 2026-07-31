@@ -1,11 +1,8 @@
 import { cn } from '@/Utils/cn';
 
 export const classes = {
-  // The bold-when-selected label comes from the source library, which drives it off the checked and
-  // indeterminate states. It is applied here rather than on the label because the label is not a
-  // sibling of the input, so a `peer-checked` variant cannot reach it — `has-*` inspects the whole
-  // subtree instead, and font-weight inherits down to the label. Driving it from CSS rather than from
-  // a React prop keeps it correct for uncontrolled checkboxes, where React never sees `checked`.
+  // On the wrapper, not the label: the label is not a sibling of the input, so `peer-checked` cannot
+  // reach it. CSS-driven so it stays correct for uncontrolled checkboxes.
   wrapper: cn(
     'snc:inline-flex snc:items-center snc:gap-2',
     'snc:has-[:checked]:font-bold snc:has-[:indeterminate]:font-bold',
@@ -18,9 +15,7 @@ export const classes = {
     'snc:focus-visible:outline-none snc:focus-visible:ring-2 snc:focus-visible:ring-offset-2',
     'snc:disabled:cursor-not-allowed snc:disabled:opacity-60',
   ),
-  // The tick sits over the input rather than inside it — an <input> cannot have children. It is a
-  // direct sibling of the input so the `peer-checked` variant resolves (`.peer:checked ~ &`), letting
-  // CSS drive the tick for uncontrolled checkboxes where React never sees the checked state.
+  // Overlaid, since an <input> cannot have children. Kept a direct sibling so `peer-checked` resolves.
   icon: cn(
     'snc:pointer-events-none snc:absolute snc:inset-0',
     'snc:items-center snc:justify-center',

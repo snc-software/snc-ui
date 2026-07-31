@@ -34,6 +34,7 @@ export default function TableHeadRow<TRow extends object>({
           className={cn(tableClasses.cell, tableClasses.cellOverlap, classes.selectionCell)}
         >
           <Checkbox
+            className={classes.selectionCheckbox}
             aria-label="Select all rows"
             checked={selectionState.checked}
             indeterminate={selectionState.indeterminate}

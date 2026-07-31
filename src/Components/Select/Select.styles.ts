@@ -11,8 +11,7 @@ export const classes = {
     'snc:disabled:cursor-not-allowed snc:disabled:opacity-60',
   ),
   triggerClosed: cn('snc:rounded-md'),
-  // Open, the trigger squares off its bottom corners and takes the panel's border colour so the two
-  // read as a single surface — as they do in the source library.
+  // Squared-off bottom while open so trigger and panel read as one surface.
   triggerOpen: cn('snc:rounded-t-md snc:border-snc-primary'),
   value: cn('snc:flex-1 snc:overflow-hidden snc:text-ellipsis snc:whitespace-nowrap'),
   placeholder: cn('snc:opacity-50'),
@@ -21,12 +20,11 @@ export const classes = {
     'snc:transition-transform snc:duration-300',
   ),
   chevronOpen: cn('snc:rotate-180'),
-  // `fixed` because the panel is portalled to `document.body` and positioned from the trigger's
-  // viewport rect — see `useAnchoredPosition` for why it cannot simply sit next to the trigger.
+  // Delta over Popout's base panel only.
   panel: cn(
-    'snc:fixed snc:z-50 snc:overflow-auto',
-    'snc:rounded-b-lg snc:border-x snc:border-b snc:border-snc-primary',
-    'snc:bg-snc-surface snc:text-snc-text-primary snc:font-snc-body snc:shadow-xl',
+    'snc:overflow-auto',
+    'snc:rounded-b-lg snc:border-snc-primary',
+    'snc:font-snc-body snc:shadow-xl',
     'snc:focus:outline-none',
   ),
   option: cn(

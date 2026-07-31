@@ -15,10 +15,8 @@ export type SelectOption = {
 };
 
 export type SelectProps = SncComponent<
-  // The trigger is a `<button>` rather than a native `<select>`: the options panel is custom-rendered
-  // so it can carry the design system's own treatment, which a native dropdown cannot be styled into.
-  // `value`/`defaultValue`/`onChange` are omitted from the button attributes and redeclared below,
-  // because the button's own versions describe a form control this component does not present.
+  // A `<button>` trigger, not a native `<select>` — an OS-drawn dropdown cannot take the design
+  // system's styling. `value`/`defaultValue`/`onChange` are redeclared below accordingly.
   Omit<
     ButtonHTMLAttributes<HTMLButtonElement>,
     'className' | 'id' | 'style' | 'children' | 'type' | 'value' | 'defaultValue' | 'onChange'

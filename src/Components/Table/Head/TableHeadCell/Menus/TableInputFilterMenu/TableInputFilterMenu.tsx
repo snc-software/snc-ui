@@ -28,16 +28,13 @@ export default function TableInputFilterMenu({
   const [value, setValue] = useState<string>(String(activeFilter?.value ?? ''));
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Moves focus into the popover as it opens. Done here rather than with `autoFocus`, which is an
-  // accessibility anti-pattern on page load; inside a menu the user just opened, it is the expected
-  // behaviour, and this scopes it to exactly that case.
+  // Not `autoFocus`, which lints as an anti-pattern — scoped to a menu the user just opened.
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
   const canSearch = value.trim().length > 0;
-  // Enabled for typed-but-not-yet-searched text as well as an applied filter, so Clear always does
-  // the thing it looks like it will: empty the box.
+  // Typed-but-unsearched text counts, so Clear is never a no-op with text on screen.
   const canClear = activeFilter !== undefined || value.length > 0;
 
   const submit = () => {
@@ -56,9 +53,7 @@ export default function TableInputFilterMenu({
     }
   };
 
-  // Deliberately leaves the popover open, unlike the source library, which closed on clear. Clearing
-  // is usually the first half of "search for something else", and closing hid the now-empty box the
-  // user was clearing in order to retype into.
+  // Stays open, unlike the source — clearing is usually the first half of retyping.
   const handleClear = () => {
     setValue('');
 

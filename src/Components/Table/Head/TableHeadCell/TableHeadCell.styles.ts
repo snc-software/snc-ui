@@ -13,13 +13,11 @@ export const classes = {
     'snc:w-full snc:flex-1',
     'snc:font-snc-heading snc:text-xs snc:font-bold snc:uppercase snc:tracking-wide',
   ),
-  // Keyed off the header foreground, not the body text tokens — including the ring, which would
-  // otherwise be primary-on-primary.
+  // Full-strength foreground with no hover shift, so filterable and plain headers read identically.
+  // The ring keys off the header foreground too — it would be primary-on-primary otherwise.
   control: cn(
     'snc:inline-flex snc:items-center snc:justify-center',
-    'snc:rounded snc:p-0 snc:text-snc-surface/70',
-    'snc:transition-colors snc:duration-150',
-    'snc:hover:text-snc-surface',
+    'snc:rounded snc:p-0 snc:text-snc-surface',
     'snc:focus-visible:outline-none snc:focus-visible:ring-2 snc:focus-visible:ring-snc-surface',
   ),
   filterTrigger: cn('snc:flex snc:flex-1 snc:items-center snc:gap-2 snc:text-left'),

@@ -1,4 +1,5 @@
 import { FastArrowLeft, FastArrowRight, NavArrowLeft, NavArrowRight } from 'iconoir-react';
+import { useStore } from 'zustand';
 
 import { cn } from '@/Utils/cn';
 
@@ -13,15 +14,17 @@ import type { PaginationProps } from './Pagination.types';
  * Named without the `Table` prefix by explicit developer decision (see `plans/issue-9-table.md`,
  * Scope Decision 11) — it remains a `Table` sub-component and is only meaningful inside one.
  */
-export default function Pagination({
-  page,
-  pageSize,
+export default function Pagination<TRow extends object>({
+  store,
   total,
   size = 2,
-  onChange,
   className,
   ...rest
-}: PaginationProps) {
+}: PaginationProps<TRow>) {
+  const page = useStore(store, (state) => state.page);
+  const pageSize = useStore(store, (state) => state.pageSize);
+  const setPage = useStore(store, (state) => state.setPage);
+
   const pageCount = getPageCount(total, pageSize);
   const pageNumbers = getPageNumbers(page, pageCount, size);
 
@@ -34,7 +37,7 @@ export default function Pagination({
       return;
     }
 
-    onChange(nextPage);
+    setPage(nextPage);
   };
 
   const isFirstPage = page <= 1;

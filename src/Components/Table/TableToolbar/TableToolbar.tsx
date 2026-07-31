@@ -1,4 +1,5 @@
 import { Xmark } from 'iconoir-react';
+import { useStore } from 'zustand';
 
 import Button from '@/Components/Button';
 import { cn } from '@/Utils/cn';
@@ -20,23 +21,25 @@ function getActionVariant(action: TableAction, index: number) {
  * Only meaningful as a child of `Table`.
  */
 export default function TableToolbar<TRow extends object>({
+  store,
   dataLength,
   total,
-  page,
-  pageSize,
   pageSizeOptions,
   isPaginated = true,
   actions = [],
   onActionClicked,
   hideActionsWhenRowsSelected = false,
-  selected = [],
   selectionActions = [],
   onSelectionActionClicked,
-  onSelectionCleared,
-  onPageSizeChanged,
   className,
   ...rest
 }: TableToolbarProps<TRow>) {
+  const page = useStore(store, (state) => state.page);
+  const pageSize = useStore(store, (state) => state.pageSize);
+  const selected = useStore(store, (state) => state.selected);
+  const setPageSize = useStore(store, (state) => state.setPageSize);
+  const clearSelection = useStore(store, (state) => state.clearSelection);
+
   const previousRowsCount = (page - 1) * pageSize;
   const firstRow = dataLength === 0 ? 0 : previousRowsCount + 1;
   const lastRow = previousRowsCount + dataLength;
@@ -64,7 +67,7 @@ export default function TableToolbar<TRow extends object>({
           )}
           <span className={classes.divider} />
           <span className={classes.caption}>{selected.length} selected</span>
-          <Button variant="text" className={classes.clearSelection} onClick={onSelectionCleared}>
+          <Button variant="text" className={classes.clearSelection} onClick={clearSelection}>
             <Xmark width={14} height={14} aria-hidden="true" />
             Clear
           </Button>
@@ -83,7 +86,7 @@ export default function TableToolbar<TRow extends object>({
             className={classes.pageSize}
             value={pageSize}
             options={pageSizeOptions}
-            onChange={onPageSizeChanged}
+            onChange={setPageSize}
           />
         </>
       )}

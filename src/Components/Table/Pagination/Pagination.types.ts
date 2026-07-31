@@ -1,11 +1,8 @@
+import type { TableStore } from '@/States/useTableState';
 import type { SncComponent } from '@/Types/SncComponent';
 
-export type PaginationProps = SncComponent<{
-  /**
-   * Current page, 1-based.
-   */
-  page: number;
-  pageSize: number;
+export type PaginationProps<TRow extends object> = SncComponent<{
+  store: TableStore<TRow>;
   /**
    * Total rows across the dataset, not just the current page.
    */
@@ -15,5 +12,4 @@ export type PaginationProps = SncComponent<{
    * @default 2
    */
   size?: number;
-  onChange: (page: number) => void;
 }>;

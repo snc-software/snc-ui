@@ -27,6 +27,8 @@
       "@/Internal/*": ["./src/Internal/*"],
       "@/Shared": ["./src/Shared"],
       "@/Shared/*": ["./src/Shared/*"],
+      "@/States": ["./src/States"],
+      "@/States/*": ["./src/States/*"],
       "@/Types": ["./src/Types"],
       "@/Types/*": ["./src/Types/*"],
       "@/Utils": ["./src/Utils"],

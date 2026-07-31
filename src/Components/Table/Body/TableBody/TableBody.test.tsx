@@ -1,10 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
+
+import { createTableStore } from '@/States/useTableState';
 
 import TableBody from './TableBody';
 
 import type { TableColumn } from '../../Table.types';
+import type { TableStore } from '@/States/useTableState';
 
 type Row = { name: string; status: string; locked?: boolean };
 
@@ -18,11 +21,19 @@ const rows: Row[] = [
   { name: 'Grace', status: 'archived', locked: true },
 ];
 
-function renderBody(overrides: Partial<Parameters<typeof TableBody<Row>>[0]> = {}) {
+function createStore() {
+  return createTableStore<Row>({ filters: [], pageSizeOptions: [20] });
+}
+
+function renderBody(
+  overrides: Partial<Parameters<typeof TableBody<Row>>[0]> & { store?: TableStore<Row> } = {},
+) {
+  const { store = createStore(), ...rest } = overrides;
   const props = {
+    store,
     columns,
     data: rows,
-    ...overrides,
+    ...rest,
   };
 
   render(
@@ -100,7 +111,10 @@ describe('TableBody', () => {
   });
 
   it('marks selected rows as selected', () => {
-    renderBody({ isSelectionEnabled: true, selectedRows: [rows[0]] });
+    const store = createStore();
+    act(() => store.getState().toggleRowSelection(rows[0], true));
+
+    renderBody({ store, isSelectionEnabled: true });
 
     expect(screen.getByRole('checkbox', { name: 'Select row 1' })).toBeChecked();
   });
@@ -111,13 +125,12 @@ describe('TableBody', () => {
     expect(screen.getByRole('checkbox', { name: 'Select row 2' })).toBeDisabled();
   });
 
-  it('forwards row selection changes', async () => {
+  it('toggles row selection on the store when a checkbox is activated', async () => {
     const user = userEvent.setup();
-    const onRowSelectChanged = vi.fn();
-    renderBody({ isSelectionEnabled: true, onRowSelectChanged });
+    const { store } = renderBody({ isSelectionEnabled: true });
 
     await user.click(screen.getByRole('checkbox', { name: 'Select row 1' }));
 
-    expect(onRowSelectChanged).toHaveBeenCalledWith(rows[0], true);
+    expect(store.getState().selected).toEqual([rows[0]]);
   });
 });

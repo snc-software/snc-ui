@@ -1,5 +1,6 @@
 import { NavArrowLeft, NavArrowRight } from 'iconoir-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useStore } from 'zustand';
 
 import Button from '@/Components/Button';
 import { cn } from '@/Utils/cn';
@@ -17,13 +18,15 @@ const ScrollStep = 200;
  *
  * Only meaningful as a child of `Table`.
  */
-export default function TableFilterPanel({
-  filters,
-  onFilterCleared,
-  onAllFiltersCleared,
+export default function TableFilterPanel<TRow extends object>({
+  store,
   className,
   ...rest
-}: TableFilterPanelProps) {
+}: TableFilterPanelProps<TRow>) {
+  const filters = useStore(store, (state) => state.activeFilters);
+  const clearFilters = useStore(store, (state) => state.clearFilters);
+  const clearAllFilters = useStore(store, (state) => state.clearAllFilters);
+
   const chipsRef = useRef<HTMLDivElement | null>(null);
   const [hasOverflow, setHasOverflow] = useState(false);
 
@@ -55,7 +58,7 @@ export default function TableFilterPanel({
             key={filter.id}
             title={filter.title}
             value={filter.text ?? String(filter.value ?? '')}
-            onClear={() => onFilterCleared(filter.id)}
+            onClear={() => clearFilters([filter.id])}
           />
         ))}
       </div>
@@ -81,7 +84,7 @@ export default function TableFilterPanel({
         </>
       )}
 
-      <Button variant="text" onClick={onAllFiltersCleared}>
+      <Button variant="text" onClick={clearAllFilters}>
         Clear All
       </Button>
     </div>

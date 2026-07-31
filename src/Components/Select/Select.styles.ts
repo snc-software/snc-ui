@@ -1,15 +1,9 @@
+import { classes as baseClasses } from '@/Internal/InputBase';
 import { cn } from '@/Utils/cn';
 
 export const classes = {
   wrapper: cn('snc:inline-flex snc:w-full snc:flex-col'),
-  trigger: cn(
-    'snc:flex snc:w-full snc:items-center snc:gap-2.5',
-    'snc:border snc:bg-snc-surface',
-    'snc:text-left snc:text-snc-text-primary snc:font-snc-body snc:leading-5',
-    'snc:transition-colors snc:duration-150',
-    'snc:focus-visible:outline-none snc:focus-visible:ring-2 snc:focus-visible:ring-snc-primary snc:focus-visible:ring-offset-2',
-    'snc:disabled:cursor-not-allowed snc:disabled:opacity-60',
-  ),
+  trigger: cn(baseClasses.base, 'snc:flex snc:w-full snc:items-center snc:gap-2.5 snc:text-left snc:leading-5'),
   triggerClosed: cn('snc:rounded-md'),
   // Squared-off bottom while open so trigger and panel read as one surface.
   triggerOpen: cn('snc:rounded-t-md snc:border-snc-primary'),

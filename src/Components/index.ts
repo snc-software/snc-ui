@@ -3,6 +3,9 @@
 // `export *` does not re-export a default binding, and each component's index.ts exports its component
 // as the default (as component-standards.md requires). Each default is therefore bound to a name here,
 // or nothing would be reachable from the library root.
+export { default as Autocomplete } from './Autocomplete';
+export type { AutocompleteOption, AutocompleteProps } from './Autocomplete';
+
 export { default as Button } from './Button';
 export type { ButtonProps } from './Button';
 

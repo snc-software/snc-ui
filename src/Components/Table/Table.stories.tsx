@@ -1,8 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 
+import StatusPill from '@/Components/StatusPill';
+
 import Table from './Table';
 
 import type { TableColumn, TableFetchParameters } from './Table.types';
+import type { StatusPillProps } from '@/Components/StatusPill';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 type DocumentRecord = {
@@ -14,25 +17,15 @@ type DocumentRecord = {
   isLocked?: boolean;
 };
 
-const StatusTone = {
-  active: 'snc:bg-snc-success-bg snc:border-snc-success-border snc:text-snc-success-text',
-  draft: 'snc:bg-snc-info-bg snc:border-snc-info-border snc:text-snc-info-text',
-  archived: 'snc:bg-snc-warning-bg snc:border-snc-warning-border snc:text-snc-warning-text',
-} as const;
-
 /**
  * Demonstrates the `cell` render prop: any React node can be returned, so a status column can render
- * a pill built from the design system's semantic status triad rather than plain text.
+ * the real `StatusPill` component rather than plain text.
  */
-function StatusPill({ status }: { status: DocumentRecord['status'] }) {
-  return (
-    <span
-      className={`snc:inline-flex snc:w-max snc:items-center snc:rounded-full snc:border snc:px-3 snc:py-1 snc:font-snc-body snc:text-xs snc:font-medium ${StatusTone[status]}`}
-    >
-      {status}
-    </span>
-  );
-}
+const StatusVariant: Record<DocumentRecord['status'], StatusPillProps['variant']> = {
+  active: 'success',
+  draft: 'info',
+  archived: 'warning',
+};
 
 const owners = ['Ada Lovelace', 'Grace Hopper', 'Alan Turing', 'Katherine Johnson'];
 const statuses: Array<DocumentRecord['status']> = ['active', 'draft', 'archived'];
@@ -65,7 +58,11 @@ const columns: Array<TableColumn<DocumentRecord>> = [
     id: 'status',
     title: 'Status',
     accessor: (row) => row.status,
-    cell: (value) => <StatusPill status={value as DocumentRecord['status']} />,
+    cell: (value) => {
+      const status = value as DocumentRecord['status'];
+
+      return <StatusPill variant={StatusVariant[status]}>{status}</StatusPill>;
+    },
     filterType: 'dropdown',
     options: statuses.map((status) => ({ value: status, label: status })),
   },
@@ -170,7 +167,7 @@ const meta = {
           '  { id: "name", title: "Name", accessor: (row) => row.name, isSortable: true,',
           '    filterType: "input" },',
           '  { id: "status", title: "Status", accessor: (row) => row.status,',
-          '    cell: (value) => <StatusPill status={value} />,',
+          '    cell: (value) => <StatusPill variant={statusVariant[value]}>{value}</StatusPill>,',
           '    filterType: "dropdown", options: statusOptions },',
           '];',
           '',

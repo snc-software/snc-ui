@@ -1,0 +1,25 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+
+import Table from '@/Components/Table';
+
+import { designTokenColumns } from './designTokenColumns';
+import { designTokenEntries } from './designTokens.data';
+
+<Meta title="Design System" />
+
+# Design System
+
+Every `--snc-*` CSS custom property exposed by this library, sourced directly from
+`src/design-tokens.css`. Colour rows that flip between light and dark mode show both
+swatches; mode-independent rows (raw scales, fonts) show one. See the Colours and Fonts
+pages in this section for a more visual tour of the same values.
+
+<Unstyled>
+  <Table
+    columns={designTokenColumns}
+    data={designTokenEntries}
+    total={designTokenEntries.length}
+    isPaginated={false}
+    onFetchRequested={() => {}}
+  />
+</Unstyled>

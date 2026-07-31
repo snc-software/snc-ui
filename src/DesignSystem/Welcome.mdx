@@ -1,0 +1,29 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks';
+
+<Meta title="Welcome" />
+
+<Unstyled>
+  <img src="logo.png" alt="snc-ui" style={{ height: 56, width: 'auto' }} />
+</Unstyled>
+
+**snc-ui** is the Raspberry / Sky design system's React component library — a set of
+accessible, light/dark-mode-aware components built on the tokens defined in
+`design-tokens.json` and exposed as CSS custom properties in `src/design-tokens.css`.
+
+## What's in here
+
+- **Design System** — every exposed `--snc-*` CSS variable (colours, fonts), plus
+  dedicated pages for the brand colour palette and type families.
+- **Typography** — `Heading`, `Paragraph`, and `Link` components.
+- **Components** — the rest of the library: `Table`, `Select`, `Checkbox`, `Input`,
+  `Spinner`, `StatusPill`, and more.
+
+## Conventions
+
+- Every component supports both light and dark mode via the semantic mode tokens —
+  never a raw scale value.
+- Semantic status colours (success/warning/error/info) always ship as a `bg` / `border`
+  / `text` triad.
+- Headings use the heading font token; body copy and UI chrome use the body font token.
+
+See the **Design System** section for the full token reference.

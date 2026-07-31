@@ -1,0 +1,173 @@
+import { ColorItem, ColorPalette, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Design System/Colours" />
+
+# Colours
+
+The full brand and semantic colour palette, sourced from `design-tokens.json`. Raspberry,
+Sky, and Neutral are raw scales and stay the same in both modes. Mode tokens and semantic
+status triads flip under the `.dark` class, so each of those groups shows a light and a
+dark section below — Storybook's light/dark toolbar toggle doesn't affect this page,
+since it only re-themes live component stories, not static MDX content like these
+swatches.
+
+## Raspberry
+
+<ColorPalette>
+  <ColorItem
+    title="raspberry"
+    subtitle="Primary: 700 (light) / 400 (dark)"
+    colors={{
+      '50': '#fce4ec',
+      '100': '#f8bbd0',
+      '200': '#f48fb1',
+      '300': '#f06292',
+      '400': '#ec407a',
+      '500': '#e91e63',
+      '600': '#d81b60',
+      '700': '#c2185b',
+      '800': '#ad1457',
+      '900': '#880e4f',
+    }}
+  />
+</ColorPalette>
+
+## Sky
+
+<ColorPalette>
+  <ColorItem
+    title="sky"
+    subtitle="Accent: 500 (light) / 400 (dark)"
+    colors={{
+      '50': '#f0f9ff',
+      '100': '#e0f2fe',
+      '200': '#bae6fd',
+      '300': '#7dd3fc',
+      '400': '#38bdf8',
+      '500': '#0ea5e9',
+      '600': '#0284c7',
+      '700': '#0369a1',
+      '800': '#075985',
+      '900': '#0c4a6e',
+    }}
+  />
+</ColorPalette>
+
+## Neutral
+
+<ColorPalette>
+  <ColorItem
+    title="neutral"
+    subtitle="50–950"
+    colors={{
+      '50': '#f8fafc',
+      '100': '#f1f5f9',
+      '200': '#e2e8f0',
+      '300': '#cbd5e1',
+      '400': '#94a3b8',
+      '500': '#64748b',
+      '600': '#475569',
+      '700': '#334155',
+      '800': '#1e293b',
+      '900': '#0f172a',
+      '950': '#020617',
+    }}
+  />
+</ColorPalette>
+
+## Mode tokens — light mode
+
+<ColorPalette>
+  <ColorItem
+    title="mode tokens"
+    subtitle="Light"
+    colors={{
+      background: '#f8fafc',
+      surface: '#ffffff',
+      'surface-accent': '#f0f9ff',
+      'text-primary': '#0f172a',
+      'text-secondary': '#475569',
+      border: '#e2e8f0',
+      primary: '#c2185b',
+      'primary-hover': '#ad1457',
+      'primary-subtle-bg': '#fce4ec',
+      accent: '#0ea5e9',
+      'accent-subtle-bg': '#e0f2fe',
+    }}
+  />
+</ColorPalette>
+
+## Mode tokens — dark mode
+
+<ColorPalette>
+  <ColorItem
+    title="mode tokens"
+    subtitle="Dark"
+    colors={{
+      background: '#020617',
+      surface: '#0f172a',
+      'surface-accent': '#1e293b',
+      'text-primary': '#f8fafc',
+      'text-secondary': '#94a3b8',
+      border: '#334155',
+      primary: '#ec407a',
+      'primary-hover': '#f06292',
+      'primary-subtle-bg': '#880e4f',
+      accent: '#38bdf8',
+      'accent-subtle-bg': '#0c4a6e',
+    }}
+  />
+</ColorPalette>
+
+## Semantic status — light mode
+
+Each status ships as a `bg` / `border` / `text` triad — never mix triads across modes or
+statuses.
+
+<ColorPalette>
+  <ColorItem
+    title="success"
+    subtitle="bg / border / text"
+    colors={['#dcfce7', '#16a34a', '#166534']}
+  />
+  <ColorItem
+    title="warning"
+    subtitle="bg / border / text"
+    colors={['#fef3c7', '#d97706', '#92400e']}
+  />
+  <ColorItem
+    title="error"
+    subtitle="bg / border / text"
+    colors={['#fee2e2', '#dc2626', '#991b1b']}
+  />
+  <ColorItem
+    title="info"
+    subtitle="bg / border / text"
+    colors={['#e0f2fe', '#0284c7', '#075985']}
+  />
+</ColorPalette>
+
+## Semantic status — dark mode
+
+<ColorPalette>
+  <ColorItem
+    title="success"
+    subtitle="bg / border / text"
+    colors={['#14532d', '#22c55e', '#86efac']}
+  />
+  <ColorItem
+    title="warning"
+    subtitle="bg / border / text"
+    colors={['#78350f', '#f59e0b', '#fcd34d']}
+  />
+  <ColorItem
+    title="error"
+    subtitle="bg / border / text"
+    colors={['#7f1d1d', '#ef4444', '#fca5a5']}
+  />
+  <ColorItem
+    title="info"
+    subtitle="bg / border / text"
+    colors={['#0c4a6e', '#38bdf8', '#7dd3fc']}
+  />
+</ColorPalette>

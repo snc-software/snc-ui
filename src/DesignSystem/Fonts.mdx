@@ -1,0 +1,49 @@
+import { Meta, Typeset, Unstyled } from '@storybook/addon-docs/blocks';
+
+import Heading from '@/Components/Typography/Heading';
+import Paragraph from '@/Components/Typography/Paragraph';
+
+<Meta title="Design System/Fonts" />
+
+# Fonts
+
+Two type families make up the design system: **JetBrains Mono** for headings, and
+**Manrope** for body copy and UI chrome. Both load via Google Fonts and ship as SIL OFL
+(free, commercial use).
+
+## Heading — JetBrains Mono
+
+`--snc-font-family-heading`. Monospaced and wider than a proportional face — apply tight
+letter-spacing (`-0.02em` or so) at large heading sizes (H1/H2) to avoid overly loose
+type.
+
+<Typeset
+  fontFamily="'JetBrains Mono', monospace"
+  fontSizes={[14, 16, 20, 24, 32, 40]}
+  fontWeight={600}
+  sampleText="Hello World"
+/>
+
+<Unstyled>
+  <Heading level="h1">Heading level="h1"</Heading>
+  <Heading level="h2">Heading level="h2"</Heading>
+  <Heading level="h3">Heading level="h3"</Heading>
+</Unstyled>
+
+## Body — Manrope
+
+`--snc-font-family-body`. Used for body copy, labels, and UI chrome.
+
+<Typeset
+  fontFamily="'Manrope', sans-serif"
+  fontSizes={[14, 16, 18, 20]}
+  fontWeight={400}
+  sampleText="Hello World"
+/>
+
+<Unstyled>
+  <Paragraph>
+    Paragraph text renders in Manrope — this is what body copy looks like at the default size and
+    weight.
+  </Paragraph>
+</Unstyled>

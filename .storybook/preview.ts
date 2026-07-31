@@ -16,8 +16,7 @@ const withColorScheme: Decorator = (Story, context) => {
       createElement(
         'div',
         {
-          className:
-            'snc:bg-snc-surface snc:border snc:border-snc-border snc:rounded-xl snc:p-6',
+          className: 'snc:bg-snc-surface snc:border snc:border-snc-border snc:rounded-xl snc:p-6',
         },
         createElement(Story),
       ),
@@ -38,6 +37,11 @@ const preview: Preview = {
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
       test: 'todo',
+    },
+    options: {
+      storySort: {
+        order: ['Welcome', 'Design System', 'Typography', 'Components'],
+      },
     },
   },
   globalTypes: {

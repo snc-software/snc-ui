@@ -1,23 +1,35 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { createTableStore } from '@/States/useTableState';
+
 import TableToolbar from './TableToolbar';
+
+import type { TableStore } from '@/States/useTableState';
 
 type Row = { name: string };
 
 const rows: Row[] = [{ name: 'Ada' }, { name: 'Grace' }];
 
-function renderToolbar(overrides: Partial<Parameters<typeof TableToolbar<Row>>[0]> = {}) {
+function createStore(overrides: Partial<Parameters<typeof createTableStore<Row>>[0]> = {}) {
+  return createTableStore<Row>({
+    filters: [],
+    pageSizeOptions: [20, 50, 100],
+    ...overrides,
+  });
+}
+
+function renderToolbar(
+  overrides: Partial<Parameters<typeof TableToolbar<Row>>[0]> & { store?: TableStore<Row> } = {},
+) {
+  const { store = createStore(), ...rest } = overrides;
   const props = {
+    store,
     dataLength: 2,
     total: 50,
-    page: 1,
-    pageSize: 20,
     pageSizeOptions: [20, 50, 100],
-    onSelectionCleared: vi.fn(),
-    onPageSizeChanged: vi.fn(),
-    ...overrides,
+    ...rest,
   };
 
   render(<TableToolbar<Row> {...props} />);
@@ -33,7 +45,10 @@ describe('TableToolbar', () => {
   });
 
   it('offsets the row count by the current page', () => {
-    renderToolbar({ page: 3, pageSize: 20, dataLength: 10 });
+    const store = createStore();
+    act(() => store.getState().setPage(3));
+
+    renderToolbar({ store, dataLength: 10 });
 
     expect(screen.getByText('Showing 41 - 50 of 50')).toBeInTheDocument();
   });
@@ -56,14 +71,14 @@ describe('TableToolbar', () => {
     expect(screen.queryByRole('combobox', { name: 'Rows per page' })).not.toBeInTheDocument();
   });
 
-  it('calls the page size handler when a new size is chosen', async () => {
+  it('calls setPageSize on the store when a new size is chosen', async () => {
     const user = userEvent.setup();
-    const props = renderToolbar();
+    const { store } = renderToolbar();
 
     await user.click(screen.getByRole('combobox', { name: 'Rows per page' }));
     await user.click(screen.getByRole('option', { name: '50' }));
 
-    expect(props.onPageSizeChanged).toHaveBeenCalledWith(50);
+    expect(store.getState().pageSize).toBe(50);
   });
 
   it('renders no selection summary when nothing is selected', () => {
@@ -73,18 +88,24 @@ describe('TableToolbar', () => {
   });
 
   it('renders the selected count when rows are selected', () => {
-    renderToolbar({ selected: rows });
+    const store = createStore();
+    act(() => store.getState().toggleSelectAll(rows));
+
+    renderToolbar({ store });
 
     expect(screen.getByText('2 selected')).toBeInTheDocument();
   });
 
   it('clears the selection when the clear control is activated', async () => {
     const user = userEvent.setup();
-    const props = renderToolbar({ selected: rows });
+    const store = createStore();
+    act(() => store.getState().toggleSelectAll(rows));
+
+    renderToolbar({ store });
 
     await user.click(screen.getByRole('button', { name: /clear/i }));
 
-    expect(props.onSelectionCleared).toHaveBeenCalledTimes(1);
+    expect(store.getState().selected).toEqual([]);
   });
 
   it('renders toolbar actions and calls onActionClicked with the action id', async () => {
@@ -106,8 +127,11 @@ describe('TableToolbar', () => {
   it('calls onSelectionActionClicked with the action id and the selection', async () => {
     const user = userEvent.setup();
     const onSelectionActionClicked = vi.fn();
+    const store = createStore();
+    act(() => store.getState().toggleSelectAll(rows));
+
     renderToolbar({
-      selected: rows,
+      store,
       selectionActions: [{ id: 'delete', label: 'Delete' }],
       onSelectionActionClicked,
     });
@@ -118,8 +142,11 @@ describe('TableToolbar', () => {
   });
 
   it('hides toolbar actions when hideActionsWhenRowsSelected is true and rows are selected', () => {
+    const store = createStore();
+    act(() => store.getState().toggleSelectAll(rows));
+
     renderToolbar({
-      selected: rows,
+      store,
       actions: [{ id: 'export', label: 'Export' }],
       hideActionsWhenRowsSelected: true,
     });
@@ -128,7 +155,10 @@ describe('TableToolbar', () => {
   });
 
   it('keeps toolbar actions visible when rows are selected by default', () => {
-    renderToolbar({ selected: rows, actions: [{ id: 'export', label: 'Export' }] });
+    const store = createStore();
+    act(() => store.getState().toggleSelectAll(rows));
+
+    renderToolbar({ store, actions: [{ id: 'export', label: 'Export' }] });
 
     expect(screen.getByRole('button', { name: 'Export' })).toBeInTheDocument();
   });

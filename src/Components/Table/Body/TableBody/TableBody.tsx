@@ -1,3 +1,5 @@
+import { useStore } from 'zustand';
+
 import Spinner from '@/Components/Spinner';
 import { cn } from '@/Utils/cn';
 
@@ -13,18 +15,20 @@ import type { TableBodyProps } from './TableBody.types';
  * Only meaningful as a child of `Table`.
  */
 export default function TableBody<TRow extends object>({
+  store,
   columns,
   data = [],
   isLoading = false,
   emptyMessage = DefaultEmptyMessage,
   isSelectionEnabled = false,
-  selectedRows = [],
   isRowSelectable,
   onRowClicked,
-  onRowSelectChanged,
   className,
   ...rest
 }: TableBodyProps<TRow>) {
+  const selectedRows = useStore(store, (state) => state.selected);
+  const toggleRowSelection = useStore(store, (state) => state.toggleRowSelection);
+
   const columnCount = columns.length + (isSelectionEnabled ? 1 : 0);
 
   return (
@@ -62,7 +66,7 @@ export default function TableBody<TRow extends object>({
             isSelected={selectedRows.includes(row)}
             isSelectable={isRowSelectable ? isRowSelectable(row) : true}
             onRowClicked={onRowClicked}
-            onSelectChanged={onRowSelectChanged}
+            onSelectChanged={toggleRowSelection}
           />
         ))}
     </tbody>

@@ -1,19 +1,34 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createTableStore } from '@/States/useTableState';
 
 import Pagination from './Pagination';
 
-function renderPagination(overrides: Partial<Parameters<typeof Pagination>[0]> = {}) {
+import type { TableStore } from '@/States/useTableState';
+
+type Row = { id: number };
+
+function createStore(page = 5, pageSize = 10) {
+  const store = createTableStore<Row>({
+    filters: [],
+    initialPageSize: pageSize,
+    pageSizeOptions: [pageSize],
+  });
+  act(() => store.getState().setPage(page));
+
+  return store;
+}
+
+function renderPagination(overrides: Partial<{ store: TableStore<Row>; total: number }> = {}) {
   const props = {
-    page: 5,
-    pageSize: 10,
+    store: createStore(),
     total: 100,
-    onChange: vi.fn(),
     ...overrides,
   };
 
-  render(<Pagination {...props} />);
+  render(<Pagination<Row> {...props} />);
 
   return props;
 }
@@ -47,69 +62,69 @@ describe('Pagination', () => {
     );
   });
 
-  it('calls onChange with the selected page number', async () => {
+  it('sets the page on the store when a page number is selected', async () => {
     const user = userEvent.setup();
-    const props = renderPagination();
+    const { store } = renderPagination();
 
     await user.click(screen.getByRole('button', { name: 'Go to page 6' }));
 
-    expect(props.onChange).toHaveBeenCalledWith(6);
+    expect(store.getState().page).toBe(6);
   });
 
-  it('does not call onChange when the current page is re-selected', async () => {
+  it('does not change the page when the current page is re-selected', async () => {
     const user = userEvent.setup();
-    const props = renderPagination();
+    const { store } = renderPagination();
 
     await user.click(screen.getByRole('button', { name: 'Go to page 5' }));
 
-    expect(props.onChange).not.toHaveBeenCalled();
+    expect(store.getState().page).toBe(5);
   });
 
   it('moves to the first page via the jump control', async () => {
     const user = userEvent.setup();
-    const props = renderPagination();
+    const { store } = renderPagination();
 
     await user.click(screen.getByRole('button', { name: 'Go to first page' }));
 
-    expect(props.onChange).toHaveBeenCalledWith(1);
+    expect(store.getState().page).toBe(1);
   });
 
   it('moves to the last page via the jump control', async () => {
     const user = userEvent.setup();
-    const props = renderPagination();
+    const { store } = renderPagination();
 
     await user.click(screen.getByRole('button', { name: 'Go to last page' }));
 
-    expect(props.onChange).toHaveBeenCalledWith(10);
+    expect(store.getState().page).toBe(10);
   });
 
   it('moves to the previous page', async () => {
     const user = userEvent.setup();
-    const props = renderPagination();
+    const { store } = renderPagination();
 
     await user.click(screen.getByRole('button', { name: 'Go to previous page' }));
 
-    expect(props.onChange).toHaveBeenCalledWith(4);
+    expect(store.getState().page).toBe(4);
   });
 
   it('moves to the next page', async () => {
     const user = userEvent.setup();
-    const props = renderPagination();
+    const { store } = renderPagination();
 
     await user.click(screen.getByRole('button', { name: 'Go to next page' }));
 
-    expect(props.onChange).toHaveBeenCalledWith(6);
+    expect(store.getState().page).toBe(6);
   });
 
   it('hides the backward controls on the first page', () => {
-    renderPagination({ page: 1 });
+    renderPagination({ store: createStore(1) });
 
     expect(screen.queryByRole('button', { name: 'Go to first page' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Go to previous page' })).not.toBeInTheDocument();
   });
 
   it('hides the forward controls on the final page', () => {
-    renderPagination({ page: 10 });
+    renderPagination({ store: createStore(10) });
 
     expect(screen.queryByRole('button', { name: 'Go to next page' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Go to last page' })).not.toBeInTheDocument();

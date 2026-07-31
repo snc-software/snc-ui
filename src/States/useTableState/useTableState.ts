@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createStore, useStore } from 'zustand';
+import { createStore } from 'zustand';
 
 import {
   applyFilters,
@@ -9,7 +9,7 @@ import {
   toggleSelectAll,
 } from '@/Components/Table/Table.utils';
 
-import type { TableState, TableStateParams } from './useTableState.types';
+import type { TableState, TableStateParams, TableStore } from './useTableState.types';
 import type { TableFilter } from '@/Components/Table';
 
 // Tracks the last-synced prop value separately from `activeFilters`, which may have since diverged
@@ -25,11 +25,11 @@ function resolveInitialPageSize(initialPageSize: number | undefined, pageSizeOpt
     : pageSizeOptions[0];
 }
 
-function createTableStore<TRow extends object>({
+export function createTableStore<TRow extends object>({
   filters,
   initialPageSize,
   pageSizeOptions,
-}: TableStateParams) {
+}: TableStateParams): TableStore<TRow> {
   return createStore<InternalTableState<TRow>>()((set) => ({
     page: 1,
     pageSize: resolveInitialPageSize(initialPageSize, pageSizeOptions),
@@ -67,9 +67,10 @@ function createTableStore<TRow extends object>({
 }
 
 // Store is created once per call (via useState's lazy initializer), so multiple `Table`s on the same
-// page never share state.
-export function useTableState<TRow extends object>(params: TableStateParams) {
+// page never share state. Returns the raw store rather than subscribed state — consumers subscribe
+// themselves via zustand's `useStore(store, selector)` so each reads only the slice it needs.
+export function useTableState<TRow extends object>(params: TableStateParams): TableStore<TRow> {
   const [store] = useState(() => createTableStore<TRow>(params));
 
-  return useStore(store);
+  return store;
 }

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useStore } from 'zustand';
 
 import { useTableState } from '@/States/useTableState';
 import { cn } from '@/Utils/cn';
@@ -34,21 +35,14 @@ export default function Table<TRow extends object>({
   className,
   ...rest
 }: TableProps<TRow>) {
-  const {
-    page,
-    pageSize,
-    activeFilters,
-    selected,
-    setPage,
-    setPageSize,
-    applyFilters,
-    clearFilters,
-    clearAllFilters,
-    syncFilters,
-    toggleSelectAll,
-    toggleRowSelection,
-    clearSelection,
-  } = useTableState<TRow>({ filters, initialPageSize, pageSizeOptions });
+  const store = useTableState<TRow>({ filters, initialPageSize, pageSizeOptions });
+
+  const page = useStore(store, (state) => state.page);
+  const pageSize = useStore(store, (state) => state.pageSize);
+  const activeFilters = useStore(store, (state) => state.activeFilters);
+  const selected = useStore(store, (state) => state.selected);
+  const syncFilters = useStore(store, (state) => state.syncFilters);
+  const clearSelection = useStore(store, (state) => state.clearSelection);
 
   const [sortBy, setSortBy] = useState<string>();
   const [sortDirection, setSortDirection] = useState<TableSortDirection>();
@@ -105,65 +99,48 @@ export default function Table<TRow extends object>({
     <div className={cn(classes.root, className)} {...rest}>
       {isToolbarVisible && (
         <TableToolbar<TRow>
+          store={store}
           dataLength={data.length}
           total={total}
-          page={page}
-          pageSize={pageSize}
           pageSizeOptions={pageSizeOptions}
           isPaginated={isPaginated}
           actions={actions}
           onActionClicked={onActionClicked}
           hideActionsWhenRowsSelected={hideActionsWhenRowsSelected}
-          selected={selected}
           selectionActions={selectionActions}
           onSelectionActionClicked={handleSelectionActionClicked}
-          onSelectionCleared={clearSelection}
-          onPageSizeChanged={setPageSize}
         />
       )}
 
-      {activeFilters.length > 0 && (
-        <TableFilterPanel
-          filters={activeFilters}
-          onFilterCleared={(filterId) => clearFilters([filterId])}
-          onAllFiltersCleared={clearAllFilters}
-        />
-      )}
+      {activeFilters.length > 0 && <TableFilterPanel<TRow> store={store} />}
 
       <div className={classes.surface}>
         <div className={classes.scrollArea}>
           <table className={classes.table}>
             <TableHead<TRow>
+              store={store}
               columns={columns}
               data={data}
-              filters={activeFilters}
               isSelectionEnabled={isSelectionEnabled}
-              selectedRows={selected}
               isRowSelectable={isRowSelectable}
-              onSelectAllClicked={() => toggleSelectAll(data, isRowSelectable)}
               sortBy={sortBy}
               sortDirection={sortDirection}
               onSortChanged={handleSortChanged}
-              onFiltersSet={applyFilters}
-              onFiltersCleared={clearFilters}
             />
             <TableBody<TRow>
+              store={store}
               columns={columns}
               data={data}
               isLoading={isLoading}
               emptyMessage={emptyMessage}
               isSelectionEnabled={isSelectionEnabled}
-              selectedRows={selected}
               isRowSelectable={isRowSelectable}
               onRowClicked={onRowClicked}
-              onRowSelectChanged={toggleRowSelection}
             />
           </table>
         </div>
 
-        {isPaginated && (
-          <Pagination page={page} pageSize={pageSize} total={total} onChange={setPage} />
-        )}
+        {isPaginated && <Pagination<TRow> store={store} total={total} />}
       </div>
     </div>
   );

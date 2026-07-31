@@ -1,4 +1,5 @@
 import type { TableFilter } from '@/Components/Table';
+import type { StoreApi } from 'zustand';
 
 export type TableStateParams = {
   /**
@@ -46,3 +47,10 @@ export type TableState<TRow extends object> = {
   toggleRowSelection: (row: TRow, isSelected: boolean) => void;
   clearSelection: () => void;
 };
+
+/**
+ * The store instance shared by `Table` and its sub-components. Kept as an opaque `StoreApi` (rather than
+ * exposing `InternalTableState`) so the internal-only `lastSyncedFilters` field never leaks into the
+ * public type.
+ */
+export type TableStore<TRow extends object> = StoreApi<TableState<TRow>>;

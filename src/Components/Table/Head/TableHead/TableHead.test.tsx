@@ -1,10 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { createTableStore } from '@/States/useTableState';
+
 import TableHead from './TableHead';
 
-import type { TableColumn, TableFilter } from '../../Table.types';
+import type { TableColumn } from '../../Table.types';
+import type { TableStore } from '@/States/useTableState';
 
 type Row = { name: string; locked?: boolean };
 
@@ -14,16 +17,20 @@ const columns: Array<TableColumn<Row>> = [
 
 const rows: Row[] = [{ name: 'Ada' }, { name: 'Grace', locked: true }];
 
-function renderHead(overrides: Partial<Parameters<typeof TableHead<Row>>[0]> = {}) {
+function createStore() {
+  return createTableStore<Row>({ filters: [], pageSizeOptions: [20] });
+}
+
+function renderHead(
+  overrides: Partial<Parameters<typeof TableHead<Row>>[0]> & { store?: TableStore<Row> } = {},
+) {
+  const { store = createStore(), ...rest } = overrides;
   const props = {
+    store,
     columns,
     data: rows,
-    filters: [] as TableFilter[],
-    onSelectAllClicked: vi.fn(),
     onSortChanged: vi.fn(),
-    onFiltersSet: vi.fn(),
-    onFiltersCleared: vi.fn(),
-    ...overrides,
+    ...rest,
   };
 
   render(
@@ -49,15 +56,18 @@ describe('TableHead', () => {
   });
 
   it('derives an unchecked select-all state when nothing is selected', () => {
-    renderHead({ isSelectionEnabled: true, selectedRows: [] });
+    renderHead({ isSelectionEnabled: true });
 
     expect(screen.getByRole('checkbox', { name: 'Select all rows' })).not.toBeChecked();
   });
 
   it('derives a checked select-all state when every selectable row is selected', () => {
+    const store = createStore();
+    act(() => store.getState().toggleRowSelection(rows[0], true));
+
     renderHead({
+      store,
       isSelectionEnabled: true,
-      selectedRows: [rows[0]],
       isRowSelectable: (row) => !row.locked,
     });
 
@@ -65,7 +75,10 @@ describe('TableHead', () => {
   });
 
   it('derives an indeterminate select-all state when only some rows are selected', () => {
-    renderHead({ isSelectionEnabled: true, selectedRows: [rows[0]] });
+    const store = createStore();
+    act(() => store.getState().toggleRowSelection(rows[0], true));
+
+    renderHead({ store, isSelectionEnabled: true });
 
     expect(screen.getByRole('checkbox', { name: 'Select all rows' })).toHaveAttribute(
       'aria-checked',
@@ -73,12 +86,15 @@ describe('TableHead', () => {
     );
   });
 
-  it('forwards select-all activation to the handler', async () => {
+  it('toggles selection for every selectable row when select-all is activated', async () => {
     const user = userEvent.setup();
-    const props = renderHead({ isSelectionEnabled: true });
+    const { store } = renderHead({
+      isSelectionEnabled: true,
+      isRowSelectable: (row) => !row.locked,
+    });
 
     await user.click(screen.getByRole('checkbox', { name: 'Select all rows' }));
 
-    expect(props.onSelectAllClicked).toHaveBeenCalledTimes(1);
+    expect(store.getState().selected).toEqual([rows[0]]);
   });
 });

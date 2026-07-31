@@ -1,3 +1,3 @@
-export { useTableState } from './useTableState';
+export { createTableStore, useTableState } from './useTableState';
 
-export type { TableState, TableStateParams } from './useTableState.types';
+export type { TableState, TableStateParams, TableStore } from './useTableState.types';

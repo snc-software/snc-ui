@@ -1,8 +1,10 @@
 import type { TableColumn } from '../../Table.types';
+import type { TableStore } from '@/States/useTableState';
 import type { SncComponent } from '@/Types/SncComponent';
 import type { ReactNode } from 'react';
 
 export type TableBodyProps<TRow extends object> = SncComponent<{
+  store: TableStore<TRow>;
   columns: Array<TableColumn<TRow>>;
   data?: Array<TRow>;
   /**
@@ -14,8 +16,6 @@ export type TableBodyProps<TRow extends object> = SncComponent<{
    */
   emptyMessage?: ReactNode;
   isSelectionEnabled?: boolean;
-  selectedRows?: Array<TRow>;
   isRowSelectable?: (row: TRow) => boolean;
   onRowClicked?: (row: TRow) => void;
-  onRowSelectChanged?: (row: TRow, isSelected: boolean) => void;
 }>;

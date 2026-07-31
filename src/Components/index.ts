@@ -9,6 +9,9 @@ export type { ButtonProps } from './Button';
 export { default as Checkbox } from './Checkbox';
 export type { CheckboxProps } from './Checkbox';
 
+export { default as InformationPanel } from './InformationPanel';
+export type { InformationPanelProps } from './InformationPanel';
+
 export { default as Input } from './Input';
 export type { InputProps } from './Input';
 

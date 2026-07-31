@@ -1,4 +1,5 @@
-import { DefaultMaxYearOffset, DefaultMinYearOffset } from './Calendar.constants';
+const DefaultMinYearOffset = 20;
+const DefaultMaxYearOffset = 10;
 
 export type CalendarDayOrigin = 'previous' | 'current' | 'next';
 

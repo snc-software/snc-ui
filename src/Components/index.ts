@@ -29,4 +29,7 @@ export type { StatusPillProps } from './StatusPill';
 export { default as Table } from './Table';
 export * from './Table';
 
+export { default as Tag } from './Tag';
+export type { TagProps } from './Tag';
+
 export * from './Typography';

@@ -12,6 +12,9 @@ export type { CheckboxProps } from './Checkbox';
 export { default as DatePicker } from './DatePicker';
 export type { DatePickerProps } from './DatePicker';
 
+export { default as FileUpload } from './FileUpload';
+export type { FileUploadProps, FileUploadRejection } from './FileUpload';
+
 export { default as InformationPanel } from './InformationPanel';
 export type { InformationPanelProps } from './InformationPanel';
 

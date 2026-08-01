@@ -29,6 +29,7 @@ export default function DatePicker({
   placeholder = DefaultPlaceholder,
   hasError = false,
   disabled = false,
+  align = 'left',
   minYear,
   maxYear,
   name,
@@ -144,6 +145,7 @@ export default function DatePicker({
         isOpen={isOpen}
         anchorRef={triggerRef}
         onClose={() => setIsOpen(false)}
+        align={align}
         hasAdaptiveWidth={false}
         className={classes.panel}
       >

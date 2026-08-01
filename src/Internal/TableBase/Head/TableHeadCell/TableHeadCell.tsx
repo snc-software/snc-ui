@@ -1,4 +1,4 @@
-import { NavArrowDown, Search, Sort, SortDown, SortUp } from 'iconoir-react';
+import { Calendar, NavArrowDown, Search, Sort, SortDown, SortUp } from 'iconoir-react';
 import { useRef, useState } from 'react';
 import { useStore } from 'zustand';
 
@@ -7,6 +7,8 @@ import { cn } from '@/Utils/cn';
 
 import { classes as tableClasses } from '../../TableBase.styles';
 import { getNextSortDirection } from '../../TableBase.utils';
+import TableDateFilterMenu from './Menus/TableDateFilterMenu';
+import TableDateRangeFilterMenu from './Menus/TableDateRangeFilterMenu';
 import TableDropdownFilterMenu from './Menus/TableDropdownFilterMenu';
 import TableInputFilterMenu from './Menus/TableInputFilterMenu';
 import { FilterIconOpenClass, IconSize } from './TableHeadCell.constants';
@@ -37,6 +39,7 @@ export default function TableHeadCell<TRow extends object>({
   ...rest
 }: TableHeadCellProps<TRow>) {
   const [isOpen, setIsOpen] = useState(false);
+  const cellRef = useRef<HTMLTableCellElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   const filters = useStore(store, (state) => state.activeFilters);
@@ -72,6 +75,10 @@ export default function TableHeadCell<TRow extends object>({
           height={IconSize}
         />
       );
+    }
+
+    if (column.filterType === 'date' || column.filterType === 'dateRange') {
+      return <Calendar className={classes.filterIcon} width={IconSize} height={IconSize} />;
     }
 
     return null;
@@ -125,11 +132,38 @@ export default function TableHeadCell<TRow extends object>({
       );
     }
 
+    if (column.filterType === 'date') {
+      return (
+        <TableDateFilterMenu
+          columnId={column.id}
+          title={column.title}
+          placeholder={column.placeholder}
+          isClearable={column.isClearable}
+          align={column.alignMenu}
+          {...menuProps}
+        />
+      );
+    }
+
+    if (column.filterType === 'dateRange') {
+      return (
+        <TableDateRangeFilterMenu
+          columnId={column.id}
+          title={column.title}
+          placeholder={column.placeholder}
+          isClearable={column.isClearable}
+          align={column.alignMenu}
+          {...menuProps}
+        />
+      );
+    }
+
     return null;
   };
 
   return (
     <th
+      ref={cellRef}
       scope="col"
       aria-sort={onSortChanged ? (sortDirection ? AriaSort[sortDirection] : 'none') : undefined}
       className={cn(tableClasses.cell, tableClasses.cellOverlap, classes.cell, className)}
@@ -173,6 +207,7 @@ export default function TableHeadCell<TRow extends object>({
         <Popout
           isOpen={isOpen}
           anchorRef={triggerRef}
+          positionRef={cellRef}
           onClose={closeMenu}
           align={column.alignMenu}
           hasAdaptiveWidth={column.hasAdaptiveWidth}

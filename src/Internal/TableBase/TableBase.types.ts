@@ -159,6 +159,28 @@ type DropdownTableColumn<TRow extends object, TValue = unknown> = FilterableTabl
   options: TableFilterOption[];
 };
 
+type DateTableColumn<TRow extends object, TValue = unknown> = FilterableTableColumn<
+  TRow,
+  'date',
+  TValue
+> & {
+  /**
+   * @default 'Select date'
+   */
+  placeholder?: string;
+};
+
+type DateRangeTableColumn<TRow extends object, TValue = unknown> = FilterableTableColumn<
+  TRow,
+  'dateRange',
+  TValue
+> & {
+  /**
+   * @default 'Select date range'
+   */
+  placeholder?: string;
+};
+
 type CustomTableColumn<TRow extends object, TValue = unknown> = FilterableTableColumn<
   TRow,
   'custom',
@@ -179,6 +201,8 @@ export type TableColumn<TRow extends object, TValue = unknown> =
   | UnfilterableTableColumn<TRow, TValue>
   | InputTableColumn<TRow, TValue>
   | DropdownTableColumn<TRow, TValue>
+  | DateTableColumn<TRow, TValue>
+  | DateRangeTableColumn<TRow, TValue>
   | CustomTableColumn<TRow, TValue>;
 
 /**

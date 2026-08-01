@@ -21,6 +21,7 @@ import type { PopoutProps } from './Popout.types';
 export default function Popout({
   isOpen,
   anchorRef,
+  positionRef,
   onClose,
   align = 'left',
   hasAdaptiveWidth = true,
@@ -31,7 +32,12 @@ export default function Popout({
   ...rest
 }: PopoutProps) {
   const panelRef = useRef<HTMLDivElement | null>(null);
-  const position = useAnchoredPosition({ isOpen, triggerRef: anchorRef, align, hasAdaptiveWidth });
+  const position = useAnchoredPosition({
+    isOpen,
+    triggerRef: positionRef ?? anchorRef,
+    align,
+    hasAdaptiveWidth,
+  });
 
   // Layout effect, not a plain one: React runs child effects before parent ones, so this guarantees
   // registration beats a parent's focus effect. Otherwise that first `focusin` escapes an empty stack

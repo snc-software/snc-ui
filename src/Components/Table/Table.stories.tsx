@@ -14,6 +14,7 @@ type DocumentRecord = {
   status: 'active' | 'draft' | 'archived';
   owner: string;
   updated: string;
+  dueDate: string;
   isLocked?: boolean;
 };
 
@@ -36,6 +37,7 @@ const allRecords: DocumentRecord[] = Array.from({ length: 87 }, (_, index) => ({
   status: statuses[index % statuses.length],
   owner: owners[index % owners.length],
   updated: new Date(2026, 0, (index % 28) + 1).toISOString().slice(0, 10),
+  dueDate: new Date(2026, 1, (index % 28) + 1).toISOString().slice(0, 10),
   isLocked: index % 7 === 0,
 }));
 
@@ -79,6 +81,15 @@ const columns: Array<TableColumn<DocumentRecord>> = [
     title: 'Last updated',
     accessor: (row) => row.updated,
     isSortable: true,
+    filterType: 'date',
+  },
+  {
+    id: 'dueDate',
+    title: 'Due date',
+    accessor: (row) => row.dueDate,
+    isSortable: true,
+    filterType: 'dateRange',
+    alignMenu: 'right',
   },
 ];
 
@@ -89,9 +100,15 @@ const columns: Array<TableColumn<DocumentRecord>> = [
 function queryRecords({ filters, page, pageSize, sortBy, sortDirection }: TableFetchParameters) {
   const filtered = allRecords.filter((record) =>
     filters.every((filter) => {
-      const value = String(record[filter.id as keyof DocumentRecord] ?? '').toLowerCase();
+      const fieldValue = String(record[filter.id as keyof DocumentRecord] ?? '');
 
-      return value.includes(String(filter.value ?? '').toLowerCase());
+      if (filter.value && typeof filter.value === 'object' && 'start' in filter.value) {
+        const range = filter.value as { start: string; end: string };
+
+        return fieldValue >= range.start && fieldValue <= range.end;
+      }
+
+      return fieldValue.toLowerCase().includes(String(filter.value ?? '').toLowerCase());
     }),
   );
 

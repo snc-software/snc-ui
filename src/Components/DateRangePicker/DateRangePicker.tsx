@@ -48,6 +48,7 @@ export default function DateRangePicker({
   placeholder = DefaultPlaceholder,
   hasError = false,
   disabled = false,
+  align = 'left',
   minYear,
   maxYear,
   name,
@@ -200,6 +201,7 @@ export default function DateRangePicker({
         isOpen={isOpen}
         anchorRef={triggerRef}
         onClose={closeAndReset}
+        align={align}
         hasAdaptiveWidth={false}
         className={classes.panel}
       >

@@ -52,6 +52,11 @@ export type DateRangePickerProps = SncComponent<
      */
     disabled?: boolean;
     /**
+     * Which edge of the calendar panel lines up with the trigger's matching edge.
+     * @default 'left'
+     */
+    align?: 'left' | 'right';
+    /**
      * Earliest year offered in both months' shared year bounds.
      * @default currentYear - 20
      */

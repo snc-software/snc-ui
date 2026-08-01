@@ -1,5 +1,5 @@
 import { NavArrowLeft, NavArrowRight } from 'iconoir-react';
-import { useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 
 import Select from '@/Components/Select';
 import { addMonths, buildMonthGrid, isSameDay, resolveYearRange } from '@/Utils/calendarGrid';
@@ -104,8 +104,12 @@ export default function Calendar({
   ).map((year) => ({ value: String(year), label: String(year) }));
 
   // Focuses the active cell on mount (Calendar remounts fresh each time its Popout opens) and again
-  // whenever arrow-key navigation moves it.
-  useLayoutEffect(() => {
+  // whenever arrow-key navigation moves it. A passive effect, not layout: it must fire after the
+  // enclosing Popout's own layout effect registers its layer, or the resulting focusin bubbles to an
+  // ancestor Popout (nesting a Calendar inside a table filter menu, say) before that layer exists,
+  // reads as an outside interaction, and closes it. Layout effects run children-before-parents, so
+  // only a later, passive effect is guaranteed to run after the ancestor's registration.
+  useEffect(() => {
     cellRefs.current[focusedIndex]?.focus();
   }, [focusedIndex]);
 

@@ -53,6 +53,9 @@ export type { SearchInputOption, SearchInputProps } from './SearchInput';
 export { default as Select } from './Select';
 export type { SelectOption, SelectProps } from './Select';
 
+export { default as Separator } from './Separator';
+export type { SeparatorProps } from './Separator';
+
 export { default as Spinner } from './Spinner';
 export type { SpinnerProps } from './Spinner';
 

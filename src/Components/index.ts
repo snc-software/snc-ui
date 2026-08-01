@@ -25,6 +25,9 @@ export type { BasicNavigationMenuProps, NavigationLink } from './BasicNavigation
 export { default as Button } from './Button';
 export type { ButtonProps } from './Button';
 
+export { default as Card } from './Card';
+export type { CardProps } from './Card';
+
 export { default as Checkbox } from './Checkbox';
 export type { CheckboxProps } from './Checkbox';
 

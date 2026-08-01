@@ -6,6 +6,11 @@
 export { default as Autocomplete } from './Autocomplete';
 export type { AutocompleteOption, AutocompleteProps } from './Autocomplete';
 
+// `ChartSeries` is shared vocabulary with `LineChart`, so it's only re-exported here once rather
+// than from both (re-exporting the same type name from two modules in one barrel would collide).
+export { default as BarChart } from './BarChart';
+export type { BarChartProps, ChartSeries } from './BarChart';
+
 export { default as Button } from './Button';
 export type { ButtonProps } from './Button';
 
@@ -27,11 +32,17 @@ export type { InformationPanelProps } from './InformationPanel';
 export { default as Input } from './Input';
 export type { InputProps } from './Input';
 
+export { default as LineChart } from './LineChart';
+export type { LineChartProps } from './LineChart';
+
 export { default as MasterDetailsTable } from './MasterDetailsTable';
 export type { MasterDetailsTablePanelProps, MasterDetailsTableProps } from './MasterDetailsTable';
 
 export { default as Modal } from './Modal';
 export type { ModalProps } from './Modal';
+
+export { default as PieChart } from './PieChart';
+export type { PieChartDatum, PieChartProps } from './PieChart';
 
 export { default as Select } from './Select';
 export type { SelectOption, SelectProps } from './Select';

@@ -47,6 +47,9 @@ export type { ModalProps } from './Modal';
 export { default as PieChart } from './PieChart';
 export type { PieChartDatum, PieChartProps } from './PieChart';
 
+export { default as SearchInput } from './SearchInput';
+export type { SearchInputOption, SearchInputProps } from './SearchInput';
+
 export { default as Select } from './Select';
 export type { SelectOption, SelectProps } from './Select';
 

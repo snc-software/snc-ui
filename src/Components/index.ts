@@ -32,7 +32,10 @@ export { default as Checkbox } from './Checkbox';
 export type { CheckboxProps } from './Checkbox';
 
 export { default as ComplexNavigationMenu } from './ComplexNavigationMenu';
-export type { ComplexNavigationMenuItem, ComplexNavigationMenuProps } from './ComplexNavigationMenu';
+export type {
+  ComplexNavigationMenuItem,
+  ComplexNavigationMenuProps,
+} from './ComplexNavigationMenu';
 
 export { default as DatePicker } from './DatePicker';
 export type { DatePickerProps } from './DatePicker';
@@ -92,6 +95,9 @@ export type { TagProps } from './Tag';
 
 export { default as TextArea } from './TextArea';
 export type { TextAreaProps } from './TextArea';
+
+export { default as Tooltip } from './Tooltip';
+export type { TooltipPlacement, TooltipProps } from './Tooltip';
 
 export * from './Typography';
 

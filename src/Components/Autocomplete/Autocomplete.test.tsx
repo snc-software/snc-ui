@@ -373,4 +373,16 @@ describe('Autocomplete', () => {
 
     expect(container.querySelector('.custom-class')).toBeInTheDocument();
   });
+
+  it('renders no label element when label is omitted', () => {
+    render(<Autocomplete aria-label="Status" options={options} />);
+
+    expect(screen.queryByText('Status', { selector: 'label' })).not.toBeInTheDocument();
+  });
+
+  it('renders the accessible name from the label prop', () => {
+    render(<Autocomplete label="Status" options={options} />);
+
+    expect(screen.getByRole('combobox', { name: 'Status' })).toBeInTheDocument();
+  });
 });

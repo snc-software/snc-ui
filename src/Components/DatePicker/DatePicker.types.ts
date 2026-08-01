@@ -1,11 +1,17 @@
 import type { SncComponent } from '@/Types/SncComponent';
-import type { InputHTMLAttributes, Ref } from 'react';
+import type { InputHTMLAttributes, ReactNode, Ref } from 'react';
 
 export type DatePickerProps = SncComponent<
   Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'className' | 'id' | 'style' | 'value' | 'defaultValue' | 'onChange' | 'type' | 'readOnly'
   > & {
+    /**
+     * Visible label rendered above the control via the shared `InputLabel`, associated to it via
+     * `htmlFor`/`id`. When omitted, an accessible name must be supplied via
+     * `aria-label`/`aria-labelledby` instead.
+     */
+    label?: ReactNode;
     /**
      * Selected date as an ISO date (`yyyy-MM-dd`) or ISO datetime string; only the date portion is
      * read. Supplying this makes the component controlled.

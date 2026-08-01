@@ -43,3 +43,7 @@ export const Disabled: Story = {
 export const Search: Story = {
   args: { type: 'search', placeholder: 'Search records' },
 };
+
+export const WithLabel: Story = {
+  args: { label: 'Full name', 'aria-label': undefined },
+};

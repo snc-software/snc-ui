@@ -1,6 +1,6 @@
 import type { Sizes } from './Autocomplete.constants';
 import type { SncComponent } from '@/Types/SncComponent';
-import type { InputHTMLAttributes, Ref } from 'react';
+import type { InputHTMLAttributes, ReactNode, Ref } from 'react';
 
 export type AutocompleteOption = {
   /**
@@ -24,6 +24,12 @@ export type AutocompleteProps = SncComponent<
      * Options to search/select from.
      */
     options: AutocompleteOption[];
+    /**
+     * Visible label rendered above the control via the shared `InputLabel`, associated to it via
+     * `htmlFor`/`id`. When omitted, an accessible name must be supplied via
+     * `aria-label`/`aria-labelledby` instead.
+     */
+    label?: ReactNode;
     /**
      * Selected value. Supplying this makes the component controlled.
      */

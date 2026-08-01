@@ -197,4 +197,16 @@ describe('DatePicker', () => {
 
     expect(container.querySelector('.custom-class')).toBeInTheDocument();
   });
+
+  it('renders no label element when label is omitted', () => {
+    render(<DatePicker aria-label="Date" />);
+
+    expect(screen.queryByText('Date', { selector: 'label' })).not.toBeInTheDocument();
+  });
+
+  it('renders the accessible name from the label prop', () => {
+    render(<DatePicker label="Date" />);
+
+    expect(screen.getByRole('combobox', { name: 'Date' })).toBeInTheDocument();
+  });
 });

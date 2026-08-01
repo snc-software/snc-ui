@@ -350,4 +350,16 @@ describe('DateRangePicker', () => {
 
     expect(container.querySelector('.custom-class')).toBeInTheDocument();
   });
+
+  it('renders no label element when label is omitted', () => {
+    render(<DateRangePicker aria-label="Date range" />);
+
+    expect(screen.queryByText('Date range', { selector: 'label' })).not.toBeInTheDocument();
+  });
+
+  it('renders the accessible name from the label prop', () => {
+    render(<DateRangePicker label="Date range" />);
+
+    expect(screen.getByRole('combobox', { name: 'Date range' })).toBeInTheDocument();
+  });
 });

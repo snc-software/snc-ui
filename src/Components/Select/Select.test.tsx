@@ -272,4 +272,16 @@ describe('Select', () => {
 
     expect(container.querySelector('.custom-class')).toBeInTheDocument();
   });
+
+  it('renders no label element when label is omitted', () => {
+    render(<Select aria-label="Status" options={options} />);
+
+    expect(screen.queryByText('Status', { selector: 'label' })).not.toBeInTheDocument();
+  });
+
+  it('renders the accessible name from the label prop', () => {
+    render(<Select label="Status" options={options} />);
+
+    expect(screen.getByRole('combobox', { name: 'Status' })).toBeInTheDocument();
+  });
 });

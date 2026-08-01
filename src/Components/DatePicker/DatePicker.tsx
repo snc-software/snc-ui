@@ -2,6 +2,7 @@ import { Calendar as CalendarIcon } from 'iconoir-react';
 import { useCallback, useId, useRef, useState } from 'react';
 
 import Calendar from '@/Internal/Calendar';
+import InputLabel from '@/Internal/InputLabel';
 import Popout from '@/Internal/Popout';
 import { cn } from '@/Utils/cn';
 import { formatDateOnly, formatWithMidnightUtc, parseIsoDate } from '@/Utils/isoDate';
@@ -20,6 +21,7 @@ import type { KeyboardEvent } from 'react';
 export default function DatePicker({
   ref,
   id,
+  label,
   value,
   defaultValue,
   onChange,
@@ -100,6 +102,8 @@ export default function DatePicker({
 
   return (
     <div className={cn(classes.wrapper, className)}>
+      {label !== undefined && <InputLabel htmlFor={triggerId}>{label}</InputLabel>}
+
       <div className={classes.inputWrapper}>
         <input
           ref={setTriggerRef}

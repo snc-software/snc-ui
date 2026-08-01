@@ -1,6 +1,7 @@
 import { NavArrowDown } from 'iconoir-react';
 import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
 
+import InputLabel from '@/Internal/InputLabel';
 import Popout from '@/Internal/Popout';
 import { cn } from '@/Utils/cn';
 
@@ -31,6 +32,7 @@ export default function Select({
   ref,
   id,
   options,
+  label,
   value,
   defaultValue,
   onChange,
@@ -160,6 +162,8 @@ export default function Select({
 
   return (
     <div className={cn(classes.wrapper, className)}>
+      {label !== undefined && <InputLabel htmlFor={triggerId}>{label}</InputLabel>}
+
       <button
         ref={setTriggerRef}
         id={triggerId}

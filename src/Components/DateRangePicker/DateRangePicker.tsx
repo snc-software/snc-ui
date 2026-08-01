@@ -1,6 +1,7 @@
 import { Calendar as CalendarIcon } from 'iconoir-react';
 import { useCallback, useId, useRef, useState } from 'react';
 
+import InputLabel from '@/Internal/InputLabel';
 import Popout from '@/Internal/Popout';
 import RangeCalendar from '@/Internal/RangeCalendar';
 import { cn } from '@/Utils/cn';
@@ -39,6 +40,7 @@ function parseRange(value: DateRangePickerValue | undefined): CommittedRange {
 export default function DateRangePicker({
   ref,
   id,
+  label,
   value,
   defaultValue,
   onChange,
@@ -145,6 +147,8 @@ export default function DateRangePicker({
 
   return (
     <div className={cn(classes.wrapper, className)}>
+      {label !== undefined && <InputLabel htmlFor={triggerId}>{label}</InputLabel>}
+
       <div className={classes.inputWrapper}>
         <input
           ref={setTriggerRef}

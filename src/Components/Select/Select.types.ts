@@ -26,6 +26,12 @@ export type SelectProps = SncComponent<
      */
     options: SelectOption[];
     /**
+     * Visible label rendered above the control via the shared `InputLabel`, associated to it via
+     * `htmlFor`/`id`. When omitted, an accessible name must be supplied via
+     * `aria-label`/`aria-labelledby` instead.
+     */
+    label?: ReactNode;
+    /**
      * Selected value. Supplying this makes the component controlled — it then only changes when the
      * consumer passes a new one.
      */

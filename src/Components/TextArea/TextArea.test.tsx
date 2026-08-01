@@ -93,4 +93,36 @@ describe('TextArea', () => {
     expect(textarea.className).toContain('custom-class');
     expect(textarea.className).toContain('snc:rounded-md');
   });
+
+  it('renders no label element when label is omitted', () => {
+    render(<TextArea aria-label="Bio" />);
+
+    expect(screen.queryByText('Bio', { selector: 'label' })).not.toBeInTheDocument();
+  });
+
+  describe('with a label', () => {
+    it('renders the accessible name from the label prop', () => {
+      render(<TextArea label="Biography" />);
+
+      expect(screen.getByRole('textbox', { name: 'Biography' })).toBeInTheDocument();
+    });
+
+    it('focuses the textarea when its label is clicked', async () => {
+      const user = userEvent.setup();
+      render(<TextArea label="Biography" />);
+
+      await user.click(screen.getByText('Biography'));
+
+      expect(screen.getByRole('textbox', { name: 'Biography' })).toHaveFocus();
+    });
+
+    it('applies a consumer-supplied className to the wrapper rather than the textarea', () => {
+      const { container } = render(<TextArea label="Biography" className="custom-class" />);
+
+      expect(container.querySelector('.custom-class')).not.toBe(
+        screen.getByRole('textbox', { name: 'Biography' }),
+      );
+      expect(container.querySelector('.custom-class')).toBeInTheDocument();
+    });
+  });
 });

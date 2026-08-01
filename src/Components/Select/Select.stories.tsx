@@ -65,6 +65,10 @@ export const WithDisabledOption: Story = {
   },
 };
 
+export const WithLabel: Story = {
+  args: { label: 'Status', 'aria-label': undefined },
+};
+
 /**
  * The panel caps its height at `visibleOptions` rows and scrolls beyond that.
  */

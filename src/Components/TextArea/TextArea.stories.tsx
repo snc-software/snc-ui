@@ -36,3 +36,7 @@ export const HasError: Story = {
 export const Disabled: Story = {
   args: { disabled: true, defaultValue: 'Cannot edit' },
 };
+
+export const WithLabel: Story = {
+  args: { label: 'Biography', 'aria-label': undefined },
+};

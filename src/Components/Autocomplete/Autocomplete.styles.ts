@@ -2,7 +2,7 @@ import { classes as baseClasses } from '@/Internal/InputBase';
 import { cn } from '@/Utils/cn';
 
 export const classes = {
-  wrapper: cn('snc:inline-flex snc:w-full snc:flex-col'),
+  wrapper: cn('snc:inline-flex snc:w-full snc:flex-col snc:gap-1.5'),
   inputWrapper: cn('snc:relative snc:flex snc:w-full snc:items-center'),
   // `pr-10` (icon clearance for the absolutely-positioned chevron) is applied after `Sizes`' own
   // `pr-2`/`pr-5` (tuned for Select's flex-gap layout, not an overlay) so it wins the merge.

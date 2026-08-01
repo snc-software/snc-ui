@@ -56,3 +56,7 @@ export const Disabled: Story = {
 export const CustomYearRange: Story = {
   args: { minYear: 2020, maxYear: 2030 },
 };
+
+export const WithLabel: Story = {
+  args: { label: 'Date', 'aria-label': undefined },
+};

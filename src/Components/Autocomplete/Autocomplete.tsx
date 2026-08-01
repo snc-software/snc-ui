@@ -1,6 +1,7 @@
 import { NavArrowDown } from 'iconoir-react';
 import { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
+import InputLabel from '@/Internal/InputLabel';
 import Popout from '@/Internal/Popout';
 import { cn } from '@/Utils/cn';
 
@@ -30,6 +31,7 @@ export default function Autocomplete({
   ref,
   id,
   options,
+  label,
   value,
   defaultValue,
   onChange,
@@ -220,6 +222,8 @@ export default function Autocomplete({
 
   return (
     <div className={cn(classes.wrapper, className)}>
+      {label !== undefined && <InputLabel htmlFor={triggerId}>{label}</InputLabel>}
+
       <div className={classes.inputWrapper}>
         <input
           ref={setTriggerRef}

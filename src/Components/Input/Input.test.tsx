@@ -93,4 +93,36 @@ describe('Input', () => {
     expect(input.className).toContain('custom-class');
     expect(input.className).toContain('snc:rounded-md');
   });
+
+  it('renders no label element when label is omitted', () => {
+    render(<Input aria-label="Name" />);
+
+    expect(screen.queryByText('Name', { selector: 'label' })).not.toBeInTheDocument();
+  });
+
+  describe('with a label', () => {
+    it('renders the accessible name from the label prop', () => {
+      render(<Input label="First name" />);
+
+      expect(screen.getByRole('textbox', { name: 'First name' })).toBeInTheDocument();
+    });
+
+    it('focuses the input when its label is clicked', async () => {
+      const user = userEvent.setup();
+      render(<Input label="First name" />);
+
+      await user.click(screen.getByText('First name'));
+
+      expect(screen.getByRole('textbox', { name: 'First name' })).toHaveFocus();
+    });
+
+    it('applies a consumer-supplied className to the wrapper rather than the input', () => {
+      const { container } = render(<Input label="First name" className="custom-class" />);
+
+      expect(container.querySelector('.custom-class')).not.toBe(
+        screen.getByRole('textbox', { name: 'First name' }),
+      );
+      expect(container.querySelector('.custom-class')).toBeInTheDocument();
+    });
+  });
 });

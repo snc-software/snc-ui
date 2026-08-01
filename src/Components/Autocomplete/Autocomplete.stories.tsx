@@ -79,3 +79,7 @@ export const Scrolling: Story = {
 export const CustomNoResultsMessage: Story = {
   args: { noResultsMessage: 'Nothing matches your search' },
 };
+
+export const WithLabel: Story = {
+  args: { label: 'Status', 'aria-label': undefined },
+};

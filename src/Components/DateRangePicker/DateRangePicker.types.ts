@@ -1,5 +1,5 @@
 import type { SncComponent } from '@/Types/SncComponent';
-import type { InputHTMLAttributes, Ref } from 'react';
+import type { InputHTMLAttributes, ReactNode, Ref } from 'react';
 
 export type DateRangePickerValue = {
   start?: string;
@@ -11,6 +11,12 @@ export type DateRangePickerProps = SncComponent<
     InputHTMLAttributes<HTMLInputElement>,
     'className' | 'id' | 'style' | 'value' | 'defaultValue' | 'onChange' | 'type' | 'readOnly'
   > & {
+    /**
+     * Visible label rendered above the control via the shared `InputLabel`, associated to it via
+     * `htmlFor`/`id`. When omitted, an accessible name must be supplied via
+     * `aria-label`/`aria-labelledby` instead.
+     */
+    label?: ReactNode;
     /**
      * Selected range as ISO date (`yyyy-MM-dd`) or ISO datetime strings; only the date portion of
      * each is read. Supplying this makes the component controlled.

@@ -9,16 +9,27 @@ export type { AccordionItem, AccordionProps } from './Accordion';
 export { default as Autocomplete } from './Autocomplete';
 export type { AutocompleteOption, AutocompleteProps } from './Autocomplete';
 
+export { default as Avatar } from './Avatar';
+export type { AvatarProps } from './Avatar';
+
 // `ChartSeries` is shared vocabulary with `LineChart`, so it's only re-exported here once rather
 // than from both (re-exporting the same type name from two modules in one barrel would collide).
 export { default as BarChart } from './BarChart';
 export type { BarChartProps, ChartSeries } from './BarChart';
+
+// `NavigationLink` is shared vocabulary with `ComplexNavigationMenu`, so it's only re-exported here
+// once rather than from both.
+export { default as BasicNavigationMenu } from './BasicNavigationMenu';
+export type { BasicNavigationMenuProps, NavigationLink } from './BasicNavigationMenu';
 
 export { default as Button } from './Button';
 export type { ButtonProps } from './Button';
 
 export { default as Checkbox } from './Checkbox';
 export type { CheckboxProps } from './Checkbox';
+
+export { default as ComplexNavigationMenu } from './ComplexNavigationMenu';
+export type { ComplexNavigationMenuItem, ComplexNavigationMenuProps } from './ComplexNavigationMenu';
 
 export { default as DatePicker } from './DatePicker';
 export type { DatePickerProps } from './DatePicker';
@@ -43,6 +54,9 @@ export type { MasterDetailsTablePanelProps, MasterDetailsTableProps } from './Ma
 
 export { default as Modal } from './Modal';
 export type { ModalProps } from './Modal';
+
+export { default as NavigationBar } from './NavigationBar';
+export type { NavigationBarProps } from './NavigationBar';
 
 export { default as PieChart } from './PieChart';
 export type { PieChartDatum, PieChartProps } from './PieChart';

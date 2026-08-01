@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { NavArrowRight } from 'iconoir-react';
 import { describe, expect, it, vi } from 'vitest';
 
 import Button from './Button';
@@ -120,6 +121,52 @@ describe('Button', () => {
 
     expect(button.className).toContain('custom-class');
     expect(button.className).toContain('snc:bg-snc-primary');
+  });
+
+  it('renders the supplied icon', () => {
+    render(<Button icon={<NavArrowRight data-testid="icon" />}>Click me</Button>);
+
+    expect(screen.getByTestId('icon')).toBeInTheDocument();
+  });
+
+  it('renders the icon before the label when iconPosition is "leading" (default)', () => {
+    render(<Button icon={<NavArrowRight data-testid="icon" />}>Click me</Button>);
+
+    const button = screen.getByRole('button', { name: 'Click me' });
+    const icon = screen.getByTestId('icon');
+
+    expect(button.firstElementChild?.contains(icon)).toBe(true);
+  });
+
+  it('renders the icon after the label when iconPosition is "trailing"', () => {
+    render(
+      <Button icon={<NavArrowRight data-testid="icon" />} iconPosition="trailing">
+        Click me
+      </Button>,
+    );
+
+    const button = screen.getByRole('button', { name: 'Click me' });
+    const icon = screen.getByTestId('icon');
+
+    expect(button.lastElementChild?.contains(icon)).toBe(true);
+  });
+
+  it('marks the icon wrapper as aria-hidden', () => {
+    render(<Button icon={<NavArrowRight data-testid="icon" />}>Click me</Button>);
+
+    const icon = screen.getByTestId('icon');
+
+    expect(icon.closest('[aria-hidden="true"]')).not.toBeNull();
+  });
+
+  it('does not render the icon when isLoading is true', () => {
+    render(
+      <Button icon={<NavArrowRight data-testid="icon" />} isLoading>
+        Click me
+      </Button>,
+    );
+
+    expect(screen.queryByTestId('icon')).not.toBeInTheDocument();
   });
 
   it('forwards standard button attributes via passthrough', () => {

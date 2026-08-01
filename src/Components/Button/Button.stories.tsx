@@ -1,3 +1,5 @@
+import { FloppyDisk } from 'iconoir-react';
+
 import Button from './Button';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -59,5 +61,13 @@ export const Disabled: Story = {
   args: {
     variant: 'primary',
     disabled: true,
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    variant: 'primary',
+    icon: <FloppyDisk />,
+    iconPosition: 'trailing',
   },
 };

@@ -71,3 +71,6 @@ export { default as TextArea } from './TextArea';
 export type { TextAreaProps } from './TextArea';
 
 export * from './Typography';
+
+export { default as Wizard } from './Wizard';
+export type { WizardCompletionAction, WizardProps, WizardStep } from './Wizard';

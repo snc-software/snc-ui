@@ -2,6 +2,7 @@ import { NavArrowLeft, NavArrowRight } from 'iconoir-react';
 import { useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import Select from '@/Components/Select';
+import { addMonths, buildMonthGrid, isSameDay, resolveYearRange } from '@/Utils/calendarGrid';
 import { cn } from '@/Utils/cn';
 
 import {
@@ -12,10 +13,9 @@ import {
   WeekdaySymbols,
 } from './Calendar.constants';
 import { classes } from './Calendar.styles';
-import { addMonths, buildMonthGrid, isSameDay, resolveYearRange } from './Calendar.utils';
 
 import type { CalendarProps } from './Calendar.types';
-import type { CalendarDay } from './Calendar.utils';
+import type { CalendarDay } from '@/Utils/calendarGrid';
 import type { KeyboardEvent } from 'react';
 
 const WEEKS = 6;

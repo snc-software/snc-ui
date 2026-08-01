@@ -33,6 +33,12 @@ export const MonthLabels = [
 export const NavIconSize = 16;
 
 export const DayCellVariants = {
-  selected: cn('snc:bg-snc-primary-subtle-bg snc:text-snc-primary snc:font-semibold'),
+  // Boundary (start/end) day — solid fill, pill-capped on its outer edge, so it reads as bolder than
+  // the light trail fill between the two ends.
+  boundary: cn('snc:bg-snc-primary snc:text-snc-surface snc:font-semibold'),
+  boundaryStart: cn('snc:rounded-l-full'),
+  boundaryEnd: cn('snc:rounded-r-full'),
+  // Strictly-between day — light tint, no rounding, so it visually joins the two boundary ends.
+  inRange: cn('snc:bg-snc-primary-subtle-bg snc:rounded-none'),
   today: cn('snc:font-semibold'),
 } as const;

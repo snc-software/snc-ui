@@ -1,8 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatDateOnly, formatWithMidnightUtc, parseIsoDate } from './DatePicker.utils';
+import {
+  formatDateOnly,
+  formatWithEndOfDayUtc,
+  formatWithMidnightUtc,
+  parseIsoDate,
+} from './isoDate';
 
-describe('DatePicker.utils', () => {
+describe('isoDate', () => {
   describe('formatDateOnly', () => {
     it('formats a Date as yyyy-MM-dd, zero-padding single-digit months/days', () => {
       expect(formatDateOnly(new Date(2026, 0, 5))).toBe('2026-01-05');
@@ -16,6 +21,12 @@ describe('DatePicker.utils', () => {
   describe('formatWithMidnightUtc', () => {
     it('formats a Date as a UTC-midnight ISO 8601 string for that calendar date', () => {
       expect(formatWithMidnightUtc(new Date(2026, 6, 31))).toBe('2026-07-31T00:00:00.000Z');
+    });
+  });
+
+  describe('formatWithEndOfDayUtc', () => {
+    it('formats a Date as a UTC 23:59:59 ISO 8601 string for that calendar date', () => {
+      expect(formatWithEndOfDayUtc(new Date(2026, 6, 31))).toBe('2026-07-31T23:59:59.000Z');
     });
   });
 

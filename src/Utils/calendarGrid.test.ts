@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { addMonths, buildMonthGrid, resolveYearRange } from './Calendar.utils';
+import { addMonths, buildMonthGrid, resolveYearRange } from './calendarGrid';
 
-describe('Calendar.utils', () => {
+describe('calendarGrid', () => {
   describe('buildMonthGrid', () => {
     it('returns exactly 42 cells for a given year/month', () => {
       expect(buildMonthGrid(2026, 6)).toHaveLength(42);

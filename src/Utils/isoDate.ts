@@ -23,6 +23,19 @@ export function formatWithMidnightUtc(date: Date): string {
 }
 
 /**
+ * Full ISO 8601 string at 23:59:59.000 UTC for the given calendar date (e.g.
+ * `2026-07-31T23:59:59.000Z`) — the latest point of that day, one second before the next UTC
+ * midnight, used for a range's end date under `includeTime`.
+ */
+export function formatWithEndOfDayUtc(date: Date): string {
+  const utcEndOfDay = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59),
+  );
+
+  return utcEndOfDay.toISOString();
+}
+
+/**
  * Reads only the `yyyy-MM-dd` portion of `value` (whether it's a plain date or a full ISO datetime)
  * and builds the equivalent local `Date`, so a UTC-midnight `includeTime` value round-trips back to
  * the same calendar date regardless of the consumer's timezone.

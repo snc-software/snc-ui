@@ -2,8 +2,9 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { buildMonthGrid } from '@/Utils/calendarGrid';
+
 import Calendar from './Calendar';
-import { buildMonthGrid } from './Calendar.utils';
 
 const getGrid = () => screen.getByRole('grid');
 const getDayCells = () => within(getGrid()).getAllByRole('gridcell');

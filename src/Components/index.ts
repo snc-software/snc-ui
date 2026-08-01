@@ -27,6 +27,9 @@ export type { InformationPanelProps } from './InformationPanel';
 export { default as Input } from './Input';
 export type { InputProps } from './Input';
 
+export { default as MasterDetailsTable } from './MasterDetailsTable';
+export type { MasterDetailsTablePanelProps, MasterDetailsTableProps } from './MasterDetailsTable';
+
 export { default as Modal } from './Modal';
 export type { ModalProps } from './Modal';
 

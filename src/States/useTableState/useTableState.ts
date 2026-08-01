@@ -7,10 +7,10 @@ import {
   clearFilters,
   toggleRowSelection,
   toggleSelectAll,
-} from '@/Components/Table/Table.utils';
+} from '@/Internal/TableBase';
 
 import type { TableState, TableStateParams, TableStore } from './useTableState.types';
-import type { TableFilter } from '@/Components/Table';
+import type { TableFilter } from '@/Internal/TableBase';
 
 // Tracks the last-synced prop value separately from `activeFilters`, which may have since diverged
 // (e.g. a filter applied through a column menu) — comparing against `activeFilters` instead would

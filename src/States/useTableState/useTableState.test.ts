@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { createTableStore } from './useTableState';
 
 import type { TableStateParams } from './useTableState.types';
-import type { TableFilter } from '@/Components/Table';
+import type { TableFilter } from '@/Internal/TableBase';
 
 type Row = { id: number; locked?: boolean };
 

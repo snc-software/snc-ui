@@ -1,4 +1,4 @@
-import type { TableFilter } from '@/Components/Table';
+import type { TableFilter } from '@/Internal/TableBase';
 import type { StoreApi } from 'zustand';
 
 export type TableStateParams = {
@@ -49,7 +49,7 @@ export type TableState<TRow extends object> = {
 };
 
 /**
- * The store instance shared by `Table` and its sub-components. Kept as an opaque `StoreApi` (rather than
+ * The store instance shared by a table layout and its parts. Kept as an opaque `StoreApi` (rather than
  * exposing `InternalTableState`) so the internal-only `lastSyncedFilters` field never leaks into the
  * public type.
  */

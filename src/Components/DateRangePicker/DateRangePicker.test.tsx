@@ -13,6 +13,18 @@ const getDayCell = (grid: HTMLElement, day: number) =>
     .getAllByRole('gridcell')
     .find((cell) => cell.textContent === String(day)) as HTMLElement;
 
+// The Popout panel is the portalled element itself — walk up from a grid to the node whose parent is
+// document.body, since neither Popout nor RangeCalendar exposes a dedicated test id.
+function getPanel(): HTMLElement {
+  let node: HTMLElement | null = getGrids()[0];
+
+  while (node && node.parentElement !== document.body) {
+    node = node.parentElement;
+  }
+
+  return node as HTMLElement;
+}
+
 describe('DateRangePicker', () => {
   it('renders a collapsed trigger input with no calendar panel visible', () => {
     render(<DateRangePicker aria-label="Date range" />);
@@ -361,5 +373,25 @@ describe('DateRangePicker', () => {
     render(<DateRangePicker label="Date range" />);
 
     expect(screen.getByRole('combobox', { name: 'Date range' })).toBeInTheDocument();
+  });
+
+  it('aligns the calendar panel to the left edge by default', async () => {
+    const user = userEvent.setup();
+    render(<DateRangePicker aria-label="Date range" />);
+
+    await user.click(getTrigger());
+
+    expect(getPanel().style.left).not.toBe('');
+    expect(getPanel().style.right).toBe('');
+  });
+
+  it('aligns the calendar panel to the right edge when align is "right"', async () => {
+    const user = userEvent.setup();
+    render(<DateRangePicker aria-label="Date range" align="right" />);
+
+    await user.click(getTrigger());
+
+    expect(getPanel().style.right).not.toBe('');
+    expect(getPanel().style.left).toBe('');
   });
 });

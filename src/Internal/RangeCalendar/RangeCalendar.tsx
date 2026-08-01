@@ -1,5 +1,5 @@
 import { NavArrowLeft, NavArrowRight } from 'iconoir-react';
-import { useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 
 import Select from '@/Components/Select';
 import { addMonths, buildMonthGrid, isSameDay, resolveYearRange } from '@/Utils/calendarGrid';
@@ -189,12 +189,15 @@ export default function RangeCalendar({
 
   // Left grid gets browser focus on mount and on every arrow-key move, matching Calendar's existing
   // behaviour (it remounts fresh each time its Popout opens). The right grid only needs this once the
-  // user has already tabbed into it — see the mounted-ref guard below.
-  useLayoutEffect(() => {
+  // user has already tabbed into it — see the mounted-ref guard below. Passive effects, not layout: see
+  // Calendar's own focus effect for why — the ancestor Popout that owns this panel must finish
+  // registering its layer (a layout effect, which runs children-before-parents) before this fires, or
+  // the resulting focusin bubbles up and reads as an outside interaction.
+  useEffect(() => {
     leftCellRefs.current[leftFocusedIndex]?.focus();
   }, [leftFocusedIndex]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!rightHasMountedRef.current) {
       rightHasMountedRef.current = true;
 

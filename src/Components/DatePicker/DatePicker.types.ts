@@ -46,6 +46,11 @@ export type DatePickerProps = SncComponent<
      */
     disabled?: boolean;
     /**
+     * Which edge of the calendar panel lines up with the trigger's matching edge.
+     * @default 'left'
+     */
+    align?: 'left' | 'right';
+    /**
      * Earliest year offered in the calendar's year selector.
      * @default currentYear - 20
      */

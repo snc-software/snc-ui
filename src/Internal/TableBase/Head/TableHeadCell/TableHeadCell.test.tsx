@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -222,6 +222,65 @@ describe('TableHeadCell', () => {
     expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
   });
 
+  it('opens the date filter menu when the trigger is activated', async () => {
+    const user = userEvent.setup();
+    renderCell({ column: { ...basicColumn, filterType: 'date' } });
+
+    await user.click(screen.getByRole('button', { name: 'Filter by name' }));
+
+    expect(screen.getByRole('combobox', { name: 'Filter by name' })).toBeInTheDocument();
+  });
+
+  it('applies a filter to the store when the date filter menu is submitted', async () => {
+    const user = userEvent.setup();
+    const { store } = renderCell({ column: { ...basicColumn, filterType: 'date' } });
+
+    await user.click(screen.getByRole('button', { name: 'Filter by name' }));
+    await user.click(screen.getByRole('combobox', { name: 'Filter by name' }));
+
+    const grid = screen.getByRole('grid');
+    const dayCell = within(grid)
+      .getAllByRole('gridcell')
+      .find((cell) => cell.textContent === '15') as HTMLElement;
+    await user.click(dayCell);
+
+    await user.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(store.getState().activeFilters).toHaveLength(1);
+    expect(store.getState().activeFilters[0]).toMatchObject({ id: 'name', title: 'Name' });
+  });
+
+  it('opens the date-range filter menu when the trigger is activated', async () => {
+    const user = userEvent.setup();
+    renderCell({ column: { ...basicColumn, filterType: 'dateRange' } });
+
+    await user.click(screen.getByRole('button', { name: 'Filter by name' }));
+
+    expect(screen.getByRole('combobox', { name: 'Filter by name' })).toBeInTheDocument();
+  });
+
+  it('applies a filter to the store when the date-range filter menu is submitted', async () => {
+    const user = userEvent.setup();
+    const { store } = renderCell({ column: { ...basicColumn, filterType: 'dateRange' } });
+
+    await user.click(screen.getByRole('button', { name: 'Filter by name' }));
+    await user.click(screen.getByRole('combobox', { name: 'Filter by name' }));
+
+    const [leftGrid] = screen.getAllByRole('grid');
+    const getDayCell = (day: number) =>
+      within(leftGrid)
+        .getAllByRole('gridcell')
+        .find((cell) => cell.textContent === String(day)) as HTMLElement;
+
+    await user.click(getDayCell(5));
+    await user.click(getDayCell(15));
+
+    await user.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(store.getState().activeFilters).toHaveLength(1);
+    expect(store.getState().activeFilters[0]).toMatchObject({ id: 'name', title: 'Name' });
+  });
+
   it('renders custom filter menu content for a custom filter column', async () => {
     const user = userEvent.setup();
     renderCell({
@@ -236,6 +295,43 @@ describe('TableHeadCell', () => {
     await user.click(screen.getByRole('button', { name: 'Filter by name' }));
 
     expect(screen.getByText('Custom menu')).toBeInTheDocument();
+  });
+
+  it('positions the filter popover against the header cell’s bounds, not the trigger button’s', async () => {
+    const user = userEvent.setup();
+    renderCell({ column: { ...basicColumn, filterType: 'input' } });
+
+    const cell = screen.getByRole('columnheader');
+    cell.getBoundingClientRect = () => ({ bottom: 200, left: 10, right: 310, width: 300 }) as DOMRect;
+
+    const trigger = screen.getByRole('button', { name: 'Filter by name' });
+    trigger.getBoundingClientRect = () => ({ bottom: 40, left: 90, right: 230, width: 140 }) as DOMRect;
+
+    await user.click(trigger);
+
+    expect(screen.getByTestId('table-filter-popover')).toHaveStyle({
+      top: '200px',
+      left: '10px',
+      width: '300px',
+    });
+  });
+
+  it('right-aligns the date-range picker’s own calendar popout when the column’s alignMenu is right', async () => {
+    const user = userEvent.setup();
+    renderCell({ column: { ...basicColumn, filterType: 'dateRange', alignMenu: 'right' } });
+
+    await user.click(screen.getByRole('button', { name: 'Filter by name' }));
+    await user.click(screen.getByRole('combobox', { name: 'Filter by name' }));
+
+    let panel: HTMLElement | null = screen.getAllByRole('grid')[0];
+
+    while (panel && panel.parentElement !== document.body) {
+      panel = panel.parentElement;
+    }
+
+    expect(panel).not.toBeNull();
+    expect((panel as HTMLElement).style.right).not.toBe('');
+    expect((panel as HTMLElement).style.left).toBe('');
   });
 
   it('applies a fixed column width when the column supplies one', () => {

@@ -183,6 +183,46 @@ describe('Popout', () => {
     expect(screen.getByTestId('popout').style.width).toBe('');
   });
 
+  it('positions and sizes the panel from positionRef when supplied, ignoring anchorRef’s own rect', async () => {
+    const user = userEvent.setup();
+    function PositionRefHarness() {
+      const anchorRef = useRef<HTMLButtonElement | null>(null);
+      const positionRef = useRef<HTMLDivElement | null>(null);
+      const [isOpen, setIsOpen] = useState(false);
+
+      return (
+        <div>
+          <div ref={positionRef} data-testid="cell">
+            <button ref={anchorRef} type="button" onClick={() => setIsOpen(true)}>
+              Open
+            </button>
+          </div>
+          <Popout
+            isOpen={isOpen}
+            anchorRef={anchorRef}
+            positionRef={positionRef}
+            onClose={() => setIsOpen(false)}
+            data-testid="popout"
+          >
+            content
+          </Popout>
+        </div>
+      );
+    }
+    render(<PositionRefHarness />);
+
+    screen.getByTestId('cell').getBoundingClientRect = () =>
+      ({ bottom: 200, left: 40, right: 340, width: 300 }) as DOMRect;
+    screen.getByRole('button', { name: 'Open' }).getBoundingClientRect = () =>
+      ({ bottom: 60, left: 100, right: 220, width: 120 }) as DOMRect;
+
+    await user.click(screen.getByRole('button', { name: 'Open' }));
+
+    const panel = screen.getByTestId('popout');
+
+    expect(panel).toHaveStyle({ top: '200px', left: '40px', width: '300px' });
+  });
+
   it('merges a consumer style over the computed position without dropping it', async () => {
     const user = userEvent.setup();
     function StyledHarness() {

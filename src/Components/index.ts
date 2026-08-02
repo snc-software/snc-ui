@@ -61,6 +61,9 @@ export type { LineChartProps } from './LineChart';
 export { default as MasterDetailsTable } from './MasterDetailsTable';
 export type { MasterDetailsTablePanelProps, MasterDetailsTableProps } from './MasterDetailsTable';
 
+export { default as MultiSelect } from './MultiSelect';
+export type { MultiSelectProps } from './MultiSelect';
+
 export { default as Modal } from './Modal';
 export type { ModalProps } from './Modal';
 

@@ -87,6 +87,62 @@ export type { PieChartDatum, PieChartProps } from './PieChart';
 export { default as SearchInput } from './SearchInput';
 export type { SearchInputOption, SearchInputProps } from './SearchInput';
 
+export { default as Sidebar, useSidebar } from './Sidebar';
+export {
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInput,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSkeleton,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarSeparator,
+  SidebarTrigger,
+} from './Sidebar';
+export type {
+  SidebarCollapsible,
+  SidebarContentProps,
+  SidebarContextValue,
+  SidebarFooterProps,
+  SidebarGroupActionProps,
+  SidebarGroupContentProps,
+  SidebarGroupLabelProps,
+  SidebarGroupProps,
+  SidebarHeaderProps,
+  SidebarInputProps,
+  SidebarInsetProps,
+  SidebarMenuActionProps,
+  SidebarMenuBadgeProps,
+  SidebarMenuButtonProps,
+  SidebarMenuItemProps,
+  SidebarMenuProps,
+  SidebarMenuSkeletonProps,
+  SidebarMenuSubButtonProps,
+  SidebarMenuSubItemProps,
+  SidebarMenuSubProps,
+  SidebarProps,
+  SidebarProviderProps,
+  SidebarRailProps,
+  SidebarSeparatorProps,
+  SidebarSide,
+  SidebarState,
+  SidebarTriggerProps,
+  SidebarVariant,
+} from './Sidebar';
+
 export { default as Select } from './Select';
 export type { SelectOption, SelectProps } from './Select';
 

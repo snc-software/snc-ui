@@ -172,6 +172,9 @@ export type { TagProps } from './Tag';
 export { default as TextArea } from './TextArea';
 export type { TextAreaProps } from './TextArea';
 
+export { default as ThemeToggle } from './ThemeToggle';
+export type { Theme, ThemeToggleProps } from './ThemeToggle';
+
 export { default as Tooltip } from './Tooltip';
 export type { TooltipPlacement, TooltipProps } from './Tooltip';
 

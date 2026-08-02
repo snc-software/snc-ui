@@ -31,6 +31,9 @@ export type { CardProps } from './Card';
 export { default as Checkbox } from './Checkbox';
 export type { CheckboxProps } from './Checkbox';
 
+export { default as CmdK } from './CmdK';
+export type { CmdKProps } from './CmdK';
+
 export { default as ComplexNavigationMenu } from './ComplexNavigationMenu';
 export type {
   ComplexNavigationMenuItem,
@@ -63,6 +66,20 @@ export type { ModalProps } from './Modal';
 
 export { default as NavigationBar } from './NavigationBar';
 export type { NavigationBarProps } from './NavigationBar';
+
+// `Option`/`OptionItem`/`Options`/`OptionsCollection`/`OptionsGroup` are shared vocabulary that
+// `CmdK` also consumes, so they're only re-exported here once rather than from both.
+export { default as OptionsList } from './OptionsList';
+export type {
+  Option,
+  OptionItem,
+  Options,
+  OptionsCollection,
+  OptionsGroup,
+  OptionsListProps,
+  SearchOptions,
+  SearchTermMatchOption,
+} from './OptionsList';
 
 export { default as PieChart } from './PieChart';
 export type { PieChartDatum, PieChartProps } from './PieChart';

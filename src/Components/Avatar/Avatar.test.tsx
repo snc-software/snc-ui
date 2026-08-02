@@ -62,4 +62,12 @@ describe('Avatar', () => {
     render(<Avatar name="Grace Hopper" />);
     expect(screen.getByText('GH').className).not.toBe(firstClassName);
   });
+
+  it('renders fallback initials in the heading font', () => {
+    render(<Avatar name="Ada Lovelace" />);
+
+    expect(screen.getByRole('img', { name: 'Ada Lovelace' }).className).toContain(
+      'snc:font-snc-heading',
+    );
+  });
 });

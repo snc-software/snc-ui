@@ -6,7 +6,7 @@ export const classes = {
   root: cn(
     'snc:inline-flex snc:shrink-0 snc:items-center snc:justify-center',
     'snc:overflow-hidden snc:rounded-full',
-    'snc:font-snc-body snc:font-medium snc:select-none',
+    'snc:font-snc-heading snc:font-semibold snc:select-none',
   ),
   image: cn('snc:h-full snc:w-full snc:object-cover'),
   fallback: cn('snc:flex snc:h-full snc:w-full snc:items-center snc:justify-center'),

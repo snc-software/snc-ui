@@ -158,6 +158,9 @@ export type { SpinnerProps } from './Spinner';
 export { default as StatCard } from './StatCard';
 export type { StatCardProps } from './StatCard';
 
+export { default as StatsGroup } from './StatsGroup';
+export type { StatsGroupProps, StatsItem } from './StatsGroup';
+
 export { default as StatusPill } from './StatusPill';
 export type { StatusPillProps } from './StatusPill';
 

@@ -9,12 +9,14 @@ export const Variants = {
 
 /**
  * CSS colour strings (not Tailwind classes) for `MiniSparkline`'s stroke / `MiniDonut`'s fill,
- * which need a real paintable value rather than a class name.
+ * which need a real paintable value rather than a class name. Uses the semantic triad's `border`
+ * value (the vivid, full-saturation hue) rather than `text` (darkened for on-light AA contrast) —
+ * a filled/stroked shape isn't body text and reads muddy with the text value.
  */
 export const StatusColors = {
-  success: 'var(--snc-success-text)',
-  warning: 'var(--snc-warning-text)',
-  error: 'var(--snc-error-text)',
+  success: 'var(--snc-success-border)',
+  warning: 'var(--snc-warning-border)',
+  error: 'var(--snc-error-border)',
 } as const;
 
 export const NeutralColor = 'var(--snc-text-secondary)';

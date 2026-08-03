@@ -122,6 +122,16 @@ describe('StatCard', () => {
     expect(screen.getByText('60%')).toBeInTheDocument();
   });
 
+  it('paints the MiniDonut fill with the semantic border colour, not the text colour', () => {
+    const { container } = render(
+      <StatCard variant="donut" label="Revenue" value="$12,400" donutValue={60} status="warning" />,
+    );
+
+    const valueSector = container.querySelector('.recharts-pie-sector path');
+
+    expect(valueSector).toHaveAttribute('fill', 'var(--snc-warning-border)');
+  });
+
   it('applies the neutral fallback colour when status is omitted', () => {
     render(
       <StatCard

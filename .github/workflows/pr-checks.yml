@@ -1,0 +1,64 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+  pull-requests: read
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify semver label
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          LABELS=$(gh pr view "${{ github.event.pull_request.number }}" --json labels --jq '.labels[].name' | grep -E '^semver:(major|minor|patch)$' || true)
+          COUNT=$(echo "$LABELS" | grep -c . || true)
+          if [ "$COUNT" -ne 1 ]; then
+            echo "::error::Exactly one semver:major, semver:minor, or semver:patch label is required on this PR (found $COUNT)."
+            exit 1
+          fi
+          echo "SEMVER_LABEL=$LABELS" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@snc-software'
+
+      - run: npm ci
+
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run test:coverage
+      - run: npm run build
+
+      - name: Compute prerelease version
+        id: version
+        run: |
+          LATEST_TAG=$(git tag --list 'v*' --sort=-v:refname | head -n1)
+          BASE_VERSION=${LATEST_TAG#v}
+          BASE_VERSION=${BASE_VERSION:-0.0.0}
+          npm pkg set version="$BASE_VERSION"
+          npm version "${SEMVER_LABEL#semver:}" --no-git-tag-version
+          NEXT_VERSION=$(node -p "require('./package.json').version")
+          PRERELEASE_VERSION="${NEXT_VERSION}-pr.${{ github.event.pull_request.number }}.${{ github.run_number }}"
+          npm pkg set version="$PRERELEASE_VERSION"
+          echo "version=$PRERELEASE_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Publish prerelease package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --tag "pr-${{ github.event.pull_request.number }}"
+
+      - name: Summary
+        run: echo "Published ${{ steps.version.outputs.version }} to GitHub Packages" >> "$GITHUB_STEP_SUMMARY"

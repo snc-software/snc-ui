@@ -155,6 +155,9 @@ export type { SeparatorProps } from './Separator';
 export { default as Spinner } from './Spinner';
 export type { SpinnerProps } from './Spinner';
 
+export { default as StatCard } from './StatCard';
+export type { StatCardProps } from './StatCard';
+
 export { default as StatusPill } from './StatusPill';
 export type { StatusPillProps } from './StatusPill';
 

@@ -4,7 +4,10 @@ import { cn } from '@/Utils/cn';
 export const classes = {
   wrapper: cn('snc:inline-flex snc:w-full snc:flex-col snc:gap-1.5'),
   inputWrapper: cn('snc:relative snc:flex snc:w-full snc:items-center'),
-  input: cn(baseClasses.base, 'snc:rounded-md snc:block snc:w-full snc:cursor-pointer snc:py-2 snc:pl-3 snc:pr-10'),
+  input: cn(
+    baseClasses.base,
+    'snc:rounded-md snc:block snc:w-full snc:cursor-pointer snc:py-2 snc:pl-3 snc:pr-10',
+  ),
   iconButton: cn(
     'snc:absolute snc:right-2 snc:flex snc:items-center snc:justify-center',
     'snc:size-6 snc:shrink-0 snc:rounded snc:text-snc-text-secondary',

@@ -42,7 +42,9 @@ export default function CmdK({
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const [query, setQuery] = useState('');
-  const [activeId, setActiveId] = useState<string | null>(() => getAdjacentEnabledId(options, null, 1));
+  const [activeId, setActiveId] = useState<string | null>(() =>
+    getAdjacentEnabledId(options, null, 1),
+  );
 
   // Whether a search has actually run yet — mirrors `SearchInput`'s own `hasSearched` gate, so an
   // empty `options` array at mount (no search performed) renders nothing rather than a premature

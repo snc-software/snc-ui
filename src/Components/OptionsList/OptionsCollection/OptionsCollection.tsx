@@ -37,7 +37,10 @@ export default function OptionsCollection({
     groupOptionsIds.forEach((groupOptionId) => {
       if (selectedIdsCopy.includes(groupOptionId) && !groupSelected.includes(groupOptionId)) {
         selectedIdsCopy.splice(selectedIdsCopy.indexOf(groupOptionId), 1);
-      } else if (!selectedIdsCopy.includes(groupOptionId) && groupSelected.includes(groupOptionId)) {
+      } else if (
+        !selectedIdsCopy.includes(groupOptionId) &&
+        groupSelected.includes(groupOptionId)
+      ) {
         selectedIdsCopy.push(groupOptionId);
       }
     });
@@ -53,7 +56,10 @@ export default function OptionsCollection({
 
         return (
           <Fragment key={key}>
-            <div className={classes.heading} style={{ paddingLeft: `${BASE_PADDING_PX + INDENT_STEP_PX * indent}px` }}>
+            <div
+              className={classes.heading}
+              style={{ paddingLeft: `${BASE_PADDING_PX + INDENT_STEP_PX * indent}px` }}
+            >
               <Tag>{key}</Tag>
             </div>
             <OptionsList
@@ -61,7 +67,9 @@ export default function OptionsCollection({
               checkbox={checkbox}
               defaultNestedExpanded={defaultNestedExpanded}
               indent={getIndent(indent, value)}
-              onChange={(groupSelected) => onSelectedGroupOptionsChanged(groupOptionsIds, groupSelected)}
+              onChange={(groupSelected) =>
+                onSelectedGroupOptionsChanged(groupOptionsIds, groupSelected)
+              }
               options={value}
               selectAll={selectAll}
               selected={selectedIds.filter((selectedId) => groupOptionsIds.includes(selectedId))}

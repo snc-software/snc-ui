@@ -17,9 +17,7 @@ describe('MiniDonut', () => {
   });
 
   it('applies the color and trackColor to the value and track segments', () => {
-    const { container } = render(
-      <MiniDonut value={60} color="#123456" trackColor="#abcdef" />,
-    );
+    const { container } = render(<MiniDonut value={60} color="#123456" trackColor="#abcdef" />);
 
     const sectors = container.querySelectorAll('.recharts-pie-sector path');
 

@@ -96,7 +96,9 @@ describe('OptionsList.utils', () => {
         groupB: { id: 'two', title: 'Two' },
       };
 
-      expect(filterSelectedOptions(options, ['two'])).toEqual({ groupB: { id: 'two', title: 'Two' } });
+      expect(filterSelectedOptions(options, ['two'])).toEqual({
+        groupB: { id: 'two', title: 'Two' },
+      });
     });
 
     it('returns null for an OptionsCollection with no selected descendants at all', () => {

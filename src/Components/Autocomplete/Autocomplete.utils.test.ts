@@ -14,7 +14,7 @@ describe('Autocomplete.utils', () => {
       expect(filterOptions(options, '')).toEqual(options);
     });
 
-    it("returns options whose label contains the query, case-insensitively", () => {
+    it('returns options whose label contains the query, case-insensitively', () => {
       expect(filterOptions(options, 'AC')).toEqual([options[1]]);
     });
 

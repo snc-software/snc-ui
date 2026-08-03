@@ -61,15 +61,17 @@ export default function OptionItem({
       {prefix}
       <span className={classes.content}>
         <span className={cn(classes.title, isSelected && classes.titleSelected)}>{title}</span>
-        {Array.isArray(description)
-          ? description.map((line, index) => (
-              <span key={index} className={classes.description}>
-                {line}
-              </span>
-            ))
-          : typeof description === 'string'
-            ? <span className={classes.description}>{description}</span>
-            : description?.({ selected: isSelected, disabled })}
+        {Array.isArray(description) ? (
+          description.map((line, index) => (
+            <span key={index} className={classes.description}>
+              {line}
+            </span>
+          ))
+        ) : typeof description === 'string' ? (
+          <span className={classes.description}>{description}</span>
+        ) : (
+          description?.({ selected: isSelected, disabled })
+        )}
       </span>
       {suffix}
     </>

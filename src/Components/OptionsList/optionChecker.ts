@@ -1,7 +1,9 @@
 import type { OptionItem, Options, OptionsCollection, OptionsGroup } from './OptionsList.types';
 
 export const isOptionItem = (option: Options): option is OptionItem => {
-  return typeof option === 'object' && option !== null && 'id' in option && !('childOptions' in option);
+  return (
+    typeof option === 'object' && option !== null && 'id' in option && !('childOptions' in option)
+  );
 };
 
 export const isOptionsGroup = (option: Options): option is OptionsGroup => {

@@ -55,7 +55,10 @@ export const Default: Story = {
             onClose={() => setIsOpen(false)}
             aria-labelledby="modal-story-heading"
           >
-            <h2 id="modal-story-heading" className="snc:font-snc-heading snc:text-lg snc:font-semibold">
+            <h2
+              id="modal-story-heading"
+              className="snc:font-snc-heading snc:text-lg snc:font-semibold"
+            >
               Delete this item?
             </h2>
             <p className="snc:font-snc-body snc:mt-2 snc:text-sm snc:text-snc-text-secondary">

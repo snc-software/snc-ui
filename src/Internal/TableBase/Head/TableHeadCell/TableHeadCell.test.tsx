@@ -302,10 +302,12 @@ describe('TableHeadCell', () => {
     renderCell({ column: { ...basicColumn, filterType: 'input' } });
 
     const cell = screen.getByRole('columnheader');
-    cell.getBoundingClientRect = () => ({ bottom: 200, left: 10, right: 310, width: 300 }) as DOMRect;
+    cell.getBoundingClientRect = () =>
+      ({ bottom: 200, left: 10, right: 310, width: 300 }) as DOMRect;
 
     const trigger = screen.getByRole('button', { name: 'Filter by name' });
-    trigger.getBoundingClientRect = () => ({ bottom: 40, left: 90, right: 230, width: 140 }) as DOMRect;
+    trigger.getBoundingClientRect = () =>
+      ({ bottom: 40, left: 90, right: 230, width: 140 }) as DOMRect;
 
     await user.click(trigger);
 

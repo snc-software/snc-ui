@@ -1,4 +1,9 @@
-import { isOptionItem, isOptionsArray, isOptionsCollection, isOptionsGroup } from '@/Components/OptionsList';
+import {
+  isOptionItem,
+  isOptionsArray,
+  isOptionsCollection,
+  isOptionsGroup,
+} from '@/Components/OptionsList';
 
 import type { OptionItem, Options } from '@/Components/OptionsList';
 

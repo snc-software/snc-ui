@@ -61,7 +61,9 @@ describe('OptionsList.search', () => {
       { id: 'two', title: 'Two Cat' },
     ];
 
-    expect(search(options, 'cat', { title: 'partial-match', flattenWhenSingleChild: true })).toEqual({
+    expect(
+      search(options, 'cat', { title: 'partial-match', flattenWhenSingleChild: true }),
+    ).toEqual({
       id: 'two',
       title: 'Two Cat',
     });
@@ -100,9 +102,9 @@ describe('OptionsList.search', () => {
       ],
     };
 
-    expect(
-      search(group, 'fish', { title: 'partial-match', flattenWhenSingleChild: true }),
-    ).toEqual({ id: 'one', title: 'One Fish' });
+    expect(search(group, 'fish', { title: 'partial-match', flattenWhenSingleChild: true })).toEqual(
+      { id: 'one', title: 'One Fish' },
+    );
   });
 
   it('returns undefined for an OptionsGroup with no matching title or children', () => {

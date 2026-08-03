@@ -171,9 +171,7 @@ describe('InformationPanel', () => {
   it('does not remove itself when the dismiss button is clicked while controlled (open=true)', async () => {
     const user = userEvent.setup();
     const onDismiss = vi.fn();
-    render(
-      <InformationPanel variant="info" heading="Heads up" open onDismiss={onDismiss} />,
-    );
+    render(<InformationPanel variant="info" heading="Heads up" open onDismiss={onDismiss} />);
 
     await user.click(screen.getByRole('button'));
 

@@ -24,7 +24,9 @@ export default function OptionsGroup({
   const panelId = useId();
 
   const [isChildItemsVisible, setIsChildItemsVisible] = useState(defaultNestedExpanded);
-  const [currentSelectedOptions, setCurrentSelectedOptions] = useState<string[]>(selectedOptions ?? []);
+  const [currentSelectedOptions, setCurrentSelectedOptions] = useState<string[]>(
+    selectedOptions ?? [],
+  );
 
   // Mirrors the legacy engine's own `selectedOptions`-sync behaviour, adjusted during render rather
   // than in an effect — see `OptionItem.tsx` for the same technique and its rationale.

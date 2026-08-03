@@ -74,7 +74,11 @@ describe('ComplexNavigationMenu', () => {
     const user = userEvent.setup();
     const multiDropdownItems: ComplexNavigationMenuItem[] = [
       ...items,
-      { key: 'company', label: 'Company', items: [{ key: 'about', label: 'About', href: '/about' }] },
+      {
+        key: 'company',
+        label: 'Company',
+        items: [{ key: 'about', label: 'About', href: '/about' }],
+      },
     ];
     render(<ComplexNavigationMenu items={multiDropdownItems} />);
 

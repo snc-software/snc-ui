@@ -9,7 +9,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 type NavItem = { id: string; title: string; description?: string; href?: string };
 
 const pages: NavItem[] = [
-  { id: 'dashboard', title: 'Dashboard', description: 'Overview of your account', href: '#dashboard' },
+  {
+    id: 'dashboard',
+    title: 'Dashboard',
+    description: 'Overview of your account',
+    href: '#dashboard',
+  },
   { id: 'billing', title: 'Billing', description: 'Manage your subscription', href: '#billing' },
   { id: 'settings', title: 'Settings', description: 'Update your preferences', href: '#settings' },
   { id: 'team', title: 'Team members', description: 'Invite and manage teammates', href: '#team' },
@@ -54,9 +59,7 @@ function CmdKDemo({
     setIsLoading(true);
 
     setTimeout(() => {
-      setOptions(
-        dataset.filter((item) => item.title.toLowerCase().includes(query.toLowerCase())),
-      );
+      setOptions(dataset.filter((item) => item.title.toLowerCase().includes(query.toLowerCase())));
       setIsLoading(false);
     }, 400);
   };
@@ -103,7 +106,7 @@ const meta = {
       story: { inline: false, iframeHeight: 500 },
       description: {
         component: [
-          'A search-driven command palette rendered inside `Modal`, modelled on shadcn\'s',
+          "A search-driven command palette rendered inside `Modal`, modelled on shadcn's",
           '`Command`/`CommandDialog`. Filtering is entirely external — typing debounces',
           '(`debounceMs`, default 300ms) then calls `onSearch(query)`, and the consumer feeds results',
           'back in via `options` (plus `isLoading` while their fetch is in flight), the same',

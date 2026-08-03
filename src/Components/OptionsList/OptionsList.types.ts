@@ -10,7 +10,8 @@ export type Option = {
    * Description text. Can be a single line, multiple lines, or a render function reflecting the
    * row's current selected/disabled state.
    */
-  description?: string | string[] | ((state: { selected: boolean; disabled?: boolean }) => ReactNode);
+  description?:
+    string | string[] | ((state: { selected: boolean; disabled?: boolean }) => ReactNode);
   /**
    * Toggle disabled state.
    * @default false

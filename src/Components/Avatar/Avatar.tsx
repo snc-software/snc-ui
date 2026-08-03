@@ -30,14 +30,7 @@ function getPaletteColour(name: string) {
   return Palette[hash];
 }
 
-export default function Avatar({
-  ref,
-  src,
-  name,
-  size = 'md',
-  className,
-  ...rest
-}: AvatarProps) {
+export default function Avatar({ ref, src, name, size = 'md', className, ...rest }: AvatarProps) {
   const [hasImageErrored, setHasImageErrored] = useState(false);
   const showImage = src !== undefined && !hasImageErrored;
 

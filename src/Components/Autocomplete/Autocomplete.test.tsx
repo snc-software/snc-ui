@@ -81,11 +81,7 @@ describe('Autocomplete', () => {
   it('shows a custom noResultsMessage when supplied and no option matches', async () => {
     const user = userEvent.setup();
     render(
-      <Autocomplete
-        aria-label="Status"
-        options={options}
-        noResultsMessage="Nothing matches"
-      />,
+      <Autocomplete aria-label="Status" options={options} noResultsMessage="Nothing matches" />,
     );
 
     await user.click(getTrigger());

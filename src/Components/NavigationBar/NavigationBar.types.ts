@@ -8,8 +8,7 @@ export type NavigationBarProps = SncComponent<
     /** Rendered at the leading (left) edge of the bar. */
     brand: ReactNode;
     navigationMenu?:
-      | ReactElement<BasicNavigationMenuProps>
-      | ReactElement<ComplexNavigationMenuProps>;
+      ReactElement<BasicNavigationMenuProps> | ReactElement<ComplexNavigationMenuProps>;
     /** Rendered at the trailing (right) edge of the bar — typically an `Avatar`. */
     actions?: ReactNode;
     ref?: Ref<HTMLElement>;

@@ -187,12 +187,7 @@ describe('StatCard', () => {
 
   it('forwards data-* attributes to the root element', () => {
     render(
-      <StatCard
-        variant="basic"
-        label="Revenue"
-        value="$12,400"
-        data-testid="revenue-stat-card"
-      />,
+      <StatCard variant="basic" label="Revenue" value="$12,400" data-testid="revenue-stat-card" />,
     );
 
     expect(screen.getByTestId('revenue-stat-card')).toBeInTheDocument();

@@ -59,15 +59,17 @@ export default function OptionsGroupButton({
           <span className={cn(classes.title, !!selectedOptionIds.length && classes.titleActive)}>
             {title}
           </span>
-          {Array.isArray(description)
-            ? description.map((line, index) => (
-                <span key={index} className={classes.description}>
-                  {line}
-                </span>
-              ))
-            : typeof description === 'string'
-              ? <span className={classes.description}>{description}</span>
-              : description?.({ selected: !!selectedOptionIds.length, disabled })}
+          {Array.isArray(description) ? (
+            description.map((line, index) => (
+              <span key={index} className={classes.description}>
+                {line}
+              </span>
+            ))
+          ) : typeof description === 'string' ? (
+            <span className={classes.description}>{description}</span>
+          ) : (
+            description?.({ selected: !!selectedOptionIds.length, disabled })
+          )}
         </span>
         {!selectAll && (
           <span

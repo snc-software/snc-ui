@@ -16,7 +16,9 @@ describe('CmdK.utils', () => {
     });
 
     it('returns a single-element array for a bare item', () => {
-      expect(flattenOptionItems({ id: 'one', title: 'One' }).map((item) => item.id)).toEqual(['one']);
+      expect(flattenOptionItems({ id: 'one', title: 'One' }).map((item) => item.id)).toEqual([
+        'one',
+      ]);
     });
 
     it("recurses into a group's childOptions without including the group itself", () => {

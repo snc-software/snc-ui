@@ -80,11 +80,12 @@ describe('OptionsGroup', () => {
   });
 
   it('shows the select-all checkbox as indeterminate when only some children are selected', () => {
-    render(
-      <OptionsGroup title="Group" childOptions={childOptions} selectedOptions={['one']} />,
-    );
+    render(<OptionsGroup title="Group" childOptions={childOptions} selectedOptions={['one']} />);
 
-    expect(screen.getByRole('checkbox', { name: 'Select all Group' })).toHaveAttribute('aria-checked', 'mixed');
+    expect(screen.getByRole('checkbox', { name: 'Select all Group' })).toHaveAttribute(
+      'aria-checked',
+      'mixed',
+    );
   });
 
   it('does not toggle child visibility via the header when selectAll is true (legacy quirk, ported verbatim)', async () => {

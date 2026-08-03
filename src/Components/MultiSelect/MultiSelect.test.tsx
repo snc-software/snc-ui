@@ -76,7 +76,9 @@ describe('MultiSelect', () => {
   });
 
   it('displays the joined titles of every selected option in the trigger', () => {
-    render(<MultiSelect aria-label="Status" options={options} defaultValue={['draft', 'archived']} />);
+    render(
+      <MultiSelect aria-label="Status" options={options} defaultValue={['draft', 'archived']} />,
+    );
 
     expect(getTrigger()).toHaveTextContent('Draft, Archived');
   });
@@ -162,7 +164,12 @@ describe('MultiSelect', () => {
 
   it('mirrors each selected value into its own hidden input sharing the given name', () => {
     const { container } = render(
-      <MultiSelect aria-label="Status" options={options} name="statuses" value={['draft', 'active']} />,
+      <MultiSelect
+        aria-label="Status"
+        options={options}
+        name="statuses"
+        value={['draft', 'active']}
+      />,
     );
 
     const hiddenInputs = container.querySelectorAll('input[type="hidden"][name="statuses"]');

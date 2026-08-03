@@ -83,10 +83,7 @@ export default function Autocomplete({
   // been typed since.
   const [filterText, setFilterText] = useState('');
 
-  const filteredOptions = useMemo(
-    () => filterOptions(options, filterText),
-    [options, filterText],
-  );
+  const filteredOptions = useMemo(() => filterOptions(options, filterText), [options, filterText]);
 
   const triggerRef = useRef<HTMLInputElement | null>(null);
   const optionRefs = useRef<Array<HTMLLIElement | null>>([]);
@@ -234,7 +231,9 @@ export default function Autocomplete({
           aria-expanded={isOpen}
           aria-haspopup="listbox"
           aria-controls={isOpen ? listboxId : undefined}
-          aria-activedescendant={isOpen && highlightedOption ? getOptionId(highlightedIndex) : undefined}
+          aria-activedescendant={
+            isOpen && highlightedOption ? getOptionId(highlightedIndex) : undefined
+          }
           aria-invalid={hasError || undefined}
           disabled={disabled}
           placeholder={placeholder}

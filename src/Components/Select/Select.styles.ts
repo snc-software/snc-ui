@@ -3,7 +3,10 @@ import { cn } from '@/Utils/cn';
 
 export const classes = {
   wrapper: cn('snc:inline-flex snc:w-full snc:flex-col snc:gap-1.5'),
-  trigger: cn(baseClasses.base, 'snc:flex snc:w-full snc:items-center snc:gap-2.5 snc:text-left snc:leading-5'),
+  trigger: cn(
+    baseClasses.base,
+    'snc:flex snc:w-full snc:items-center snc:gap-2.5 snc:text-left snc:leading-5',
+  ),
   triggerClosed: cn('snc:rounded-md'),
   // Squared-off bottom while open so trigger and panel read as one surface.
   triggerOpen: cn('snc:rounded-t-md snc:border-snc-primary'),

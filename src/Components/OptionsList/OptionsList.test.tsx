@@ -112,7 +112,11 @@ describe('OptionsList', () => {
 
   it('renders a custom emptyText when supplied', () => {
     render(
-      <OptionsList options={{ id: 'one', title: 'One' }} searchTerm="nomatch" emptyText="Nothing here" />,
+      <OptionsList
+        options={{ id: 'one', title: 'One' }}
+        searchTerm="nomatch"
+        emptyText="Nothing here"
+      />,
     );
 
     expect(screen.getByText('Nothing here')).toBeInTheDocument();

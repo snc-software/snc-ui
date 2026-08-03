@@ -23,7 +23,12 @@ const collectionOptions: OptionsCollection = {
 };
 
 const linkItems: OptionItem[] = [
-  { id: 'dashboard', title: 'Dashboard', description: 'Overview of your account', href: '#dashboard' },
+  {
+    id: 'dashboard',
+    title: 'Dashboard',
+    description: 'Overview of your account',
+    href: '#dashboard',
+  },
   { id: 'billing', title: 'Billing', description: 'Manage your subscription', href: '#billing' },
   { id: 'settings', title: 'Settings', description: 'Update your preferences', href: '#settings' },
 ];

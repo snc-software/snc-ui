@@ -12,7 +12,9 @@ describe('OptionItem', () => {
   });
 
   it('renders a prefix and suffix', () => {
-    render(<OptionItem id="one" title="One" prefix={<span>pre</span>} suffix={<span>post</span>} />);
+    render(
+      <OptionItem id="one" title="One" prefix={<span>pre</span>} suffix={<span>post</span>} />,
+    );
 
     expect(screen.getByText('pre')).toBeInTheDocument();
     expect(screen.getByText('post')).toBeInTheDocument();
@@ -99,7 +101,14 @@ describe('OptionItem', () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
     render(
-      <OptionItem id="one" title="One" checkbox={false} href="/settings" disabled onChange={onChange} />,
+      <OptionItem
+        id="one"
+        title="One"
+        checkbox={false}
+        href="/settings"
+        disabled
+        onChange={onChange}
+      />,
     );
 
     const link = screen.getByRole('option', { name: 'One' });
@@ -126,7 +135,9 @@ describe('OptionItem', () => {
     const user = userEvent.setup();
     const onClick = vi.fn();
     const onChange = vi.fn();
-    render(<OptionItem id="one" title="One" checkbox={false} onClick={onClick} onChange={onChange} />);
+    render(
+      <OptionItem id="one" title="One" checkbox={false} onClick={onClick} onChange={onChange} />,
+    );
 
     await user.click(screen.getByRole('option', { name: 'One' }));
 

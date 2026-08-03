@@ -92,7 +92,9 @@ export default function OptionsList({
   };
 
   const displayOptions = selectedOnly ? filterSelectedOptions(options, selectedIds) : options;
-  const matchingOptions = displayOptions ? search(displayOptions, searchTerm, searchOptions) : undefined;
+  const matchingOptions = displayOptions
+    ? search(displayOptions, searchTerm, searchOptions)
+    : undefined;
 
   if (matchingOptions !== undefined) {
     if (isOptionsArray(matchingOptions) && matchingOptions.length) {
@@ -143,7 +145,9 @@ export default function OptionsList({
           checkbox={checkbox}
           defaultNestedExpanded={defaultNestedExpanded}
           indent={indent}
-          onSelectionChange={(subSelected) => onSelectedSubOptionsChanged(childOptionsIds, subSelected)}
+          onSelectionChange={(subSelected) =>
+            onSelectedSubOptionsChanged(childOptionsIds, subSelected)
+          }
           selectAll={selectAll}
           selectedOptions={selectedIds.filter((selectedId) => childOptionsIds.includes(selectedId))}
           title={title ? title : matchingOptions.title}

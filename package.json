@@ -1,10 +1,14 @@
 {
   "name": "@snc-software/snc-ui",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "main": "./dist/snc-ui.cjs.js",
   "module": "./dist/snc-ui.es.js",
   "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snc-software/snc-ui"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

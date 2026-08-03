@@ -7,6 +7,8 @@
 // consumer imports them from.
 export { default as ChartLegend } from './ChartLegend';
 export { default as ChartTooltip } from './ChartTooltip';
+export { default as MiniDonut } from './MiniDonut';
+export { default as MiniSparkline } from './MiniSparkline';
 
 export {
   DefaultChartHeight,
@@ -19,3 +21,5 @@ export { resolveSeriesColor } from './ChartBase.utils';
 export type { ChartLegendProps } from './ChartLegend';
 export type { ChartTooltipProps } from './ChartTooltip';
 export type { CartesianChartBaseProps, ChartCommonProps, ChartSeries } from './ChartBase.types';
+export type { MiniDonutProps } from './MiniDonut';
+export type { MiniSparklineProps } from './MiniSparkline';

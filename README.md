@@ -4,6 +4,8 @@ React component library built on the Raspberry / Sky design system. Components s
 library build, are developed and documented in Storybook, and consume design tokens exposed as
 CSS custom properties.
 
+**[Browse the component library →](https://snc-software.github.io/snc-ui/)**
+
 ## Getting Started
 
 Node version is pinned via `.nvmrc` (`nvm use`).
@@ -12,6 +14,13 @@ Node version is pinned via `.nvmrc` (`nvm use`).
 npm install
 npm run storybook   # component dev environment (http://localhost:6006)
 ```
+
+## Documentation Site
+
+Storybook is published to GitHub Pages at
+[snc-software.github.io/snc-ui](https://snc-software.github.io/snc-ui/). Every push to `main`
+rebuilds and redeploys it via the `Deploy Storybook` workflow; the workflow can also be run manually
+from the Actions tab.
 
 ## Scripts
 

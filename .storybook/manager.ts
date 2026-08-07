@@ -6,7 +6,7 @@ const sncTheme = create({
 
   brandTitle: 'SNC-UI',
   brandUrl: 'https://github.com/snc-software/snc-ui',
-  brandImage: '/logo.png',
+  brandImage: './logo.png',
   brandTarget: '_self',
 
   colorPrimary: '#C2185B',

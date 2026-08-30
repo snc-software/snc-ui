@@ -11,7 +11,7 @@
 
 ## Known non-blocking warnings
 
-- `Spinner`, `ThemeToggle` — `[RENDER_THIN]` (variants look similar / mounts paint minimal content). Verified visually via compare — both are small icon-only components with genuinely little visual variation between story variants; not a bug.
+- `Spinner`, `ThemeToggle`, `IconButton` — `[RENDER_THIN]` (variants look similar / mounts paint minimal content). Verified visually via compare — all three are small icon-only components with genuinely little visual variation between story variants; not a bug.
 - `[FONT_REMOTE]` "Manrope", "JetBrains Mono" — fonts load via Google Fonts CDN `@import` in `styles.css` (no local font files in this repo). Confirmed rendering correctly via the `Heading` compare (JetBrains Mono renders identically on both sides).
 
 ## Re-sync risks

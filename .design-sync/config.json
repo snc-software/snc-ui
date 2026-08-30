@@ -1,0 +1,23 @@
+{
+  "projectId": "2d71e504-39fa-4296-b291-7b755c1f5f41",
+  "shape": "storybook",
+  "pkg": "@snc-software/snc-ui",
+  "storybookStatic": ".design-sync/sb-reference",
+  "buildCmd": "npm run build && cat dist/design-tokens.css dist/snc-ui.css > .design-sync/combined-styles.css",
+  "cssEntry": ".design-sync/combined-styles.css",
+  "tsconfig": ".design-sync/paths-tsconfig.json",
+  "overrides": {
+    "BarChart": { "cardMode": "column" },
+    "LineChart": { "cardMode": "column" },
+    "MasterDetailsTable": { "cardMode": "column" },
+    "NavigationBar": { "cardMode": "column" },
+    "PieChart": { "cardMode": "column" },
+    "Table": { "cardMode": "column" },
+    "CmdK": { "cardMode": "single", "primaryStory": "Default" }
+  },
+  "storyImports": {
+    "shim": ["Sidebar.context"]
+  },
+  "guidelinesGlob": ["DESIGN SYSTEM.md"],
+  "readmeHeader": ".design-sync/conventions.md"
+}

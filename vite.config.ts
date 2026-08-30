@@ -18,10 +18,33 @@ function copyDesignTokens(): Plugin {
   };
 }
 
+function fixCjsReactRequire(): Plugin {
+  return {
+    name: 'fix-cjs-react-require',
+    enforce: 'pre',
+    transform(code, id) {
+      // use-sync-external-store's CJS shim does a bare, top-level
+      // `require("react")`. Because it's inside a lazily-evaluated CJS
+      // interop wrapper, Rollup can't hoist it to the externalized `react`
+      // import and instead leaves a runtime require() call, which throws in
+      // any browser (no global `require`) — including any consumer bundling
+      // this package for browser use. Rewriting it to a real ESM import
+      // here, before Rollup's CJS interop sees it, lets Rollup link it
+      // normally to the externalized `react` binding.
+      if (!id.includes('use-sync-external-store')) return null;
+      if (!/require\(\s*["']react["']\s*\)/.test(code)) return null;
+      const hoisted = "import __React from 'react';\n";
+      const rewritten = code.replace(/require\(\s*["']react["']\s*\)/g, '__React');
+      return { code: hoisted + rewritten, map: null };
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   publicDir: false,
   plugins: [
+    fixCjsReactRequire(),
     react(),
     tailwindcss(),
     dts({

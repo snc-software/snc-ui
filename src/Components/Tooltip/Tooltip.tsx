@@ -1,4 +1,12 @@
-import { cloneElement, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import {
+  cloneElement,
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { createPortal } from 'react-dom';
 
 import { cn } from '@/Utils/cn';
@@ -14,9 +22,9 @@ type TriggerProps = {
 };
 
 /**
- * Shows `content` in a small floating panel when the single trigger element is hovered or
- * focused, following the WAI-ARIA APG Tooltip pattern (show on hover/focus, hide on
- * mouse-leave/blur/Escape).
+ * Shows `content` in a small floating panel after the single trigger element has been
+ * continuously hovered or focused for `showDelayMs`, following the WAI-ARIA APG Tooltip pattern
+ * (hide on mouse-leave/blur/Escape/pointerdown of the trigger).
  *
  * Portalled to `document.body`, like `Internal/Popout`/`Modal`, so it isn't clipped by an
  * ancestor with `overflow` other than `visible` (e.g. `Card`'s bordered, overflow-hidden root).
@@ -34,6 +42,7 @@ export default function Tooltip({
   children,
   placement = 'bottom',
   isDisabled = false,
+  showDelayMs = 1000,
   id,
   className,
   style,
@@ -47,16 +56,27 @@ export default function Tooltip({
 
   const triggerRef = useRef<HTMLSpanElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const showTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const child = children as ReactElement<TriggerProps>;
 
   const show = () => {
-    if (!isDisabled) {
-      setIsOpen(true);
+    if (isDisabled) {
+      return;
     }
+
+    clearTimeout(showTimeoutRef.current);
+    showTimeoutRef.current = setTimeout(() => setIsOpen(true), showDelayMs);
   };
 
-  const hide = () => setIsOpen(false);
+  const hide = useCallback(() => {
+    clearTimeout(showTimeoutRef.current);
+    setIsOpen(false);
+  }, []);
+
+  useEffect(() => {
+    return () => clearTimeout(showTimeoutRef.current);
+  }, []);
 
   // Layout effect so the panel is positioned before paint — otherwise it flashes at the origin.
   useLayoutEffect(() => {
@@ -103,7 +123,7 @@ export default function Tooltip({
     document.addEventListener('keydown', handleKeyDown);
 
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, hide]);
 
   const trigger = cloneElement(child, {
     'aria-describedby': isOpen ? tooltipId : child.props['aria-describedby'],
@@ -118,6 +138,7 @@ export default function Tooltip({
         onMouseLeave={hide}
         onFocus={show}
         onBlur={hide}
+        onPointerDown={hide}
       >
         {trigger}
       </span>

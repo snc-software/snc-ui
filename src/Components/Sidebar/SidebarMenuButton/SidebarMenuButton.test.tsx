@@ -129,6 +129,9 @@ describe('SidebarMenuButton', () => {
 
     await user.hover(screen.getByRole('button'));
 
-    expect(await screen.findByRole('tooltip')).toHaveTextContent('Dashboard');
+    // `Tooltip` waits for its default 2000ms show delay before appearing.
+    expect(await screen.findByRole('tooltip', {}, { timeout: 3000 })).toHaveTextContent(
+      'Dashboard',
+    );
   });
 });

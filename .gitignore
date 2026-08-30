@@ -29,3 +29,14 @@ dist-ssr
 plans
 code-reviews
 
+# design-sync
+.design-sync/sb-reference/
+.design-sync/learnings/
+.design-sync/.cache/
+.design-sync/node_modules
+.design-sync/combined-styles.css
+.ds-sync/
+ds-bundle/
+
+coverage
+

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "..",
+    "paths": {
+      "@/Components/Typography": ["./src/Components/Typography/index.ts"],
+      "@/Components*": ["./src/Components*"],
+      "@/Internal*": ["./src/Internal*"],
+      "@/Shared*": ["./src/Shared*"],
+      "@/States*": ["./src/States*"],
+      "@/Types*": ["./src/Types*"],
+      "@/Utils*": ["./src/Utils*"]
+    }
+  }
+}

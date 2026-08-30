@@ -1,10 +1,9 @@
 import { HalfMoon, SunLight } from 'iconoir-react';
 import { useState } from 'react';
 
-import { cn } from '@/Utils/cn';
+import IconButton from '@/Components/IconButton';
 
 import { IconSize } from './ThemeToggle.constants';
-import { classes } from './ThemeToggle.styles';
 
 import type { ThemeToggleProps } from './ThemeToggle.types';
 
@@ -23,13 +22,11 @@ export default function ThemeToggle({
   const Icon = currentTheme === 'dark' ? HalfMoon : SunLight;
 
   return (
-    <button
+    <IconButton
       ref={ref}
-      type="button"
       aria-pressed={currentTheme === 'dark'}
-      aria-label={label}
-      title={label}
-      className={cn(classes.button, className)}
+      label={label}
+      className={className}
       onClick={(event) => {
         const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
@@ -43,6 +40,6 @@ export default function ThemeToggle({
       {...rest}
     >
       <Icon width={IconSize} height={IconSize} />
-    </button>
+    </IconButton>
   );
 }

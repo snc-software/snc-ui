@@ -49,6 +49,9 @@ export type { DateRangePickerProps, DateRangePickerValue } from './DateRangePick
 export { default as FileUpload } from './FileUpload';
 export type { FileUploadProps, FileUploadRejection } from './FileUpload';
 
+export { default as IconButton } from './IconButton';
+export type { IconButtonProps } from './IconButton';
+
 export { default as InformationPanel } from './InformationPanel';
 export type { InformationPanelProps } from './InformationPanel';
 

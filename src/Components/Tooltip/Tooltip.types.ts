@@ -29,4 +29,9 @@ export type TooltipProps = Omit<
    * @default false
    */
   isDisabled?: boolean;
+  /**
+   * How long the trigger must be continuously hovered/focused before the tooltip appears.
+   * @default 1000
+   */
+  showDelayMs?: number;
 };

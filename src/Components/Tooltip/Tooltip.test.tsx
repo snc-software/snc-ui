@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Tooltip from './Tooltip';
 import * as TooltipUtils from './Tooltip.utils';
@@ -12,9 +12,16 @@ vi.mock('./Tooltip.utils', () => ({
   getTooltipPosition: vi.fn(() => ({ top: 42, left: 24 })),
 }));
 
+const DefaultShowDelayMs = 1000;
+
 describe('Tooltip', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('renders the trigger without showing tooltip content by default', () => {
@@ -28,7 +35,7 @@ describe('Tooltip', () => {
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 
-  it('shows the tooltip content on mouse enter of the trigger', () => {
+  it('does not show the tooltip immediately on mouse enter, before the default delay elapses', () => {
     render(
       <Tooltip content="Helpful hint">
         <button type="button">Trigger</button>
@@ -37,7 +44,58 @@ describe('Tooltip', () => {
 
     fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
 
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  });
+
+  it('shows the tooltip content after the default delay following mouse enter of the trigger', () => {
+    render(
+      <Tooltip content="Helpful hint">
+        <button type="button">Trigger</button>
+      </Tooltip>,
+    );
+
+    fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
+
     expect(screen.getByRole('tooltip')).toHaveTextContent('Helpful hint');
+  });
+
+  it('shows the tooltip after a custom showDelayMs elapses, not the default', () => {
+    render(
+      <Tooltip content="Helpful hint" showDelayMs={500}>
+        <button type="button">Trigger</button>
+      </Tooltip>,
+    );
+
+    fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(499);
+    });
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(1);
+    });
+    expect(screen.getByRole('tooltip')).toHaveTextContent('Helpful hint');
+  });
+
+  it('cancels a pending show if the mouse leaves before the delay elapses', () => {
+    render(
+      <Tooltip content="Helpful hint">
+        <button type="button">Trigger</button>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Trigger' });
+    fireEvent.mouseEnter(trigger);
+    fireEvent.mouseLeave(trigger);
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
+
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 
   it('hides the tooltip content on mouse leave of the trigger', () => {
@@ -49,12 +107,15 @@ describe('Tooltip', () => {
 
     const trigger = screen.getByRole('button', { name: 'Trigger' });
     fireEvent.mouseEnter(trigger);
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
     fireEvent.mouseLeave(trigger);
 
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 
-  it('shows the tooltip content on focus of the trigger', () => {
+  it('shows the tooltip content after the default delay following focus of the trigger', () => {
     render(
       <Tooltip content="Helpful hint">
         <button type="button">Trigger</button>
@@ -62,6 +123,9 @@ describe('Tooltip', () => {
     );
 
     fireEvent.focus(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
 
     expect(screen.getByRole('tooltip')).toHaveTextContent('Helpful hint');
   });
@@ -75,6 +139,9 @@ describe('Tooltip', () => {
 
     const trigger = screen.getByRole('button', { name: 'Trigger' });
     fireEvent.focus(trigger);
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
     fireEvent.blur(trigger);
 
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
@@ -88,8 +155,71 @@ describe('Tooltip', () => {
     );
 
     fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
     fireEvent.keyDown(document, { key: 'Escape' });
 
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  });
+
+  it('hides an already-open tooltip immediately on pointerdown of the trigger', () => {
+    render(
+      <Tooltip content="Helpful hint">
+        <button type="button">Trigger</button>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Trigger' });
+    fireEvent.mouseEnter(trigger);
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
+    expect(screen.getByRole('tooltip')).toBeInTheDocument();
+
+    fireEvent.pointerDown(trigger);
+
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  });
+
+  it('cancels a pending (not-yet-shown) tooltip on pointerdown of the trigger, so it never appears', () => {
+    render(
+      <Tooltip content="Helpful hint">
+        <button type="button">Trigger</button>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Trigger' });
+    fireEvent.mouseEnter(trigger);
+    fireEvent.pointerDown(trigger);
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
+
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  });
+
+  it("still calls the trigger's own onClick after the tooltip dismiss logic runs", () => {
+    const handleClick = vi.fn();
+
+    render(
+      <Tooltip content="Helpful hint">
+        <button type="button" onClick={handleClick}>
+          Trigger
+        </button>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Trigger' });
+    fireEvent.mouseEnter(trigger);
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
+
+    fireEvent.pointerDown(trigger);
+    fireEvent.click(trigger);
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 
@@ -101,6 +231,9 @@ describe('Tooltip', () => {
     );
 
     fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
 
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
@@ -113,6 +246,9 @@ describe('Tooltip', () => {
     );
 
     fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
 
     expect(TooltipUtils.getTooltipPosition).toHaveBeenCalledWith(
       expect.anything(),
@@ -130,6 +266,9 @@ describe('Tooltip', () => {
     );
 
     fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
 
     expect(TooltipUtils.getTooltipPosition).toHaveBeenCalledWith(
       expect.anything(),
@@ -147,6 +286,9 @@ describe('Tooltip', () => {
     );
 
     fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
 
     expect(screen.getByRole('tooltip')).toHaveStyle({ top: '42px', left: '24px' });
   });
@@ -162,6 +304,9 @@ describe('Tooltip', () => {
     expect(trigger).not.toHaveAttribute('aria-describedby');
 
     fireEvent.mouseEnter(trigger);
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
     expect(trigger).toHaveAttribute('aria-describedby', 'hint-tooltip');
     expect(screen.getByRole('tooltip')).toHaveAttribute('id', 'hint-tooltip');
 
@@ -183,6 +328,9 @@ describe('Tooltip', () => {
     );
 
     fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
 
     expect(screen.getByRole('tooltip')).toHaveTextContent('Rich content');
   });
@@ -195,6 +343,9 @@ describe('Tooltip', () => {
     );
 
     fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
 
     expect(screen.getByRole('tooltip')).toHaveClass('custom-class');
   });
@@ -207,6 +358,9 @@ describe('Tooltip', () => {
     );
 
     fireEvent.mouseEnter(screen.getByRole('button', { name: 'Trigger' }));
+    act(() => {
+      vi.advanceTimersByTime(DefaultShowDelayMs);
+    });
 
     expect(screen.getByTestId('hint')).toBeInTheDocument();
   });

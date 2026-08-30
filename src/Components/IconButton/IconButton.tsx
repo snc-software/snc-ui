@@ -4,13 +4,7 @@ import { classes } from './IconButton.styles';
 
 import type { IconButtonProps } from './IconButton.types';
 
-export default function IconButton({
-  ref,
-  children,
-  label,
-  className,
-  ...rest
-}: IconButtonProps) {
+export default function IconButton({ ref, children, label, className, ...rest }: IconButtonProps) {
   return (
     <button
       ref={ref}

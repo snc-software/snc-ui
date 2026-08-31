@@ -62,9 +62,7 @@ export default function StatCard({
             </div>
           )}
 
-          {!isLoading && value === undefined && (
-            <div className={classes.empty}>{emptyMessage}</div>
-          )}
+          {!isLoading && value === undefined && <div className={classes.empty}>{emptyMessage}</div>}
 
           {!isLoading && value !== undefined && (
             <div className={cn(classes.metricRow, Variants[variant])}>

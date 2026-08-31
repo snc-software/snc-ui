@@ -22,11 +22,7 @@ export default function StatsGroup({
   return (
     <div
       ref={ref}
-      className={cn(
-        classes.root,
-        !isLoading && !isEmpty && ColumnClasses[columnCount],
-        className,
-      )}
+      className={cn(classes.root, !isLoading && !isEmpty && ColumnClasses[columnCount], className)}
       {...rest}
     >
       {isLoading && (

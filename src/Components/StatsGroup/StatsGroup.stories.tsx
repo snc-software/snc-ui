@@ -9,6 +9,9 @@ const meta = {
   title: 'Components/StatsGroup',
   component: StatsGroup,
   tags: ['autodocs'],
+  argTypes: {
+    isLoading: { control: 'boolean' },
+  },
 } satisfies Meta<typeof StatsGroup>;
 
 export default meta;
@@ -83,5 +86,18 @@ export const ExceedsMax: Story = {
         story: 'A 5th item is supplied but only the first 4 are rendered — `StatsGroup` caps at 4.',
       },
     },
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    items: fourMixedVariants,
+    isLoading: true,
+  },
+};
+
+export const Empty: Story = {
+  args: {
+    items: [],
   },
 };

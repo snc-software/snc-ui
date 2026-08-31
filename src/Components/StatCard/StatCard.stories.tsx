@@ -17,6 +17,7 @@ const meta = {
       control: 'select',
       options: [undefined, 'success', 'warning', 'error'],
     },
+    isLoading: { control: 'boolean' },
   },
   args: {
     label: 'Revenue',
@@ -73,5 +74,19 @@ export const ErrorStatus: Story = {
     variant: 'donut',
     donutValue: 24,
     status: 'error',
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    variant: 'basic',
+    isLoading: true,
+  },
+};
+
+export const Empty: Story = {
+  args: {
+    variant: 'basic',
+    value: undefined,
   },
 };

@@ -217,4 +217,46 @@ describe('StatCard', () => {
     expect(root).toHaveClass('custom-stat-card');
     expect(root.className).toContain('snc:rounded-xl');
   });
+
+  it('renders a loading indicator instead of the metric content when isLoading is true', () => {
+    render(<StatCard variant="basic" label="Revenue" value="$12,400" isLoading />);
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.queryByText('$12,400')).not.toBeInTheDocument();
+  });
+
+  it('still renders the label and icon while isLoading is true', () => {
+    render(
+      <StatCard
+        variant="basic"
+        label="Revenue"
+        value="$12,400"
+        icon={<StatsReport data-testid="stat-icon" />}
+        isLoading
+      />,
+    );
+
+    expect(screen.getByText('Revenue')).toBeInTheDocument();
+    expect(screen.getByTestId('stat-icon')).toBeInTheDocument();
+  });
+
+  it('renders the default "No data found" message when value is omitted', () => {
+    render(<StatCard variant="basic" label="Revenue" />);
+
+    expect(screen.getByText('No data found')).toBeInTheDocument();
+  });
+
+  it('renders a custom emptyMessage when value is omitted', () => {
+    render(<StatCard variant="basic" label="Revenue" emptyMessage="Awaiting data" />);
+
+    expect(screen.getByText('Awaiting data')).toBeInTheDocument();
+    expect(screen.queryByText('No data found')).not.toBeInTheDocument();
+  });
+
+  it('prefers the loading indicator over the empty message when isLoading is true and value is omitted', () => {
+    render(<StatCard variant="basic" label="Revenue" isLoading />);
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.queryByText('No data found')).not.toBeInTheDocument();
+  });
 });

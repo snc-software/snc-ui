@@ -140,4 +140,31 @@ describe('StatsGroup', () => {
     expect(screen.getByTestId('stats-group')).toHaveClass('snc:lg:grid-cols-4');
     expect(screen.getByTestId('stats-group').className).not.toMatch(/grid-cols-5/);
   });
+
+  it('renders a single loading indicator instead of the card grid when isLoading is true', () => {
+    render(<StatsGroup items={buildItems(3)} isLoading />);
+
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+    expect(screen.queryByText('Label 0')).not.toBeInTheDocument();
+  });
+
+  it('renders the default "No data found" message when items is empty', () => {
+    render(<StatsGroup items={[]} />);
+
+    expect(screen.getByText('No data found')).toBeInTheDocument();
+  });
+
+  it('renders a custom emptyMessage when items is empty', () => {
+    render(<StatsGroup items={[]} emptyMessage="Nothing to show" />);
+
+    expect(screen.getByText('Nothing to show')).toBeInTheDocument();
+    expect(screen.queryByText('No data found')).not.toBeInTheDocument();
+  });
+
+  it('prefers the loading indicator over the empty message when isLoading is true and items is empty', () => {
+    render(<StatsGroup items={[]} isLoading />);
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.queryByText('No data found')).not.toBeInTheDocument();
+  });
 });

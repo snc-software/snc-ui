@@ -141,11 +141,32 @@ describe('StatsGroup', () => {
     expect(screen.getByTestId('stats-group').className).not.toMatch(/grid-cols-5/);
   });
 
-  it('renders a single loading indicator instead of the card grid when isLoading is true', () => {
+  it('renders a single loading region instead of the card grid when isLoading is true', () => {
     render(<StatsGroup items={buildItems(3)} isLoading />);
 
     expect(screen.getAllByRole('status')).toHaveLength(1);
     expect(screen.queryByText('Label 0')).not.toBeInTheDocument();
+  });
+
+  it('renders one placeholder card per supplied item when isLoading is true', () => {
+    const { container } = render(<StatsGroup items={buildItems(3)} isLoading />);
+
+    expect(container.querySelectorAll('.snc\\:animate-pulse').length).toBeGreaterThan(0);
+    expect(screen.getByRole('status').children).toHaveLength(3);
+  });
+
+  it('caps the placeholder card count at MAX_ITEMS when more items are supplied than the max', () => {
+    render(<StatsGroup items={buildItems(5)} isLoading />);
+
+    expect(screen.getByRole('status').children).toHaveLength(4);
+  });
+
+  it('renders no placeholder cards, but still announces role="status", when items is empty and isLoading is true', () => {
+    render(<StatsGroup items={[]} isLoading />);
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.getByRole('status').children).toHaveLength(0);
+    expect(screen.queryByText('No data found')).not.toBeInTheDocument();
   });
 
   it('renders the default "No data found" message when items is empty', () => {
@@ -158,13 +179,6 @@ describe('StatsGroup', () => {
     render(<StatsGroup items={[]} emptyMessage="Nothing to show" />);
 
     expect(screen.getByText('Nothing to show')).toBeInTheDocument();
-    expect(screen.queryByText('No data found')).not.toBeInTheDocument();
-  });
-
-  it('prefers the loading indicator over the empty message when isLoading is true and items is empty', () => {
-    render(<StatsGroup items={[]} isLoading />);
-
-    expect(screen.getByRole('status')).toBeInTheDocument();
     expect(screen.queryByText('No data found')).not.toBeInTheDocument();
   });
 });

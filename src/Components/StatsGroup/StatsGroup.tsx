@@ -1,4 +1,5 @@
-import Spinner from '@/Components/Spinner';
+import Card from '@/Components/Card';
+import Skeleton from '@/Components/Skeleton';
 import StatCard from '@/Components/StatCard';
 import { cn } from '@/Utils/cn';
 
@@ -22,16 +23,28 @@ export default function StatsGroup({
   return (
     <div
       ref={ref}
-      className={cn(classes.root, !isLoading && !isEmpty && ColumnClasses[columnCount], className)}
+      role={isLoading ? 'status' : undefined}
+      aria-label={isLoading ? 'Loading' : undefined}
+      className={cn(classes.root, !isEmpty && ColumnClasses[columnCount], className)}
       {...rest}
     >
-      {isLoading && (
-        <div className={classes.loading}>
-          <Spinner size="xl" />
-        </div>
-      )}
-
       {isEmpty && <div className={classes.empty}>{emptyMessage}</div>}
+
+      {isLoading &&
+        visibleItems.map(({ id }) => (
+          <Card
+            key={id}
+            content={
+              <div>
+                <div className={classes.loadingCardHeader}>
+                  <Skeleton shape="text" className={classes.loadingCardLabel} />
+                  <Skeleton shape="circle" className={classes.loadingCardIcon} />
+                </div>
+                <Skeleton shape="text" className={classes.loadingCardValue} />
+              </div>
+            }
+          />
+        ))}
 
       {!isLoading &&
         !isEmpty &&

@@ -1,5 +1,7 @@
 import { cn } from '@/Utils/cn';
 
+export const DefaultEmptyMessage = 'No data found';
+
 export const Variants = {
   basic: cn('snc:flex-col'),
   trend: cn('snc:flex-col'),

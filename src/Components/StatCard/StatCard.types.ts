@@ -1,6 +1,6 @@
 import type { Variants } from './StatCard.constants';
 import type { SncComponent } from '@/Types/SncComponent';
-import type { HTMLAttributes, ReactElement, Ref } from 'react';
+import type { HTMLAttributes, ReactElement, ReactNode, Ref } from 'react';
 
 export type StatCardProps = SncComponent<
   Omit<HTMLAttributes<HTMLDivElement>, 'className' | 'id' | 'style' | 'children'> & {
@@ -13,9 +13,20 @@ export type StatCardProps = SncComponent<
      */
     label: string;
     /**
-     * The headline value.
+     * The headline value. Omit while data is still in flight or unavailable — its absence (with
+     * `isLoading` false) is what triggers `emptyMessage`.
      */
-    value: string | number;
+    value?: string | number;
+    /**
+     * Replaces the value/metric region with a loading indicator.
+     * @default false
+     */
+    isLoading?: boolean;
+    /**
+     * Shown in place of the value/metric region when `value` is omitted and `isLoading` is false.
+     * @default 'No data found'
+     */
+    emptyMessage?: ReactNode;
     /**
      * Decorative icon, available on every variant. Hidden from assistive tech and tinted by
      * `status` (or the neutral fallback when `status` is omitted).

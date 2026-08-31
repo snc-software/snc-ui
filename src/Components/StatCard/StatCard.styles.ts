@@ -9,6 +9,8 @@ export const classes = {
     'snc:rounded-lg',
   ),
   metricRow: cn('snc:flex'),
+  loading: cn('snc:mt-1 snc:flex snc:items-center'),
+  empty: cn('snc:mt-1 snc:font-snc-body snc:text-sm snc:text-snc-text-secondary'),
   trend: cn('snc:mt-2 snc:flex snc:items-center snc:gap-1 snc:text-sm'),
   trendIcon: cn('snc:inline-flex snc:shrink-0 snc:items-center'),
   trendValue: cn('snc:font-medium'),
